@@ -1,3 +1,4 @@
+import AppLayout from '@layout/AppLayout';
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const HomePage = React.lazy(() => import('@pages/HomePage'));
@@ -8,7 +9,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<HomePage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
