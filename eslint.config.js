@@ -35,12 +35,11 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // Import 관련 규칙
       'import/no-duplicates': 'error',
       'import/no-unused-modules': 'warn',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-      'import/order': 'off', // simple-import-sort를 사용하므로 비활성화
+      'import/order': 'off',
     },
   },
 
