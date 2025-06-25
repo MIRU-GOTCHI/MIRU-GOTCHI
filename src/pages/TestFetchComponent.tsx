@@ -1,42 +1,24 @@
 import { useAuth } from '@hooks/useAuth';
-import { goalService } from '@service/goalService/goalService';
-import { logService } from '@service/logService/logService';
+import { useGetGoals } from '@hooks/useGetGoals';
+import { useGetLogs } from '@hooks/useGetLogs';
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
-
-import type { Goal } from '@models/goal';
-import type { Log } from '@models/log';
+import { useState } from 'react';
 
 const TestFetchComponent = () => {
   const { userId } = useAuth();
   const [goalId, setGoalId] = useState('');
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [logs, setLogs] = useState<Log[]>([]);
 
-  useEffect(() => {
-    const fetchGoals = async () => {
-      if (!userId) return;
-      try {
-        const fetchedGoals = await goalService.getUserGoals(userId);
-        setGoals(fetchedGoals);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const {
+    data: goals = [],
+    isLoading: isGoalsLoading,
+    error: goalsError,
+  } = useGetGoals(userId ?? '');
 
-    fetchGoals();
-  }, [userId]);
-
-  const handleFetchLogs = async () => {
-    if (!userId || !goalId) return;
-
-    try {
-      const fetchedLogs = await logService.getGoalLogs(userId, goalId);
-      setLogs(fetchedLogs);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const {
+    data: logs = [],
+    isLoading: isLogsLoading,
+    error: logsError,
+  } = useGetLogs(userId ?? '', goalId);
 
   return (
     <div>
@@ -46,17 +28,24 @@ const TestFetchComponent = () => {
         <div>유저 ID: {userId}</div>
 
         <div>
-          <select value={goalId} onChange={(e) => setGoalId(e.target.value)}>
-            {goals.map((goal) => (
-              <option key={goal.id} value={goal.id}>
-                {goal.title}
-              </option>
-            ))}
-          </select>
-        </div>
+          {isGoalsLoading && <p>목표 불러오는 중...</p>}
+          {goalsError && <p>에러 발생: {String(goalsError)}</p>}
 
-        <button onClick={handleFetchLogs}>로그 불러오기</button>
+          {!isGoalsLoading && (
+            <select value={goalId} onChange={(e) => setGoalId(e.target.value)}>
+              <option value="">목표를 선택하세요</option>
+              {goals.map((goal) => (
+                <option key={goal.id} value={goal.id}>
+                  {goal.title}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
       </div>
+
+      {isLogsLoading && <p>로그 불러오는 중...</p>}
+      {logsError && <p>로그 에러: {String(logsError)}</p>}
 
       {logs.length > 0 && (
         <div>
