@@ -1,8 +1,8 @@
-import FormPage from '@pages/FormPage';
-import React from 'react';
+import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const HomePage = React.lazy(() => import('@pages/HomePage'));
 const LoginPage = React.lazy(() => import('@pages/LoginPage'));
+const FormPage = React.lazy(() => import('@pages/FormPage'));
 
 function App() {
   return (
