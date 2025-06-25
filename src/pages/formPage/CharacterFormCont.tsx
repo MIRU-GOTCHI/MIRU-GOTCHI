@@ -7,7 +7,7 @@ import ToggleButtonGroup, {
 const CharacterFormBox = styled(Grid)({
   width: '100%',
   height: 'auto',
-  borderRadius: '5px',
+  borderRadius: '15px',
   backgroundColor: '#D9D9D9',
   padding: '0 20px'
 })

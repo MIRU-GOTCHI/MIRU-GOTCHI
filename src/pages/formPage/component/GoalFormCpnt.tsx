@@ -5,7 +5,7 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, styled } fr
 const GoalFormBox = styled(Grid)({
   width: '100%',
   height: 'auto',
-  borderRadius: '5px',
+  borderRadius: '15px',
   backgroundColor: '#5B93D5',
   padding: '20px',
   display: 'flex',
