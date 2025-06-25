@@ -1,3 +1,4 @@
+import FormPage from '@pages/FormPage';
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/new" element={<FormPage />} />
       </Routes>
     </BrowserRouter>
   );
