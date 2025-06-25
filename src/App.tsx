@@ -1,4 +1,4 @@
-import { AuthProvider } from '@context/AuthContext';
+import { AuthProvider } from '@context/AuthProvider';
 import AppLayout from '@layout/AppLayout';
 import TestFetchComponent from '@pages/TestFetchComponent';
 import * as React from 'react';

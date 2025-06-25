@@ -1,4 +1,4 @@
-import { useAuth } from '@hooks/useAuth';
+import { useAuth } from '@hooks/auth/useAuth';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { useGetLogs } from '@hooks/useGetLogs';
 import { format } from 'date-fns';
