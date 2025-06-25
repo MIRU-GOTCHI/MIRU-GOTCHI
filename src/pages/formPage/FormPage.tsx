@@ -1,7 +1,7 @@
 import { Box, Button, Grid, styled } from "@mui/material"
-import GoalFormCpnt from "./formPage/component/GoalFormCpnt"
-import CharacterFormCont from "./formPage/CharacterFormCont"
 import { useState } from "react"
+import GoalFormCpnt from "./component/GoalFormCpnt"
+import CharacterFormCont from "./component/CharacterFormCont"
 
 const FormPageBox = styled(Box)({
   display: 'flex',
