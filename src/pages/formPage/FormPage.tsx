@@ -2,31 +2,42 @@ import { Box, Button, Grid, styled } from "@mui/material"
 import { useState } from "react"
 import GoalFormCpnt from "./component/GoalFormCpnt"
 import CharacterFormCont from "./component/CharacterFormCont"
+import BeforeBtn from "@common/components/BeforeBtn"
 
 const FormPageBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
-  width: '96vw',
+  width: '100%',
   maxWidth: '100vw',
-  maxHeight: '100vh',
-  padding: '2vw',
+  flexGrow: 1,
 
 })
 const FormTitle = styled(Box)({
   width: '100%',
-  height: '40px',
+  height: '6vh',
+  display:'flex',
+  alignItems:'center',
+})
+const Form = styled('form')({
+  display: 'flex',
+  width: '100%',
+  minHeight: '60vh',
+  flexGrow: 1,
+  borderRadius: '5px',
+
 })
 const FormBox = styled(Grid)({
   display: 'flex',
   width: '100%',
-  height: '80vh',
+  minHeight: '60vh',
+  flexGrow: 1,
   borderRadius: '5px',
 
 })
 
 const FormFooter = styled(Box)({
   width: '100%',
-  height: 'auto',
+  height: '6vh',
   display: 'flex',
 })
 const FormButton = styled(Button)({
@@ -69,12 +80,13 @@ const FormPage = () => {
 
   return (
     <FormPageBox>
+      <BeforeBtn />
       <FormTitle>습관 등록</FormTitle>
-      <form
-        // onSubmit={handleSubmit}
+      <Form
+      // onSubmit={handleSubmit}
       >
-      <FormBox container spacing={2}>
-        
+        <FormBox container spacing={2}>
+
           <GoalFormCpnt
           //props 추가
           // habitName={formData.habitName}
@@ -85,12 +97,12 @@ const FormPage = () => {
           // onDescriptionChange={handleChange}
           />
           <CharacterFormCont
-            //props 추가
-            // characterName={formData.characterName}
-            // onCharacterNameChange={handleChange}
+          //props 추가
+          // characterName={formData.characterName}
+          // onCharacterNameChange={handleChange}
           />
-      </FormBox>
-      </form>
+        </FormBox>
+      </Form>
       <FormFooter>
         <FormButton type="submit" > 등록 하기</FormButton>
       </FormFooter>

@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="new" element={<FormPage />} />
-          <Route path="habit" element={<FormPage />}>
+          <Route path="habit">
             <Route path=":id" element={<HabitDetailPage />} />
           </Route>
         </Route>        
