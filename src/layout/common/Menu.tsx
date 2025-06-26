@@ -3,6 +3,7 @@ import ListIcon from '@mui/icons-material/List';
 import MarginIcon from '@mui/icons-material/Margin';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
 // import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 // import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 // import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -56,6 +57,12 @@ const Menu = () => {
             <ListIcon />
             {/* <DensitySmallIcon />
             <EditNoteIcon /> */}
+          </NavLink>
+        </li>
+        <li> 
+          {/* 임시 가이드 메뉴 */}
+          <NavLink to="/guide">
+            <ViewSidebarIcon />
           </NavLink>
         </li>
       </NevList>
