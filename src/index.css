@@ -73,15 +73,23 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.fontBitBit {
+  font-family: "DNFBitBitv2";
+}
+
+.fontGalmuri {
+  font-family: "Galmuri14";
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
 
-  a:hover {
+  /* a:hover {
     color: #747bff;
-  }
+  } */
 
   button {
     background-color: #f9f9f9;
