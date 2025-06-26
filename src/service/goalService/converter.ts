@@ -2,7 +2,7 @@ import { convertTimestampToDate } from '@utils/timeStampConverter';
 
 import type { Goal, GoalFirestore } from '@models/goal';
 
-export const convertGoalFromFirestore = (data: GoalFirestore, id: string): Goal => {
+export const convertGoalDate = (data: GoalFirestore, id: string): Goal => {
   const totalDays = Math.ceil(
     (convertTimestampToDate(data.endDate).getTime() -
       convertTimestampToDate(data.startDate).getTime()) /

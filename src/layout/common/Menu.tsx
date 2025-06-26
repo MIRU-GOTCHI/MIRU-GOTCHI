@@ -1,9 +1,9 @@
 import HomeFilledIcon from '@mui/icons-material/HomeFilled';
 import ListIcon from '@mui/icons-material/List';
 import MarginIcon from '@mui/icons-material/Margin';
+import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import ViewSidebarIcon from '@mui/icons-material/ViewSidebar';
 // import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 // import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 // import EditNoteIcon from '@mui/icons-material/EditNote';
