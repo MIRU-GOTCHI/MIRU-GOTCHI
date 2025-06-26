@@ -1,5 +1,6 @@
-import { db } from 'firebase';
 import { query, where, getDocs, collection, Timestamp, doc, updateDoc } from 'firebase/firestore';
+
+import { db } from '../../firebase';
 
 export const updateFailCount = async (userId: string, goalId: string) => {
   const now = new Date();

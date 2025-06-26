@@ -3,7 +3,7 @@ import AppLayout from '@layout/AppLayout';
 import CharacterDetailPage from '@pages/Character/CharacterDetailPage';
 import CharacterPage from '@pages/Character/CharacterPage';
 import StyleGuidePage from '@pages/styleGuidePage/StyleGuidePage';
-import TestFetchComponent from '@pages/TestFetchComponent';
+import TestGoalCheck from '@pages/TestGoalCheck';
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const HomePage = React.lazy(() => import('@pages/HomePage'));
@@ -17,7 +17,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/test" element={<TestFetchComponent />} />
+          <Route path="/test" element={<TestGoalCheck />} />
           <Route path="/" element={<AppLayout />}>
             <Route index element={<HomePage />} />
             <Route path="guide" element={<StyleGuidePage />} />
