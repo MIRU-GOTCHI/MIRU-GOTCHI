@@ -1,61 +1,100 @@
-// // src/hooks/useFirestoreMutation.ts
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
-// import { collection, addDoc, updateDoc, deleteDoc, doc, DocumentData, Timestamp } from 'firebase/firestore';
-// import { db } from '../firebaseConfig'; // Firestore 인스턴스 임포트
+import type { GoalFirestore } from "@models/goal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { convertDatesToTimestamps } from "@utils/timeStampConverter";
+import { auth, db } from "firebase";
+import { addDoc, collection, deleteDoc, doc, Timestamp, updateDoc } from "firebase/firestore";
 
-// // 뮤테이션 페이로드 타입 정의
-// interface AddPayload {
-//   collectionName: string;
-//   data: DocumentData;
-// }
+export const useGoalsFirestore = () => {
+  const queryClient = useQueryClient();
+  const collectionName = 'goals'; // 목표 데이터를 저장할 컬렉션 이름
 
-// interface UpdatePayload {
-//   collectionName: string;
-//   docId: string;
-//   data: Partial<DocumentData>; // 부분 업데이트 가능
-// }
+  // 1. 목표 추가 뮤테이션 훅
+  const addGoalMutation = useMutation({
+    mutationFn: async (data: GoalFirestore) => {
+      const userId = auth.currentUser?.uid;
+      if (!userId) {
+        throw new Error('User not authenticated. Please log in to add data.');
+      }
 
-// interface DeletePayload {
-//   collectionName: string;
-//   docId: string;
-// }
+      const dataForFirestore = convertDatesToTimestamps(data);
 
-// // 뮤테이션 타입 정의
-// type FirestoreMutationPayload = AddPayload | UpdatePayload | DeletePayload;
+      const finalDocData: GoalFirestore = {
+        ...dataForFirestore as Omit<GoalFirestore, 'userId' | 'createdAt' | 'updatedAt'>,
+        userId,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        // characterStatus.gone은 필요에 따라 이곳에서 설정하거나 CreateGoalData에 포함
+        characterStatus: {
+          ...data.characterStatus,
+          gone: data.characterStatus.growthStage === 'gone' // growthStage가 'gone'이면 gone: true 설정
+        }
+      };
 
-// export const useFirestoreMutation = (
-//   type: 'add' | 'update' | 'delete',
-//   queryKeyToInvalidate?: string[] // 뮤테이션 성공 시 무효화할 쿼리 키
-// ) => {
-//   const queryClient = useQueryClient();
+      return await addDoc(collection(db, collectionName), finalDocData);
+    },
+    onSuccess: () => {
+      // 'goals' 쿼리 키를 무효화하여 모든 목표 목록을 새로고침
+      queryClient.invalidateQueries({ queryKey: [collectionName] });
+    },
+    onError: (error: Error) => {
+      console.error('Failed to add goal:', error);
+      // 여기에서 사용자에게 오류 메시지를 표시하는 등의 추가적인 오류 처리 가능
+    },
+  });
 
-//   const mutationFn = async (payload: FirestoreMutationPayload) => {
-//     if (type === 'add') {
-//       const { collectionName, data } = payload as AddPayload;
-//       // 생성 시간 자동 추가 (선택 사항)
-//       return await addDoc(collection(db, collectionName), { ...data, createdAt: Timestamp.now() });
-//     } else if (type === 'update') {
-//       const { collectionName, docId, data } = payload as UpdatePayload;
-//       // 업데이트 시간 자동 추가 (선택 사항)
-//       return await updateDoc(doc(db, collectionName, docId), { ...data, updatedAt: Timestamp.now() });
-//     } else if (type === 'delete') {
-//       const { collectionName, docId } = payload as DeletePayload;
-//       return await deleteDoc(doc(db, collectionName, docId));
-//     }
-//     throw new Error('Invalid Firestore mutation type');
-//   };
+  // 2. 목표 업데이트 뮤테이션 훅
+  const updateGoalMutation = useMutation({
+    mutationFn: async ({ data }: { data: Partial<GoalFirestore> }) => {
+      const dataForFirestore = convertDatesToTimestamps(data);
 
-//   return useMutation({
-//     mutationFn,
-//     onSuccess: () => {
-//       // 뮤테이션 성공 시 지정된 쿼리 키를 무효화하여 데이터 재요청
-//       if (queryKeyToInvalidate) {
-//         queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
-//       }
-//     },
-//     onError: (error: Error) => {
-//       console.error(`Firestore ${type} mutation failed:`, error);
-//       // 에러 처리 로직 (예: 사용자에게 알림)
-//     },
-//   });
-// };
+      const updateGoal: Partial<GoalFirestore> = {
+        ...dataForFirestore as Partial<Omit<GoalFirestore, 'updatedAt'>>,
+        updatedAt: Timestamp.now(),
+      };
+
+      // characterStatus.gone 업데이트 로직 (부분 업데이트 시에도 반영)
+      if (data.characterStatus?.growthStage === 'gone') {
+        if (!updateGoal.characterStatus) {
+          updateGoal.characterStatus = { ...(dataForFirestore as Partial<GoalFirestore>).characterStatus as CharacterStatus };
+        }
+        updateGoal.characterStatus.gone = true;
+      } else if (data.characterStatus?.growthStage) {
+         if (!updateGoal.characterStatus) {
+            updateGoal.characterStatus = { ...(dataForFirestore as Partial<GoalFirestore>).characterStatus as CharacterStatus };
+         }
+         updateGoal.characterStatus.gone = false; 
+      }
+
+
+      return await updateDoc(doc(db, collectionName), updateGoal);
+    },
+    onSuccess: (_) => {
+      // 'goals' 목록과 특정 목표 상세 페이지 쿼리 키 무효화
+      queryClient.invalidateQueries({ queryKey: [collectionName] });
+      queryClient.invalidateQueries({ queryKey: [collectionName] });
+    },
+    onError: (error: Error) => {
+      console.error('Failed to update goal:', error);
+    },
+  });
+
+  // 3. 목표 삭제 뮤테이션 훅
+  const deleteGoalMutation = useMutation({
+    mutationFn: async (docId: string) => {
+      return await deleteDoc(doc(db, collectionName, docId));
+    },
+    onSuccess: () => {
+      // 'goals' 쿼리 키를 무효화하여 목록을 새로고침
+      queryClient.invalidateQueries({ queryKey: [collectionName] });
+    },
+    onError: (error: Error) => {
+      console.error('Failed to delete goal:', error);
+    },
+  });
+
+  return {
+    addGoal: addGoalMutation,
+    updateGoal: updateGoalMutation,
+    deleteGoal: deleteGoalMutation,
+  };
+};
