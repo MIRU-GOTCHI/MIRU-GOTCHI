@@ -2,7 +2,6 @@ import BeforeBtn from '@common/components/BeforeBtn';
 import ContentTitle from '@layout/common/ContentTitle';
 import { Box, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { flushSync } from 'react-dom';
 import styled from 'styled-components';
 
 const Container = styled('div')({
@@ -14,37 +13,33 @@ const Container = styled('div')({
   padding: '2rem',
 });
 
-const Title = styled(Typography)({
-  justifyContent: 'center',
+const GrowthTitle = styled(Typography)({
+  display: 'flex',
+  alignContent: 'center',
+  paddingInline: '3rem',
   fontSize: '32px !important',
   color: '#050505 !important',
-  fontFamily: 'Galmuri14!important',
-});
-
-const Description = styled(Typography)({
-  justifyContent: 'center',
-  fontSize: '16px !important',
-  color: '#a4a4a4 !important',
-  fontFamily: 'Galmuri14 !important',
-  marginBottom: '2rem !important',
-});
-
-const GrowthTitle = styled(Typography)({
-  fontSize: '16px !important',
-  color: '#050505 !important',
-  fontFamily: 'Galmuri14!important',
+  fontFamily: 'DNFBitBitv2 !important',
   marginBlock: '1rem !important',
 });
 
 const GrowthStageContainer = styled('div')({
   display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  width: '700px',
+  alignSelf: 'center',
+  backgroundColor: 'grey',
+  paddingBottom: '2rem',
+});
+
+const GrowthStageArea = styled('div')({
+  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   width: '700px',
   alignSelf: 'center',
-
   backgroundColor: 'grey',
-  aspectRatio: '1/1',
 });
 
 const UnlockedStage = styled('div')({
@@ -70,8 +65,6 @@ const CharacterDetailPage = () => {
       <ContentTitle>
         <BeforeBtn />
       </ContentTitle>
-      <Title>미루몬 프로필</Title>
-      <Description>성장 중인 미루몬의 레벨, 경험치 정보를 확인해보세요!</Description>
 
       <Box
         sx={{
@@ -95,29 +88,32 @@ const CharacterDetailPage = () => {
           alignItems: 'center',
           alignSelf: 'center',
           width: '700px',
-          height: '200px',
+          height: '50px',
           backgroundColor: 'blue',
           color: '#fafdff',
+          marginBottom: '1rem',
         }}
       >
         경험치 바
       </Box>
-      <GrowthTitle>쑥쑥! 성장기록</GrowthTitle>
       <GrowthStageContainer>
-        <Grid container rowSpacing={8} columnSpacing={1}>
-          <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <UnlockedStage></UnlockedStage>
+        <GrowthTitle>쑥쑥! 성장기록</GrowthTitle>
+        <GrowthStageArea>
+          <Grid container rowSpacing={8} columnSpacing={1}>
+            <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <UnlockedStage></UnlockedStage>
+            </Grid>
+            <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <UnlockedStage></UnlockedStage>
+            </Grid>
+            <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <UnlockedStage></UnlockedStage>
+            </Grid>
+            <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <LockedStage>?</LockedStage>
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <UnlockedStage></UnlockedStage>
-          </Grid>
-          <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <UnlockedStage></UnlockedStage>
-          </Grid>
-          <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <LockedStage>?</LockedStage>
-          </Grid>
-        </Grid>
+        </GrowthStageArea>
       </GrowthStageContainer>
     </Container>
   );
