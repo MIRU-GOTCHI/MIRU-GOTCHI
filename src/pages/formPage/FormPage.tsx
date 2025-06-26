@@ -34,7 +34,6 @@ const FormBox = styled(Grid)({
   borderRadius: '5px',
 
 })
-
 const FormFooter = styled(Box)({
   width: '100%',
   height: '6vh',
