@@ -15,6 +15,8 @@ const Wrap = styled('div')({
 const ContentArea = styled('main')({
   padding: '70px 20px',
   height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 const AppLayout = () => {
