@@ -14,7 +14,8 @@
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
       "@models/*": ["models/*"],
-      "@layout/*": ["layout/*"]
+      "@layout/*": ["layout/*"],
+      "@service/*": ["service/*"]
     },
 
     "moduleResolution": "node",

@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -22,7 +22,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            p: 3,
+            padding: '60px 48px',
             backgroundColor: '#5B93D5',
             minHeight: '300px',
           }}
@@ -44,16 +44,25 @@ function a11yProps(index: number) {
 const CharacterPageContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  width: '100vw',
-  height: '100vh',
+  width: '100%',
+  height: '100%',
   background: '#F2F2F3',
+  padding: '4rem',
 });
 
 const CharacterPageTitle = styled(Typography)({
   justifyContent: 'center',
-  fontSize: '32px',
-  fontWeight: '900',
-  color: '#050505',
+  fontSize: '32px !important',
+  color: '#050505 !important',
+  // fontFamily: 'Galmuri14, sans-serif !important',
+});
+
+const CharacterPageDescription = styled(Typography)({
+  justifyContent: 'center',
+  fontSize: '16px !important',
+  color: '#a4a4a4 !important',
+  // fontFamily: 'Galmuri14, sans-serif !important',
+  marginBottom: '2rem !important',
 });
 
 const CharacterPageTabArea = styled('div')({
@@ -64,15 +73,18 @@ const CharacterPageTabArea = styled('div')({
 });
 
 const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
-  backgroundColor: '#4B7CB4',
-  color: '#A4A4A4',
-  fontWeight: 'bold',
+  width: 'fit-content',
+  backgroundColor: '#4B7CB4 !important',
+  color: '#A4A4A4 !important',
+  fontSize: '20px !important',
   border: 'none',
   outline: 'none',
   boxShadow: 'none',
+  padding: '16px 32px !important',
+  // fontFamily: 'Galmuri14, sans-serif !important',
   '&.Mui-selected': {
-    backgroundColor: '#5B93D5',
-    color: '#fafdff',
+    backgroundColor: '#5B93D5 !important',
+    color: '#fafdff !important',
   },
   '&:focus': {
     outline: 'none',
@@ -90,26 +102,90 @@ const CharacterPage = () => {
   };
 
   return (
-    <CharacterPageContainer>
-      <CharacterPageTitle>나의 습관 캐릭터 목록</CharacterPageTitle>
-      <CharacterPageTabArea>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="fullWidth"
-          TabIndicatorProps={{ style: { display: 'none' } }}
-        >
-          <CharacterPageTab label="진행중" {...a11yProps(0)}></CharacterPageTab>
-          <CharacterPageTab label="완료" {...a11yProps(1)}></CharacterPageTab>
-        </Tabs>
-      </CharacterPageTabArea>
-      <CustomTabPanel value={value} index={0}>
-        Item One
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Item Two
-      </CustomTabPanel>
-    </CharacterPageContainer>
+    <>
+      <CharacterPageContainer>
+        <CharacterPageTitle>나의 습관 캐릭터 목록</CharacterPageTitle>
+        <CharacterPageDescription>
+          지금까지 키워온 미루몬들을 한눈에 확인 할 수 있어요!
+        </CharacterPageDescription>
+        <CharacterPageTabArea>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant="standard"
+            scrollButtons="auto"
+            TabIndicatorProps={{ style: { display: 'none' } }}
+          >
+            <CharacterPageTab label="진행중" {...a11yProps(0)} sx={{ marginRight: '1rem' }} />
+            <CharacterPageTab label="완료" {...a11yProps(1)} />
+          </Tabs>
+        </CharacterPageTabArea>
+        <CustomTabPanel value={value} index={0}>
+          <Grid container rowSpacing={4} columnSpacing={1}>
+            {[...Array(12)].map((_, index) => (
+              <Grid
+                size={{ xs: 2.4 }}
+                key={index}
+                sx={{ display: 'flex', justifyContent: 'center' }}
+              >
+                <Box
+                  sx={{
+                    position: 'relative',
+                    backgroundColor: 'white',
+                    width: '128px',
+                    height: '128px',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      position: 'absolute',
+                      zIndex: 1,
+                      top: '0',
+                      right: '0',
+                      padding: '0.5rem 1rem',
+                    }}
+                  >
+                    Lv.1
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Grid container rowSpacing={4} columnSpacing={1}>
+            {[...Array(7)].map((_, index) => (
+              <Grid
+                size={{ xs: 2.4 }}
+                key={index}
+                sx={{ display: 'flex', justifyContent: 'center' }}
+              >
+                <Box
+                  sx={{
+                    position: 'relative',
+                    backgroundColor: 'white',
+                    width: '128px',
+                    height: '128px',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      position: 'absolute',
+                      zIndex: 1,
+                      top: '0',
+                      right: '0',
+                      padding: '0.5rem 1rem',
+                    }}
+                  >
+                    Lv.1
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </CustomTabPanel>
+      </CharacterPageContainer>
+    </>
   );
 };
 
