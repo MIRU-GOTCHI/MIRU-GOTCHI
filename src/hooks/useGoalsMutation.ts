@@ -1,20 +1,31 @@
-import type { GoalFirestore } from "@models/goal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { convertDatesToTimestamps } from "@utils/timeStampConverter";
-import { auth, db } from "firebase";
-import { addDoc, collection, deleteDoc, doc, Timestamp, updateDoc } from "firebase/firestore";
+import type { CharacterStatus } from '@models/character';
+import type { CreateGoalData, GoalFirestore } from '@models/goal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { convertDatesToTimestamps } from '@utils/timeStampConverter';
+import { auth, db } from '../firebase';
+import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
+import { useAuthContext } from './auth/useAuthContext';
+
 
 export const useGoalsFirestore = () => {
   const queryClient = useQueryClient();
-  const collectionName = 'goals'; // 목표 데이터를 저장할 컬렉션 이름
+  // 컬렉션 이름은 'goals'로 유지하되, users/{userId} 하위 컬렉션으로 사용
+  const goalsSubCollectionName = 'goals'; 
+
+  const { userId: contextUserId } = useAuthContext();
+  const getUserId = () => {
+    const userId = auth.currentUser?.uid;
+    const finalUserId = userId || contextUserId; 
+    if (!finalUserId) {
+      throw new Error('User not authenticated. Please log in.');
+    }
+    return finalUserId;
+  };
 
   // 1. 목표 추가 뮤테이션 훅
   const addGoalMutation = useMutation({
-    mutationFn: async (data: GoalFirestore) => {
-      const userId = auth.currentUser?.uid;
-      if (!userId) {
-        throw new Error('User not authenticated. Please log in to add data.');
-      }
+    mutationFn: async (data: CreateGoalData) => {
+      const userId = getUserId(); // userId 가져오기
 
       const dataForFirestore = convertDatesToTimestamps(data);
 
@@ -23,55 +34,59 @@ export const useGoalsFirestore = () => {
         userId,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
-        // characterStatus.gone은 필요에 따라 이곳에서 설정하거나 CreateGoalData에 포함
-        characterStatus: {
-          ...data.characterStatus,
-          gone: data.characterStatus.growthStage === 'gone' // growthStage가 'gone'이면 gone: true 설정
-        }
       };
 
-      return await addDoc(collection(db, collectionName), finalDocData);
+      // users/{userId}/goals 컬렉션 참조 생성
+      const userGoalsCollectionRef = collection(db, 'users', userId, goalsSubCollectionName);
+      return await addDoc(userGoalsCollectionRef, finalDocData);
     },
     onSuccess: () => {
-      // 'goals' 쿼리 키를 무효화하여 모든 목표 목록을 새로고침
-      queryClient.invalidateQueries({ queryKey: [collectionName] });
+      // 'goals' 컬렉션의 쿼리 키를 무효화하여 모든 목표 목록을 새로고침
+      // 사용자별 쿼리 키를 사용한다면 [collectionName, userId] 형태로 무효화해야 합니다.
+      queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName] });
     },
     onError: (error: Error) => {
       console.error('Failed to add goal:', error);
-      // 여기에서 사용자에게 오류 메시지를 표시하는 등의 추가적인 오류 처리 가능
     },
   });
 
   // 2. 목표 업데이트 뮤테이션 훅
   const updateGoalMutation = useMutation({
-    mutationFn: async ({ data }: { data: Partial<GoalFirestore> }) => {
+    mutationFn: async (payload: { docId: string; data: Partial<CreateGoalData> }) => {
+      const userId = getUserId(); // userId 가져오기
+      const { docId, data } = payload;
+
       const dataForFirestore = convertDatesToTimestamps(data);
 
-      const updateGoal: Partial<GoalFirestore> = {
+      const updatePayload: Partial<GoalFirestore> = {
         ...dataForFirestore as Partial<Omit<GoalFirestore, 'updatedAt'>>,
         updatedAt: Timestamp.now(),
       };
 
-      // characterStatus.gone 업데이트 로직 (부분 업데이트 시에도 반영)
-      if (data.characterStatus?.growthStage === 'gone') {
-        if (!updateGoal.characterStatus) {
-          updateGoal.characterStatus = { ...(dataForFirestore as Partial<GoalFirestore>).characterStatus as CharacterStatus };
+      // characterStatus.gone 업데이트 로직
+      if (data.characterStatus?.growthStage !== undefined) {
+        if (!updatePayload.characterStatus) {
+          updatePayload.characterStatus = {
+            growthStage: data.characterStatus.growthStage,
+            level: data.characterStatus.level || 0,
+          } as CharacterStatus & { gone?: boolean };
         }
-        updateGoal.characterStatus.gone = true;
-      } else if (data.characterStatus?.growthStage) {
-         if (!updateGoal.characterStatus) {
-            updateGoal.characterStatus = { ...(dataForFirestore as Partial<GoalFirestore>).characterStatus as CharacterStatus };
-         }
-         updateGoal.characterStatus.gone = false; 
+
+        if (data.characterStatus.growthStage === 'gone') {
+          updatePayload.characterStatus!.gone = true;
+        } else {
+          updatePayload.characterStatus!.gone = false;
+        }
       }
 
-
-      return await updateDoc(doc(db, collectionName), updateGoal);
+      // users/{userId}/goals/{docId} 문서 참조 생성
+      const goalDocRef = doc(db, 'users', userId, goalsSubCollectionName, docId);
+      return await updateDoc(goalDocRef, updatePayload);
     },
-    onSuccess: (_) => {
-      // 'goals' 목록과 특정 목표 상세 페이지 쿼리 키 무효화
-      queryClient.invalidateQueries({ queryKey: [collectionName] });
-      queryClient.invalidateQueries({ queryKey: [collectionName] });
+    onSuccess: (_, variables) => {
+      // 사용자별 목표 목록과 특정 목표 상세 페이지 쿼리 키 무효화
+      queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName] });
+      queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName, variables.docId] });
     },
     onError: (error: Error) => {
       console.error('Failed to update goal:', error);
@@ -81,11 +96,15 @@ export const useGoalsFirestore = () => {
   // 3. 목표 삭제 뮤테이션 훅
   const deleteGoalMutation = useMutation({
     mutationFn: async (docId: string) => {
-      return await deleteDoc(doc(db, collectionName, docId));
+      const userId = getUserId(); // userId 가져오기
+
+      // users/{userId}/goals/{docId} 문서 참조 생성
+      const goalDocRef = doc(db, 'users', userId, goalsSubCollectionName, docId);
+      return await deleteDoc(goalDocRef);
     },
     onSuccess: () => {
-      // 'goals' 쿼리 키를 무효화하여 목록을 새로고침
-      queryClient.invalidateQueries({ queryKey: [collectionName] });
+      // 사용자별 목표 목록 쿼리 키 무효화
+      queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName] });
     },
     onError: (error: Error) => {
       console.error('Failed to delete goal:', error);
