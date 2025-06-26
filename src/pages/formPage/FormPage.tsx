@@ -1,11 +1,13 @@
+import BeforeBtn from "@common/components/BeforeBtn"
+import { useGoalsFirestore } from "@hooks/useGoalsMutation"
 import { Box, Button, Grid, styled } from "@mui/material"
 import { useState } from "react"
-import GoalFormCpnt from "./component/GoalFormCpnt"
+
 import CharacterFormCont from "./component/CharacterFormCont"
-import BeforeBtn from "@common/components/BeforeBtn"
-import type { GrowthStage } from "@models/common"
+import GoalFormCpnt from "./component/GoalFormCpnt"
+
 import type { CharacterStatus } from "@models/character"
-import { useGoalsFirestore } from "@hooks/useGoalsMutation"
+import type { GrowthStage } from "@models/common"
 import type { CreateGoalData } from "@models/goal"
 
 const FormPageBox = styled(Box)({

@@ -1,4 +1,4 @@
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, styled } from "@mui/material"
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, styled } from '@mui/material';
 
 const GoalFormBox = styled(Grid)({
   width: '100%',
@@ -8,29 +8,29 @@ const GoalFormBox = styled(Grid)({
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: 30
-})
-const TitleTextField = styled(TextField)(({  }) => ({
+  gap: 30,
+});
+const TitleTextField = styled(TextField)(() => ({
   width: '100%',
   color: '#fff',
   backgroundColor: '#ffffff80',
   borderRadius: '10px',
   '&hover': {
-    border: '#fff'
+    border: '#fff',
   },
   border: 'none',
-  '& fieldset': { border: 'none', },
+  '& fieldset': { border: 'none' },
 }));
 const CalenderIcon = styled('img')({
   height: '25px',
-})
+});
 const DateSelectBox = styled(FormControl)({
   width: '100%',
   borderColor: '#fff',
   '& fieldset': {
     borderColor: '#fff',
   },
-})
+});
 
 interface GoalFormCpntProps {
   title: string;
@@ -50,7 +50,7 @@ const GoalFormCpnt: React.FC<GoalFormCpntProps> = ({
   onDescriptionChange,
 }) => {
   return (
-    <GoalFormBox size={{ xs: 12, md: 6 }} >
+    <GoalFormBox size={{ xs: 12, md: 6 }}>
       <TitleTextField
         placeholder="습관 이름을 입력하세요. "
         multiline
@@ -66,19 +66,22 @@ const GoalFormCpnt: React.FC<GoalFormCpntProps> = ({
         <Select
           // onChange={handle}
           label="기간"
-          MenuProps={{ PaperProps: { sx: { maxHeight: 150, overflowY: 'auto', }, }, }}
+          MenuProps={{ PaperProps: { sx: { maxHeight: 150, overflowY: 'auto' } } }}
           value={period}
           onChange={(e) => onPeriodWeeksChange(e.target.value as string)}
         >
-          {[...Array(8)].map((_, index) => { // 1부터 20까지의 MenuItem 생성
+          {[...Array(8)].map((_, index) => {
+            // 1부터 20까지의 MenuItem 생성
             const value = index + 1;
             return (
-              <MenuItem key={value} value={value}>{value} 주</MenuItem>
+              <MenuItem key={value} value={value}>
+                {value} 주
+              </MenuItem>
             );
           })}
         </Select>
       </DateSelectBox>
-      
+
       <TitleTextField
         placeholder="세부 설명을 입력하세요."
         multiline
@@ -88,8 +91,7 @@ const GoalFormCpnt: React.FC<GoalFormCpntProps> = ({
         onChange={onDescriptionChange}
       />
     </GoalFormBox>
-  )
-}
+  );
+};
 
-export default GoalFormCpnt
-
+export default GoalFormCpnt;

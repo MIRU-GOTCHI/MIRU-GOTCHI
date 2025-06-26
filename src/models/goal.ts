@@ -24,9 +24,7 @@ export interface GoalFirestore {
   startDate: Timestamp;
   endDate: Timestamp;
   characterId: string;
-  characterStatus: CharacterStatus & {
-    gone?: boolean;
-  };
+  characterStatus: CharacterStatus;
   successCount: number;
   failCount: number;
   createdAt: Timestamp;
@@ -39,9 +37,7 @@ export interface CreateGoalData {
   startDate: Date;
   endDate: Date;
   characterId: string;
-  characterStatus: CharacterStatus & {
-    gone?: boolean;
-  };
+  characterStatus: CharacterStatus;
   successCount: number;
   failCount: number;
 }

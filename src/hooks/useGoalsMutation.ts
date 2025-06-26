@@ -1,21 +1,22 @@
-import type { CharacterStatus } from '@models/character';
-import type { CreateGoalData, GoalFirestore } from '@models/goal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { convertDatesToTimestamps } from '@utils/timeStampConverter';
-import { auth, db } from '../firebase';
 import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
+
+import { auth, db } from '../firebase';
 import { useAuthContext } from './auth/useAuthContext';
 
+import type { CharacterStatus } from '@models/character';
+import type { CreateGoalData, GoalFirestore } from '@models/goal';
 
 export const useGoalsFirestore = () => {
   const queryClient = useQueryClient();
   // 컬렉션 이름은 'goals'로 유지하되, users/{userId} 하위 컬렉션으로 사용
-  const goalsSubCollectionName = 'goals'; 
+  const goalsSubCollectionName = 'goals';
 
   const { userId: contextUserId } = useAuthContext();
   const getUserId = () => {
     const userId = auth.currentUser?.uid;
-    const finalUserId = userId || contextUserId; 
+    const finalUserId = userId || contextUserId;
     if (!finalUserId) {
       throw new Error('User not authenticated. Please log in.');
     }
@@ -30,7 +31,7 @@ export const useGoalsFirestore = () => {
       const dataForFirestore = convertDatesToTimestamps(data);
 
       const finalDocData: GoalFirestore = {
-        ...dataForFirestore as Omit<GoalFirestore, 'userId' | 'createdAt' | 'updatedAt'>,
+        ...(dataForFirestore as Omit<GoalFirestore, 'userId' | 'createdAt' | 'updatedAt'>),
         userId,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -59,7 +60,7 @@ export const useGoalsFirestore = () => {
       const dataForFirestore = convertDatesToTimestamps(data);
 
       const updatePayload: Partial<GoalFirestore> = {
-        ...dataForFirestore as Partial<Omit<GoalFirestore, 'updatedAt'>>,
+        ...(dataForFirestore as Partial<Omit<GoalFirestore, 'updatedAt'>>),
         updatedAt: Timestamp.now(),
       };
 
