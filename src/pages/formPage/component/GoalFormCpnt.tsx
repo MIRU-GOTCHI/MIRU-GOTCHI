@@ -4,7 +4,7 @@ const GoalFormBox = styled(Grid)({
   width: '100%',
   height: 'auto',
   borderRadius: '15px',
-  backgroundColor: '#5B93D5',
+  backgroundColor: '#5B93D595',
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
@@ -23,6 +23,7 @@ const TitleTextField = styled(TextField)(({  }) => ({
 }));
 const CalenderIcon = styled('img')({
   height: '25px',
+  filter: 'invert(100%)',
 })
 const DateSelectBox = styled(FormControl)({
   width: '100%',

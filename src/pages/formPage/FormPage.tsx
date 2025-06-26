@@ -17,10 +17,13 @@ const FormPageBox = styled(Box)({
 
 })
 const FormTitle = styled(Box)({
-  width: '100%',
-  height: '6vh',
+  height: '7vh',
   display: 'flex',
   alignItems: 'center',
+  fontSize:'20px',
+})
+const FlagIcon= styled('img')({
+  height:'3vh',margin:'0 15px'
 })
 const Form = styled('form')({
   display: 'flex',
@@ -45,7 +48,10 @@ const FormFooter = styled(Grid)({
   display: 'flex',
 })
 const FormButton = styled(Button)({
-  marginLeft: 'auto'
+  marginLeft: 'auto',
+  padding:'0 10vh',
+  height:'5vh',
+  marginTop:'auto'
 })
 //////////////////////////////////////
 const FormPage = () => {
@@ -133,8 +139,8 @@ const FormPage = () => {
 
   return (
     <FormPageBox>
-      <BeforeBtn />
-      <FormTitle>습관 등록</FormTitle>
+      
+      <FormTitle><BeforeBtn /><FlagIcon src="public\icon\social-rewards-flag--Streamline-Pixel.svg" alt="" /> 습관 등록</FormTitle>
       <Form
         onSubmit={handleSubmit}
       >
