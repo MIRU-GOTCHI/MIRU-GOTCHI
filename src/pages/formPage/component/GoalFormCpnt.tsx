@@ -14,12 +14,16 @@ const TitleTextField = styled(TextField)(() => ({
   width: '100%',
   color: '#fff',
   backgroundColor: '#ffffff80',
-  borderRadius: '10px',
+  borderRadius: '5px',
   '&hover': {
     border: '#fff',
   },
   border: 'none',
   '& fieldset': { border: 'none' },
+   '& .MuiInputBase-input': {
+  '&::placeholder': { fontFamily:'Galmuri14',},
+  fontFamily:'Galmuri14',
+}
 }));
 const CalenderIcon = styled('img')({
   height: '25px',

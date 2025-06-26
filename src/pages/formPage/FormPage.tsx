@@ -16,7 +16,7 @@ const FormPageBox = styled(Box)({
   width: '100%',
   maxWidth: '100vw',
   flexGrow: 1,
-
+  fontFamily:'Galmuri14'
 })
 const FormTitle = styled(Box)({
   height: '7vh',
@@ -25,7 +25,7 @@ const FormTitle = styled(Box)({
   fontSize:'20px',
 })
 const FlagIcon= styled('img')({
-  height:'3vh',margin:'0 15px'
+  height:'3.5vh',margin:'0 15px'
 })
 const Form = styled('form')({
   display: 'flex',

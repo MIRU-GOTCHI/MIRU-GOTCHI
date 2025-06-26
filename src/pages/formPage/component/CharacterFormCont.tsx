@@ -13,6 +13,7 @@ const CharacterFormBox = styled(Grid)({
   display:'flex',
   flexDirection:'column',
   gap:5,
+  fontFamily:'Galmuri14'
 })
 const CharInformText = styled('p')({
   color:'#00000090'
@@ -45,7 +46,7 @@ const StyledToggleButton = styled(ToggleButton)({
  height:'15vh',
  backgroundColor:'#fff',
  border:'none',
-  boxShadow: 'inset 0px 0px 10px rgba(0, 0, 0, 0.07)',
+  boxShadow: 'inset 0px 0px 10px rgba(0, 0, 0, 0.05)',
  '&.Mui-selected': {
   backgroundColor:'#5B93D530',
   border: '2px solid #5B93D5'
