@@ -1,6 +1,7 @@
-import { convertGoalDate } from '@utils/convertGoalDate';
-import { db } from 'firebase';
+import { convertGoalDate } from '@service/goalService/converter';
 import { doc, getDoc } from 'firebase/firestore';
+
+import { db } from '../../firebase';
 
 import type { Goal, GoalFirestore } from '@models/goal';
 

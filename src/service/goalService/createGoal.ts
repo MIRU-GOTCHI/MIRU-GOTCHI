@@ -1,6 +1,7 @@
 import { addLogForGoal } from '@service/logService';
-import { db } from 'firebase';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
+
+import { db } from '../../firebase';
 
 import type { CreateGoalData } from '@models/goal';
 
