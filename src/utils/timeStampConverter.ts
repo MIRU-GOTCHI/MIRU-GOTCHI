@@ -23,3 +23,17 @@ export const convertDatesToTimestamps = (data: DataToConvert): DataToConvert => 
     return acc;
   }, {} as DataToConvert);
 };
+
+// 특정 날짜의 시작 시점 (00:00:00.000)을 Timestamp로 반환
+export const getStartOfDayTimestamp = (date: Date): Timestamp => {
+  const startOfDay = new Date(date);
+  startOfDay.setHours(0, 0, 0, 0);
+  return Timestamp.fromDate(startOfDay);
+};
+
+// 특정 날짜의 끝 시점 (23:59:59.999)을 Timestamp로 반환
+export const getEndOfOfDayTimestamp = (date: Date): Timestamp => {
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
+  return Timestamp.fromDate(endOfDay);
+};
