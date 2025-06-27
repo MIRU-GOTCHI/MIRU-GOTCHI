@@ -1,171 +1,174 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import styled from "styled-components";
+import LinearProgress from '@mui/material/LinearProgress';
+import styled from 'styled-components';
 
-
-import RabbitBackground from '../../assets/images/background/rabbit-background.png';
-import CatAdult from "../../assets/images/character/cat/cat-adult.png";
-import CatBaby from "../../assets/images/character/cat/cat-baby.png";
-import CatEgg from "../../assets/images/character/cat/cat-egg.png";
-import DogAdult from "../../assets/images/character/dog/dog-adult.png";
-import DogBaby from "../../assets/images/character/dog/dog-baby.png";
-import DogEgg from "../../assets/images/character/dog/dog-egg.png";
-import RabbitBaby from "../../assets/images/character/rabbit/rabbit-baby.png";
-import RabbitEgg from "../../assets/images/character/rabbit/rabbit-egg.png";
-import RabbitTeen from "../../assets/images/character/rabbit/rabbit-teen.png";
-import DogTeen from "../../assets/images/character/dog/dog-teen.png";
-import CatTeen from "../../assets/images/character/cat/cat-teen.png";
-import HamsterEgg from "../../assets/images/character/hamster/hamster-egg.png";
-import HamsterBaby from "../../assets/images/character/hamster/hamster-baby.png";
-import HamsterTeen from "../../assets/images/character/hamster/hamster-teen.png";
-import HamsterAdult from "../../assets/images/character/hamster/hamster-adult.png";
-import TitAdult from "../../assets/images/character/tit/tit-adult.png";
-import TitBaby from "../../assets/images/character/tit/tit-baby.png";
-import TitEgg from "../../assets/images/character/tit/tit-egg.png";
-import TitTeen from "../../assets/images/character/tit/tit-teen.png";
-import DogBackground from '../../assets/images/background/dog-background.png';
 import CatBackground from '../../assets/images/background/cat-background.png';
-import HamsterBackground from '../../assets/images/background/hamster-background.png';
-import TitBackground from '../../assets/images/background/tit-background.png';
-import RabbitAdult from "../../assets/images/character/rabbit/rabbit-adult.png";
+import CatTeen from '../../assets/images/character/cat/cat-teen.png';
+// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+// import DogBackground from '../../assets/images/background/dog-background.png';
+// import HamsterBackground from '../../assets/images/background/hamster-background.png';
+// import RabbitBackground from '../../assets/images/background/rabbit-background.png';
+// import TitBackground from '../../assets/images/background/tit-background.png';
+// import CatAdult from "../../assets/images/character/cat/cat-adult.png";
+// import CatBaby from "../../assets/images/character/cat/cat-baby.png";
+// import CatEgg from "../../assets/images/character/cat/cat-egg.png";
+// import DogAdult from "../../assets/images/character/dog/dog-adult.png";
+// import DogBaby from "../../assets/images/character/dog/dog-baby.png";
+// import DogEgg from "../../assets/images/character/dog/dog-egg.png";
+// import DogTeen from "../../assets/images/character/dog/dog-teen.png";
+// import HamsterAdult from "../../assets/images/character/hamster/hamster-adult.png";
+// import HamsterBaby from "../../assets/images/character/hamster/hamster-baby.png";
+// import HamsterEgg from "../../assets/images/character/hamster/hamster-egg.png";
+// import HamsterTeen from "../../assets/images/character/hamster/hamster-teen.png";
+// import RabbitBaby from "../../assets/images/character/rabbit/rabbit-baby.png";
+// import RabbitEgg from "../../assets/images/character/rabbit/rabbit-egg.png";
+// import RabbitTeen from "../../assets/images/character/rabbit/rabbit-teen.png";
+// import TitAdult from "../../assets/images/character/tit/tit-adult.png";
+// import TitBaby from "../../assets/images/character/tit/tit-baby.png";
+// import TitEgg from "../../assets/images/character/tit/tit-egg.png";
+// import TitTeen from "../../assets/images/character/tit/tit-teen.png";
+// import RabbitAdult from "../../assets/images/character/rabbit/rabbit-adult.png";
 
-import type { CharacterStatus } from "@models/character";
-
+import type { CharacterStatus } from '@models/character';
 
 interface CharacterProps {
-  failCount?: number,
-  title?: string,
-  characterStatus?: CharacterStatus,
-  totalDays?: number,
-  successCount?: number,
-  characterId?: string,
+  failCount?: number;
+  title?: string;
+  characterStatus?: CharacterStatus;
+  totalDays?: number;
+  successCount?: number;
+  characterId?: string;
 }
 
-const CharacterContent = styled("div") ({
-  height: "100%",
-  padding: "20px",
-  textAlign: "center",
-  width: "100%",
-  maxWidth: "500px",
-  margin: "0 auto",
-  "& .characterBg": {
-    width: "100%",
+const CharacterContent = styled('div')({
+  height: '100%',
+  padding: '20px',
+  textAlign: 'center',
+  width: '100%',
+  maxWidth: '500px',
+  margin: '0 auto',
+  '& .characterBg': {
+    width: '100%',
   },
-  "&.rabbit .character": {
-    left: "25%",
-    top: "37%",
+  '&.rabbit .character': {
+    left: '25%',
+    top: '37%',
   },
-  "&.dog .character": {
-    "& .bubble":{
-      right: "40%",
+  '&.dog .character': {
+    '& .bubble': {
+      right: '40%',
     },
-    left: "47%",
-    top: "40%",
+    left: '47%',
+    top: '40%',
   },
-  "&.cat .character": {
-    left: "20%",
-    top: "23%",
+  '&.cat .character': {
+    left: '20%',
+    top: '23%',
   },
-  "&.tit .character": {
-    "& .bubble":{
-      right: "20%",
+  '&.tit .character': {
+    '& .bubble': {
+      right: '20%',
     },
-    left: "57%",
-    top: "40%",
+    left: '57%',
+    top: '40%',
   },
-  "&.hamster .character": {
-    "& .bubble":{
-      right: "20%",
+  '&.hamster .character': {
+    '& .bubble': {
+      right: '20%',
     },
-    left: "56%",
-    top: "37%",
-  }
-})
+    left: '56%',
+    top: '37%',
+  },
+});
 
-const CharacterField = styled("div") ({
-   position: "relative",
-})
+const CharacterField = styled('div')({
+  position: 'relative',
+});
 
-const Life = styled("div") ({
-  position: "absolute",
-  top: "10%",
-  right: "10%",
-  color: "#FF1010",
-  textAlign: "right",
-  "& svg":{
-    width: "10%",
-    height: "10%",
-    stroke: "#2a251e",
+const Life = styled('div')({
+  position: 'absolute',
+  top: '10%',
+  right: '10%',
+  color: '#FF1010',
+  textAlign: 'right',
+  '& svg': {
+    width: '10%',
+    height: '10%',
+    stroke: '#2a251e',
     strokeWidth: 2,
-  }
-})
+  },
+});
 
-const Character = styled("div") ({
-  position: "absolute",
-  width: "40%",
-  "& img": {
-    width: "100%",
-  }
-})
+const Character = styled('div')({
+  position: 'absolute',
+  width: '40%',
+  '& img': {
+    width: '100%',
+  },
+});
 
-const Name = styled("div") ({
-  position: "absolute",
-  bottom: "-8%",
-  left: "50%",
-  transform: "translateX(-50%)",
-  padding: "2px 5px",
-  borderRadius: "3px",
-  background: "#050505",
-  color: "#fff",
-  fontSize: "12px",
-})
+const Name = styled('div')({
+  position: 'absolute',
+  bottom: '-8%',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  padding: '2px 5px',
+  borderRadius: '3px',
+  background: '#050505',
+  color: '#fff',
+  fontSize: '12px',
+});
 
-const RandomText = styled("div") ({
-  position: "absolute",
+const RandomText = styled('div')({
+  position: 'absolute',
   right: 0,
-  top: "-5%",
-  width: "110%",
-  padding: "2px 5px",
-  border: "2px solid #000", 
-  borderRadius: "4px",
-  backgroundColor: "rgba(255,255,255,0.7)",
-})
+  top: '-5%',
+  width: '110%',
+  padding: '2px 5px',
+  border: '2px solid #000',
+  borderRadius: '4px',
+  backgroundColor: 'rgba(255,255,255,0.7)',
+});
 
-const InfoField = styled("div") ({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-})
+const InfoField = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
 
-const LevelBox = styled("div") ({
-  marginTop: "15px",
-  display: "flex",
-  textAlign: "left",
-  alignItems: "center",
+const LevelBox = styled('div')({
+  marginTop: '15px',
+  display: 'flex',
+  textAlign: 'left',
+  alignItems: 'center',
   gap: 10,
-  justifyContent: "center",
-  width: "90%",
-})
+  justifyContent: 'center',
+  width: '90%',
+});
 
-const Level = styled("div") ({
-  width: "35px",
+const Level = styled('div')({
+  width: '35px',
   flexShrink: 0,
-})
+});
 
-const LevelBar = styled("div") ({
+const LevelBar = styled('div')({
   flexGrow: 1,
-})
+});
 
-const Title = styled("div") ({
-  marginTop: "10px",
-  fontSize: "22px",
-})
+const Title = styled('div')({
+  marginTop: '10px',
+  fontSize: '22px',
+});
 
-
-const CharacterBox = ({failCount, title, characterStatus, characterId
-, totalDays, successCount}:CharacterProps) => {
+const CharacterBox = ({
+  failCount,
+  title,
+  characterStatus,
+  characterId,
+  totalDays,
+  successCount,
+}: CharacterProps) => {
   return (
     // className : rabbit hamster tit dog cat
     <CharacterContent className="cat">
@@ -200,15 +203,14 @@ const CharacterBox = ({failCount, title, characterStatus, characterId
 
           {/* <img src={CatEgg} alt=""/> */}
           {/* <img src={CatBaby} alt=""/> */}
-          <img src={CatTeen} alt=""/>
+          <img src={CatTeen} alt="" />
           {/* <img src={CatAdult} alt=""/> */}
-
         </Character>
         {/* <img src={RabbitBackground} alt="" className="characterBg"/> */}
         {/* <img src={DogBackground} alt="" className="characterBg"/> */}
         {/* <img src={HamsterBackground} alt="" className="characterBg"/> */}
         {/* <img src={TitBackground} alt="" className="characterBg"/> */}
-        <img src={CatBackground} alt="" className="characterBg"/>
+        <img src={CatBackground} alt="" className="characterBg" />
       </CharacterField>
 
       <InfoField>
@@ -220,10 +222,10 @@ const CharacterBox = ({failCount, title, characterStatus, characterId
             <LinearProgress variant="determinate" value={50} />
           </LevelBar>
         </LevelBox>
-         <Title className="fontBitBit">"물 마시기"</Title>
+        <Title className="fontBitBit">"물 마시기"</Title>
       </InfoField>
     </CharacterContent>
-  )
-}
+  );
+};
 
 export default CharacterBox;
