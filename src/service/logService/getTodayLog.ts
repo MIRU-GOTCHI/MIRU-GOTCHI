@@ -1,9 +1,12 @@
+import { convertTimestampToDate } from '@utils/timeStampConverter';
 import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { convertTimestampToDate } from '@utils/timeStampConverter';
 import type { Log, LogFirestore } from '@models/log';
 
-export const getTodayLog = async (userId: string, goalId: string): Promise<Log | null> => {
+import type { Log, LogFirestore } from '@models/log';
+
+export const getTodayLog = async (userId: string, goalId: string): Promise<Log[]> => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const start = Timestamp.fromDate(today);
@@ -17,17 +20,17 @@ export const getTodayLog = async (userId: string, goalId: string): Promise<Log |
 
   const snapshot = await getDocs(q);
 
-  if (!snapshot.empty) {
-    const docSnap = snapshot.docs[0];
-    const logData = docSnap.data() as LogFirestore;
+  const logs: Log[] = snapshot.docs.map((doc) => {
+    const data = doc.data() as LogFirestore;
+
     return {
-      id: docSnap.id,
-      checked: logData.checked,
-      createdAt: convertTimestampToDate(logData.createdAt),
-      date: convertTimestampToDate(logData.date),
-      goalId: logData.goalId,
+      id: doc.id,
+      goalId: data.goalId,
+      date: convertTimestampToDate(data.date),
+      checked: data.checked,
+      createdAt: convertTimestampToDate(data.createdAt),
     };
-  } else {
-    return null;
-  }
+  });
+
+  return logs;
 };

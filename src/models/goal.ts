@@ -41,3 +41,8 @@ export interface CreateGoalData {
   successCount: number;
   failCount: number;
 }
+
+export type UpdateGoalData = Partial<Omit<CreateGoalData, 'startDate' | 'endDate'>> & {
+  startDate?: Date;
+  endDate?: Date;
+};
