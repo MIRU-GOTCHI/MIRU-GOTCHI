@@ -13,14 +13,12 @@ const convertLogFromFirestore = (data: LogFirestore, id: string): Log => ({
   createdAt: convertTimestampToDate(data.createdAt),
 });
 
-export const logService = {
-  async getGoalLogs(userId: string, goalId: string): Promise<Log[]> {
-    const logsRef = collection(db, 'users', userId, 'goals', goalId, 'logs');
-    const q = query(logsRef, orderBy('date', 'desc'));
-    const querySnapshot = await getDocs(q);
+export const getGoalLogs = async (userId: string, goalId: string): Promise<Log[]> => {
+  const logsRef = collection(db, 'users', userId, 'goals', goalId, 'logs');
+  const q = query(logsRef, orderBy('date', 'desc'));
+  const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) =>
-      convertLogFromFirestore(doc.data() as LogFirestore, doc.id),
-    );
-  },
+  return querySnapshot.docs.map((doc) =>
+    convertLogFromFirestore(doc.data() as LogFirestore, doc.id),
+  );
 };
