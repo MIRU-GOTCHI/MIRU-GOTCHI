@@ -1,8 +1,7 @@
 import BeforeBtn from '@common/components/BeforeBtn';
 import ContentTitle from '@layout/common/ContentTitle';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, styled, Typography } from '@mui/material';
 import React from 'react';
-import styled from 'styled-components';
 
 const Container = styled('div')({
   display: 'flex',
@@ -27,7 +26,8 @@ const GrowthStageContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  width: '700px',
+  width: '100%',
+  maxWidth: '720px',
   alignSelf: 'center',
   backgroundColor: 'grey',
   paddingBottom: '2rem',
@@ -37,26 +37,31 @@ const GrowthStageArea = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '700px',
+  width: '100%',
+  maxWidth: '720px',
   alignSelf: 'center',
   backgroundColor: 'grey',
 });
 
 const UnlockedStage = styled('div')({
   backgroundColor: 'white',
-  width: '256px',
-  height: '256px',
+  width: '100%',
+  maxWidth: '256px',
+  minWidth: '64px',
+  aspectRatio: '1 / 1',
 });
 
 const LockedStage = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '128px',
+  fontSize: '32px',
   color: '#fafdff',
   backgroundColor: 'black',
-  width: '256px',
-  height: '256px',
+  width: '100%',
+  maxWidth: '256px',
+  minWidth: '64px',
+  aspectRatio: '1 / 1',
 });
 
 const CharacterDetailPage = () => {
@@ -72,14 +77,15 @@ const CharacterDetailPage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
-          backgroundColor: 'blue',
           color: '#fafdff',
-          width: '700px',
+          backgroundColor: 'blue',
+          width: '100%',
+          maxWidth: '720px',
           aspectRatio: '1/1',
           marginBottom: '1rem',
         }}
       >
-        캐릭터 공통 컴포넌트
+        character room
       </Box>
       <Box
         sx={{
@@ -87,7 +93,8 @@ const CharacterDetailPage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
-          width: '700px',
+          width: '100%',
+          maxWidth: '720px',
           height: '50px',
           backgroundColor: 'blue',
           color: '#fafdff',
@@ -99,15 +106,15 @@ const CharacterDetailPage = () => {
       <GrowthStageContainer>
         <GrowthTitle>쑥쑥! 성장기록</GrowthTitle>
         <GrowthStageArea>
-          <Grid container rowSpacing={8} columnSpacing={1}>
+          <Grid container rowSpacing={8} columnSpacing={1} sx={{ width: '100%' }}>
             <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <UnlockedStage></UnlockedStage>
+              <UnlockedStage>1</UnlockedStage>
             </Grid>
             <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <UnlockedStage></UnlockedStage>
+              <UnlockedStage>2</UnlockedStage>
             </Grid>
             <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <UnlockedStage></UnlockedStage>
+              <UnlockedStage>3</UnlockedStage>
             </Grid>
             <Grid size={{ xs: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
               <LockedStage>?</LockedStage>
