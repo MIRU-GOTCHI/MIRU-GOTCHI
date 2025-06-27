@@ -115,19 +115,15 @@ const CharacterPage = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
 
-<<<<<<< HEAD
   const { userId } = useAuthContext();
   const { data: allGoalData } = useGetGoals(userId);
 
-  const onGoingGoals = allGoalData?.filter((goal) => !goal.characterStatus.gone);
-  const completedGoals = allGoalData?.filter((goal) => goal.characterStatus.gone);
+  const onGoingGoals = allGoalData ? allGoalData.filter((goal) => !goal.characterStatus.gone) : [];
+  const completedGoals = allGoalData ? allGoalData.filter((goal) => goal.characterStatus.gone) : [];
 
   // console.log('dd', allGoalData);
 
   const handleChange = (e, newValue: number) => {
-=======
-  const handleChange = (_e: any, newValue: number) => {
->>>>>>> develop
     setValue(newValue);
   };
 
