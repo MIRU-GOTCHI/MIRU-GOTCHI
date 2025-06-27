@@ -1,39 +1,36 @@
-import styled from "styled-components";
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import type { CharacterStatus } from "@models/character";
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import styled from "styled-components";
 
-import RabbitAdult from "../../assets/images/character/rabbit/rabbit-adult.png";
-import RabbitEgg from "../../assets/images/character/rabbit/rabbit-egg.png";
-import RabbitBaby from "../../assets/images/character/rabbit/rabbit-baby.png";
-import RabbitTeen from "../../assets/images/character/rabbit/rabbit-teen.png";
 
-import DogEgg from "../../assets/images/character/dog/dog-egg.png";
-import DogBaby from "../../assets/images/character/dog/dog-baby.png";
-import DogTeen from "../../assets/images/character/dog/dog-teen.png";
-import DogAdult from "../../assets/images/character/dog/dog-adult.png";
-
-import CatEgg from "../../assets/images/character/cat/cat-egg.png";
-import CatBaby from "../../assets/images/character/cat/cat-baby.png";
-import CatTeen from "../../assets/images/character/cat/cat-teen.png";
+import RabbitBackground from '../../assets/images/background/rabbit-background.png';
 import CatAdult from "../../assets/images/character/cat/cat-adult.png";
-
+import CatBaby from "../../assets/images/character/cat/cat-baby.png";
+import CatEgg from "../../assets/images/character/cat/cat-egg.png";
+import DogAdult from "../../assets/images/character/dog/dog-adult.png";
+import DogBaby from "../../assets/images/character/dog/dog-baby.png";
+import DogEgg from "../../assets/images/character/dog/dog-egg.png";
+import RabbitBaby from "../../assets/images/character/rabbit/rabbit-baby.png";
+import RabbitEgg from "../../assets/images/character/rabbit/rabbit-egg.png";
+import RabbitTeen from "../../assets/images/character/rabbit/rabbit-teen.png";
+import DogTeen from "../../assets/images/character/dog/dog-teen.png";
+import CatTeen from "../../assets/images/character/cat/cat-teen.png";
 import HamsterEgg from "../../assets/images/character/hamster/hamster-egg.png";
 import HamsterBaby from "../../assets/images/character/hamster/hamster-baby.png";
 import HamsterTeen from "../../assets/images/character/hamster/hamster-teen.png";
 import HamsterAdult from "../../assets/images/character/hamster/hamster-adult.png";
-
-import TitEgg from "../../assets/images/character/tit/tit-egg.png";
-import TitBaby from "../../assets/images/character/tit/tit-baby.png";
-import TitTeen from "../../assets/images/character/tit/tit-teen.png";
 import TitAdult from "../../assets/images/character/tit/tit-adult.png";
-
-import RabbitBackground from '../../assets/images/background/rabbit-background.png';
+import TitBaby from "../../assets/images/character/tit/tit-baby.png";
+import TitEgg from "../../assets/images/character/tit/tit-egg.png";
+import TitTeen from "../../assets/images/character/tit/tit-teen.png";
 import DogBackground from '../../assets/images/background/dog-background.png';
 import CatBackground from '../../assets/images/background/cat-background.png';
 import HamsterBackground from '../../assets/images/background/hamster-background.png';
 import TitBackground from '../../assets/images/background/tit-background.png';
+import RabbitAdult from "../../assets/images/character/rabbit/rabbit-adult.png";
+
+import type { CharacterStatus } from "@models/character";
 
 
 interface CharacterProps {

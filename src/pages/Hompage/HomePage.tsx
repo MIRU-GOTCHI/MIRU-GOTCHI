@@ -1,18 +1,19 @@
 
+import CharacterBox from "@common/components/CharacterBox";
+import { useAuthContext } from "@hooks/auth/useAuthContext";
+import { useGetGoals } from "@hooks/useGetGoals";
+import { useGetGoalsWithTodyLog } from "@hooks/useGetGoalsWithTodyLog";
+import { useGetLogs } from "@hooks/useGetLogs";
+import { FormGroup } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import CustomItem from "@pages/HomPage/component/CustomItem";
+import { getGoalsList, getGoalsWithTodayLog } from "@service/goalService";
+import { getTodayLog } from "@service/logService";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 import LogoImage from '../../assets/images/logo.png';
-import { FormGroup } from "@mui/material";
-import CustomItem from "@pages/HomPage/component/CustomItem";
-import { getGoalsList, getGoalsWithTodayLog } from "@service/goalService";
-import { useGetGoals } from "@hooks/useGetGoals";
-import { useAuthContext } from "@hooks/auth/useAuthContext";
-import { useGetLogs } from "@hooks/useGetLogs";
-import { useGetGoalsWithTodyLog } from "@hooks/useGetGoalsWithTodyLog";
-import CharacterBox from "@common/components/CharacterBox";
-import { getTodayLog } from "@service/logService";
 
 const MainContent = styled("div") ({
   margin: "-10px -20px 0",
