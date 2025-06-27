@@ -28,7 +28,6 @@ const theme = createTheme({
       primary: "#050505",
       secondary: "#FAFDFF",
     },
-    
   },
   components: {
     MuiCssBaseline: {
@@ -133,8 +132,28 @@ const theme = createTheme({
           color: "rgba(5, 5, 5, 0.6)",
         }
       }
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: "rgba(5,5,5,0.5)"
+        }
+      }
+    },
+    MuiLinearProgress: {
+      styleOverrides: {
+        root: {
+          height: 24,
+          border: "3px solid #000",
+          borderRadius: 12,
+          "& .MuiLinearProgress-bar": {
+            borderRadius: 12,
+          }
+        }
+      }
     }
   },
+  
 });
 
 export default theme;
