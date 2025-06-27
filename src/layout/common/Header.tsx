@@ -10,6 +10,7 @@ const HeaderArea = styled('header')({
   width: '100%',
   // backgroundColor: "rgba(255,255,255,0.7)",
   backgroundColor: 'rgba(242,242,243,0.7)',
+  zIndex: 100,
 });
 
 const Inner = styled('div')({

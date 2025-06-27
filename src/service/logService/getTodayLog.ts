@@ -1,8 +1,9 @@
 import { convertTimestampToDate } from '@utils/timeStampConverter';
 import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
-import { db } from '../../firebase';
-import type { Log, LogFirestore } from '@models/log';
 
+import { db } from '../../firebase';
+
+import type { Log, LogFirestore } from '@models/log';
 
 export const getTodayLog = async (userId: string, goalId: string): Promise<Log[]> => {
   const today = new Date();

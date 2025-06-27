@@ -1,4 +1,13 @@
-import { collection, query, where, getDocs, doc, updateDoc, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  Timestamp,
+  getDoc,
+} from 'firebase/firestore';
 
 import { db } from '../../firebase';
 
@@ -11,49 +20,55 @@ const calculateGrowthStage = (successRatio: number): GrowthStage => {
   return 'egg';
 };
 
-export const updateGoalProgress = async (userId: string, goalId: string) => {
+export const updateGoalProgress = async (userId: string, goalId: string): Promise<void> => {
   const goalRef = doc(db, 'users', userId, 'goals', goalId);
-  const logsRef = collection(db, 'users', userId, 'goals', goalId, 'logs');
+  const goalSnap = await getDoc(goalRef);
 
+  if (!goalSnap.exists()) return;
+
+  const goalData = goalSnap.data();
+  const endDate = goalData.endDate.toDate();
   const now = new Date();
-  now.setHours(0, 0, 0, 0);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const logsRef = collection(db, 'users', userId, 'goals', goalId, 'logs');
   const failQuery = query(
     logsRef,
-    where('date', '<', Timestamp.fromDate(now)),
+    where('date', '<', Timestamp.fromDate(today)),
     where('checked', '==', false),
   );
-
   const failSnapshot = await getDocs(failQuery);
   const failCount = failSnapshot.size;
 
-  const goalSnap = await getDocs(
-    query(collection(db, 'users', userId, 'goals'), where('__name__', '==', goalId)),
-  );
-  if (goalSnap.empty) return;
-
-  const goalData = goalSnap.docs[0].data();
-  const successCount = goalData.successCount;
-  const totalDays = goalData.totalDays;
-
+  const successCount = goalData.successCount ?? 0;
+  const totalDays = goalData.totalDays ?? 0;
   const successRatio = totalDays === 0 ? 0 : successCount / totalDays;
 
   let growthStage: GrowthStage;
   let gone = false;
+  let status = goalData.status;
 
   if (failCount >= 3) {
     growthStage = 'gone';
     gone = true;
+    status = 'failed';
   } else {
     growthStage = calculateGrowthStage(successRatio);
+    if (now > endDate) {
+      status = 'completed';
+    }
   }
 
   await updateDoc(goalRef, {
     failCount,
+    status,
     characterStatus: {
       growthStage,
       level: goalData.characterStatus.level,
       gone,
     },
+    updatedAt: Timestamp.now(),
   });
 };

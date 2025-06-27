@@ -42,7 +42,7 @@ const Menu = () => {
     <Menu>
       <NevList>
         <li>
-          <NavLink to="/">
+          <NavLink to="/character">
             <MarginIcon />
             {/* <CatchingPokemonIcon/> */}
           </NavLink>

@@ -6,7 +6,7 @@ import StyleGuidePage from '@pages/styleGuidePage/StyleGuidePage';
 import TestGoalCheck from '@pages/TestGoalCheck';
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
-const HomePage = React.lazy(() => import('@pages/HomePage'));
+const HomePage = React.lazy(() => import('@pages/HomPage/HomePage'));
 const LoginPage = React.lazy(() => import('@pages/LoginPage'));
 const FormPage = React.lazy(() => import('@pages/formPage/FormPage'));
 const HabitDetailPage = React.lazy(() => import('@pages/habitDetailPage/HabitDetailPage'));

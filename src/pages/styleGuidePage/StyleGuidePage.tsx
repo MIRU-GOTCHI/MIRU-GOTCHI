@@ -2,7 +2,7 @@ import BeforeBtn from "@common/components/BeforeBtn"
 import Loading from "@common/components/Loading"
 import SectionTitle from "@common/components/SectionTitle"
 import ContentTitle from "@layout/common/ContentTitle"
-import { Button, Tab, Tabs } from "@mui/material"
+import { Button, Checkbox, Tab, Tabs } from "@mui/material"
 import { useState } from "react"
 
 const StyleGuidePage = () => {
@@ -78,6 +78,22 @@ const StyleGuidePage = () => {
         <h2>로딩</h2>
       </SectionTitle>
       <Loading />
+
+      <SectionTitle>
+        <h2>체크박스</h2>
+      </SectionTitle>
+      <Checkbox
+      />
+      <Checkbox
+        disabled
+      />
+      <Checkbox
+        checked
+      />
+      <Checkbox
+        disabled
+        checked
+      />
     </div>
   )
 }

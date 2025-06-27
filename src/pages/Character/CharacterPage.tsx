@@ -1,5 +1,11 @@
+import { useAuthContext } from '@hooks/auth/useAuthContext';
+import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
+import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Grid, styled, Tab, Tabs, Typography } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { characterImageMap } from '../../constants/characterImages';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -21,9 +27,10 @@ function CustomTabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            padding: '60px 48px',
+            padding: { sm: '60px 48px', xs: '30px 24px' },
             backgroundColor: '#5B93D5',
-            minHeight: '300px',
+            minHeight: '128px',
+            borderRadius: '0px 16px 16px 16px',
           }}
         >
           {children}
@@ -40,27 +47,33 @@ function a11yProps(index: number) {
   };
 }
 
-const CharacterPageContainer = styled('div')({
+const CharacterPageContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
   height: '100%',
   background: '#F2F2F3',
   padding: '4rem',
-});
+  [theme.breakpoints.down('lg')]: {
+    padding: '2rem',
+  },
+  [theme.breakpoints.down('md')]: {
+    padding: '1rem',
+  },
+}));
 
 const CharacterPageTitle = styled(Typography)({
   justifyContent: 'center',
   fontSize: '32px !important',
   color: '#050505 !important',
-  // fontFamily: 'Galmuri14, sans-serif !important',
+  fontFamily: 'Galmuri14 !important',
 });
 
 const CharacterPageDescription = styled(Typography)({
   justifyContent: 'center',
   fontSize: '16px !important',
   color: '#a4a4a4 !important',
-  // fontFamily: 'Galmuri14, sans-serif !important',
+  fontFamily: 'Galmuri14!important',
   marginBottom: '2rem !important',
 });
 
@@ -72,6 +85,9 @@ const CharacterPageTabArea = styled('div')({
 });
 
 const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   width: 'fit-content',
   backgroundColor: '#4B7CB4 !important',
   color: '#A4A4A4 !important',
@@ -80,7 +96,9 @@ const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
   outline: 'none',
   boxShadow: 'none',
   padding: '16px 32px !important',
-  // fontFamily: 'Galmuri14, sans-serif !important',
+  fontFamily: 'Galmuri14 !important',
+  borderRadius: '16px 16px 0px 0px ',
+
   '&.Mui-selected': {
     backgroundColor: '#5B93D5 !important',
     color: '#fafdff !important',
@@ -94,9 +112,18 @@ const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
 });
 
 const CharacterPage = () => {
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
 
-  const handleChange = (_e: any, newValue: number) => {
+  const { userId } = useAuthContext();
+  const { data: allGoalData } = useGetGoals(userId);
+
+  const onGoingGoals = allGoalData ? allGoalData.filter((goal) => !goal.characterStatus.gone) : [];
+  const completedGoals = allGoalData ? allGoalData.filter((goal) => goal.characterStatus.gone) : [];
+
+  // console.log('dd', allGoalData);
+
+  const handleChange = (e, newValue: number) => {
     setValue(newValue);
   };
 
@@ -121,66 +148,115 @@ const CharacterPage = () => {
         </CharacterPageTabArea>
         <CustomTabPanel value={value} index={0}>
           <Grid container rowSpacing={4} columnSpacing={1}>
-            {[...Array(12)].map((_, index) => (
-              <Grid
-                size={{ xs: 2.4 }}
-                key={index}
-                sx={{ display: 'flex', justifyContent: 'center' }}
-              >
-                <Box
-                  sx={{
-                    position: 'relative',
-                    backgroundColor: 'white',
-                    width: '128px',
-                    height: '128px',
-                  }}
+            {onGoingGoals?.map((goal) => {
+              const charId = goal.characterId;
+              const stage = goal.characterStatus.growthStage;
+              const image = characterImageMap[charId]?.[stage];
+
+              return (
+                <Grid
+                  key={goal.id}
+                  size={{ lg: 2, md: 3, sm: 4, xs: 6 }}
+                  sx={{ display: 'flex', justifyContent: 'center' }}
                 >
-                  <Typography
+                  <Box
+                    onClick={() => navigate(`/character/${goal.id}`)}
                     sx={{
-                      position: 'absolute',
-                      zIndex: 1,
-                      top: '0',
-                      right: '0',
-                      padding: '0.5rem 1rem',
+                      position: 'relative',
+                      backgroundColor: 'white',
+                      width: '128px',
+                      height: '128px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
-                    Lv.1
-                  </Typography>
-                </Box>
-              </Grid>
-            ))}
+                    {image && (
+                      <img
+                        src={image}
+                        alt="캐릭터 이미지"
+                        style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+                      />
+                    )}
+                    <Typography
+                      sx={{
+                        position: 'absolute',
+                        zIndex: 1,
+                        top: '0',
+                        right: '0',
+                        padding: '0.5rem 1rem',
+                        color: '#050505',
+                        fontWeight: 'bold',
+                        fontSize: '1rem',
+                        fontFamily: 'DNFBitBitv2 !important',
+                        borderBottomLeftRadius: '8px',
+                      }}
+                    >
+                      Lv. {goal.characterStatus.level}
+                    </Typography>
+                  </Box>
+                </Grid>
+              );
+            })}
           </Grid>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <Grid container rowSpacing={4} columnSpacing={1}>
-            {[...Array(7)].map((_, index) => (
-              <Grid
-                size={{ xs: 2.4 }}
-                key={index}
-                sx={{ display: 'flex', justifyContent: 'center' }}
-              >
-                <Box
-                  sx={{
-                    position: 'relative',
-                    backgroundColor: 'white',
-                    width: '128px',
-                    height: '128px',
-                  }}
+            {completedGoals?.map((goal) => {
+              const charId = goal.characterId;
+              const stage = goal.characterStatus.growthStage;
+              const image = characterImageMap[charId]?.[stage];
+
+              return (
+                <Grid
+                  key={goal.id}
+                  size={{ lg: 2, md: 3, sm: 4, xs: 6 }}
+                  sx={{ display: 'flex', justifyContent: 'center' }}
                 >
-                  <Typography
+                  <Box
+                    onClick={() => navigate(`/character/${goal.id}`)}
                     sx={{
-                      position: 'absolute',
-                      zIndex: 1,
-                      top: '0',
-                      right: '0',
-                      padding: '0.5rem 1rem',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      position: 'relative',
+                      backgroundColor: 'white',
+                      width: '128px',
+                      height: '128px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
                     }}
                   >
-                    Lv.1
-                  </Typography>
-                </Box>
-              </Grid>
-            ))}
+                    {image && (
+                      <img
+                        src={image}
+                        alt="캐릭터 이미지"
+                        style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+                      />
+                    )}
+                    <Typography
+                      sx={{
+                        position: 'absolute',
+                        zIndex: 1,
+                        top: '0',
+                        right: '0',
+                        padding: '0.5rem 1rem',
+                        color: '#050505',
+                        fontWeight: 'bold',
+                        fontSize: '1rem',
+                        fontFamily: 'DNFBitBitv2 !important',
+                        borderBottomLeftRadius: '8px',
+                      }}
+                    >
+                      Lv. {goal.characterStatus.level}
+                    </Typography>
+                  </Box>
+                </Grid>
+              );
+            })}
           </Grid>
         </CustomTabPanel>
       </CharacterPageContainer>

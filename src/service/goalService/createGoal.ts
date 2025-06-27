@@ -9,24 +9,29 @@ export const createGoal = async (userId: string, goalData: CreateGoalData) => {
   const goalsRef = collection(db, 'users', userId, 'goals');
   const now = Timestamp.now();
 
-  const totalDays = Math.ceil(
-    (goalData.endDate.getTime() - goalData.startDate.getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const start = new Date(goalData.startDate);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(goalData.endDate);
+  end.setHours(23, 59, 59, 999);
+
+  const totalDays = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 
   const docRef = await addDoc(goalsRef, {
     ...goalData,
     userId,
-    startDate: Timestamp.fromDate(goalData.startDate),
-    endDate: Timestamp.fromDate(goalData.endDate),
+    startDate: Timestamp.fromDate(start),
+    endDate: Timestamp.fromDate(end),
     characterStatus: {
       ...goalData.characterStatus,
     },
     totalDays,
     createdAt: now,
     updatedAt: now,
+    status: 'in_progress',
   });
 
-  await addLogForGoal(userId, docRef.id, goalData.startDate, goalData.endDate);
+  await addLogForGoal(userId, docRef.id, start, end);
 
   return docRef.id;
 };
