@@ -115,6 +115,7 @@ const CharacterPage = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
 
+<<<<<<< HEAD
   const { userId } = useAuthContext();
   const { data: allGoalData } = useGetGoals(userId);
 
@@ -124,6 +125,9 @@ const CharacterPage = () => {
   // console.log('dd', allGoalData);
 
   const handleChange = (e, newValue: number) => {
+=======
+  const handleChange = (_e: any, newValue: number) => {
+>>>>>>> develop
     setValue(newValue);
   };
 
