@@ -2,10 +2,10 @@ import BeforeBtn from "@common/components/BeforeBtn"
 import { useAuthContext } from "@hooks/auth/useAuthContext"
 import { useGetGoalDetail } from "@hooks/useGetGoalDetail"
 import { useGoalsFirestore } from "@hooks/useGoalsMutation"
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, LinearProgress, styled } from "@mui/material"
+import { Box, Button, Grid, LinearProgress, styled } from "@mui/material"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router"
-import EditHabitDetailModal from "./EditHabitDetailModal"
+import EditHabitDetailModal from "./component/EditHabitDetailModal"
 
 const FlexBox = styled(Box)({
   display: 'flex', gap: 10,
@@ -79,7 +79,6 @@ const HabitDetailPage = () => {
   const { deleteGoal } = useGoalsFirestore();
   const { data, isLoading } = useGetGoalDetail(userId, id);
   // 모달
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false); 
   const [openEditModal, setOpenEditModal] = useState(false);
 
   if (!id) { return <div>오류: 파라미터값이 발견되지 않았습니다.</div>; }
@@ -125,7 +124,7 @@ const HabitDetailPage = () => {
   };
   // 수정 버튼 조건
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
-  const isEditable = !(data.failCount > 2 && (data.startDate.getTime() - now.getTime()) > ONE_DAY_IN_MS); 
+const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
   return (
     <>
       <BeforeBtn />
@@ -134,7 +133,7 @@ const HabitDetailPage = () => {
         <HabitDetailTitle>
           <h2>{data?.title}</h2>
 
-          {data.endDate < now ? ('') : (
+          {!isEditable ? ('') : (
             <Box sx={{ marginLeft: 'auto' }}>
               {data.failCount > 2 ? ('') : (
                 <EditBtn onClick={handleOpenEditModal}>수정</EditBtn>

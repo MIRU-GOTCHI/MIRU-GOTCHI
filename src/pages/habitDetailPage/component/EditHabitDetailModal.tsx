@@ -71,7 +71,7 @@ const EditHabitDetailModal: React.FC<EditGoalFormDialogProps>
     };
 
     const handlePeriodChange = (value: string) => {
-      setFormData(prev => ({ ...prev, periodWeeks: value }));
+      setFormData(prev => ({ ...prev, period: value }));
     };
 
     const handleCharacterChange = (newCharacterId: string) => {
@@ -129,7 +129,7 @@ const EditHabitDetailModal: React.FC<EditGoalFormDialogProps>
         aria-labelledby="edit-goal-dialog-title"
         fullWidth
         maxWidth="sm"
-        sx={{ '& .MuiDialog-paper': { borderRadius: '15px', padding: '20px',minWidth:'80vw' } }} // 모달 테두리 둥글게, 내부 패딩
+        sx={{ '& .MuiDialog-paper': { borderRadius: '15px', padding: '20px', minWidth: '80vw' } }} // 모달 테두리 둥글게, 내부 패딩
       >
         <Form
           onSubmit={handleSubmit}
@@ -142,7 +142,7 @@ const EditHabitDetailModal: React.FC<EditGoalFormDialogProps>
               period={formData.period}
               description={formData.description}
               onTitleChange={handleChange}
-              onPeriodWeeksChange={handlePeriodChange}
+              onPeriodChange={handlePeriodChange}
               onDescriptionChange={handleChange}
             />
             <CharacterFormCont

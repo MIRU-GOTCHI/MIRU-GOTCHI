@@ -14,18 +14,19 @@ const FormPageBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  maxWidth: '100vw',
+  maxWidth: '800px',
   flexGrow: 1,
-  fontFamily:'Galmuri14'
+  fontFamily: 'Galmuri14',
+  margin: '0 auto'
 })
 const FormTitle = styled(Box)({
   height: '7vh',
   display: 'flex',
   alignItems: 'center',
-  fontSize:'20px',
+  fontSize: '20px',
 })
-const FlagIcon= styled('img')({
-  height:'3.5vh',margin:'0 15px'
+const FlagIcon = styled('img')({
+  height: '3.5vh', margin: '0 15px'
 })
 const Form = styled('form')({
   display: 'flex',
@@ -51,11 +52,11 @@ const FormFooter = styled(Grid)({
 })
 const FormButton = styled(Button)({
   marginLeft: 'auto',
-  padding:'0 10vh',
-  height:'5vh',
-  marginTop:'auto'
+  padding: '0 10vh',
+  height: '5vh',
+  marginTop: 'auto'
 })
-//////////////////////////////////////
+//-----------------------------------------//
 const FormPage = () => {
 
   const [formData, setFormData] = useState({
@@ -78,7 +79,7 @@ const FormPage = () => {
   const handlePeriodChange = (value: string) => {
     setFormData(prev => ({ ...prev, period: value }));
   };
-   // CharacterFormCont에서 호출될 핸들러
+  // CharacterFormCont에서 호출될 핸들러
   const handleCharacterChange = (newCharacterId: string) => {
     setFormData(prev => ({
       ...prev,
@@ -97,7 +98,7 @@ const FormPage = () => {
       return;
     }
 
-    // periodWeeks를 startDate와 endDate로 변환
+    // period를 startDate와 endDate로 변환
     const periodInWeeks = parseInt(formData.period);
     if (isNaN(periodInWeeks) || periodInWeeks <= 0) {
       alert('유효한 기간을 선택해주세요.');
@@ -141,7 +142,7 @@ const FormPage = () => {
 
   return (
     <FormPageBox>
-      
+
       <FormTitle><BeforeBtn /><FlagIcon src="public\icon\social-rewards-flag--Streamline-Pixel.svg" alt="" /> 습관 등록</FormTitle>
       <Form
         onSubmit={handleSubmit}
@@ -154,7 +155,7 @@ const FormPage = () => {
             period={formData.period}
             description={formData.description}
             onTitleChange={handleChange}
-            onPeriodWeeksChange={handlePeriodChange}
+            onPeriodChange={handlePeriodChange}
             onDescriptionChange={handleChange}
           />
           <CharacterFormCont
