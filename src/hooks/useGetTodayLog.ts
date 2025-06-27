@@ -1,8 +1,10 @@
 
-import type { Log } from '@models/log'; 
-import { useAuthContext } from './auth/useAuthContext';
-import { useQuery } from '@tanstack/react-query';
 import { getTodayLog } from '@service/logService';
+import { useQuery } from '@tanstack/react-query';
+
+import { useAuthContext } from './auth/useAuthContext';
+
+import type { Log } from '@models/log'; 
 
 export const useGetTodayLog = (goalId: string | undefined) => {
   const { userId } = useAuthContext(); 
