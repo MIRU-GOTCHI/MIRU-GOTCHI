@@ -17,7 +17,8 @@
       "@layout/*": ["layout/*"],
       "@service/*": ["service/*"],
       "@context/*": ["context/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@assets/*": ["assets/*"]
     },
 
     "moduleResolution": "node",
