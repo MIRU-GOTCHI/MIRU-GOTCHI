@@ -1,9 +1,10 @@
 import { useGoalsFirestore } from "@hooks/useGoalsMutation"
-import type { CreateGoalData, Goal } from "@models/goal"
 import { Button, Dialog, Grid, styled } from "@mui/material"
 import CharacterFormCont from "@pages/formPage/component/CharacterFormCont"
 import GoalFormCpnt from "@pages/formPage/component/GoalFormCpnt"
 import { useEffect, useState } from "react"
+
+import type { CreateGoalData, Goal } from "@models/goal"
 
 const Form = styled('form')({
   display: 'flex',
