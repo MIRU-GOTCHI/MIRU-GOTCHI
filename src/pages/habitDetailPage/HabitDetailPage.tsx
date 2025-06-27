@@ -1,12 +1,14 @@
 import BeforeBtn from "@common/components/BeforeBtn"
-import { AuthContext } from "@context/AuthContext"
 import { useAuthContext } from "@hooks/auth/useAuthContext"
 import { useGetGoalDetail } from "@hooks/useGetGoalDetail"
-import { Box, Button, colors, Grid, LinearProgress, linearProgressClasses, styled } from "@mui/material"
-import { useParams } from "react-router"
+import { useGoalsFirestore } from "@hooks/useGoalsMutation"
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, LinearProgress, styled } from "@mui/material"
+import { useState } from "react"
+import { useNavigate, useParams } from "react-router"
+import EditHabitDetailModal from "./EditHabitDetailModal"
 
 const FlexBox = styled(Box)({
-  display:'flex', gap: 10,
+  display: 'flex', gap: 10,
 })
 const HabitDetailBox = styled(Box)({
   display: 'flex',
@@ -72,18 +74,58 @@ const HabitDoneBtn = styled(Button)({
 const HabitDetailPage = () => {
   const { id } = useParams();
   const { userId } = useAuthContext();
+  const navigate = useNavigate();
+
+  const { deleteGoal } = useGoalsFirestore();
+  const { data, isLoading } = useGetGoalDetail(userId, id);
+  // 모달
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false); 
+  const [openEditModal, setOpenEditModal] = useState(false);
+
   if (!id) { return <div>오류: 파라미터값이 발견되지 않았습니다.</div>; }
   if (!userId) { return <div>로그인이 필요합니다.</div>; }
-
-  const { data } = useGetGoalDetail(userId, id);
   if (!data) { return <div>⚠️오류: 존재하지않는 습관입니다.</div>; }
+  if (isLoading) { return <div>로딩 중...</div>; }
+
   // console.log('data', data)
+
+
 
   // 진행률
   const totalDays = data?.totalDays ?? 0;
   const successCount = data?.successCount ?? 0;
   const progressValue = (successCount / totalDays) * 100;
 
+  const now = new Date();
+
+  // 삭제 핸들러
+  const handleDeleteGoal = async () => {
+    if (!data.id) {
+      alert('삭제할 목표 ID를 찾을 수 없습니다.');
+      return;
+    }
+    if (window.confirm(`정말로 "${data.title}" 습관을 삭제하시겠습니까?`)) {
+      try {
+        await deleteGoal.mutateAsync(data.id);
+        alert('습관이 성공적으로 삭제되었습니다.');
+        navigate('/habit');
+      } catch (err: any) {
+        alert('습관 삭제 실패: ' + err.message);
+        console.error('습관 삭제 에러:', err);
+      }
+    }
+  };
+
+    // 수정 모달 열기/닫기 핸들러
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
+  };
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false);
+  };
+  // 수정 버튼 조건
+  const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
+  const isEditable = !(data.failCount > 2 && (data.startDate.getTime() - now.getTime()) > ONE_DAY_IN_MS); 
   return (
     <>
       <BeforeBtn />
@@ -91,10 +133,16 @@ const HabitDetailPage = () => {
 
         <HabitDetailTitle>
           <h2>{data?.title}</h2>
-          <Box sx={{ marginLeft: 'auto' }}>
-            <EditBtn>수정</EditBtn>|
-            <EditBtn>삭제</EditBtn>
-          </Box>
+
+          {data.endDate < now ? ('') : (
+            <Box sx={{ marginLeft: 'auto' }}>
+              {data.failCount > 2 ? ('') : (
+                <EditBtn onClick={handleOpenEditModal}>수정</EditBtn>
+              )} |
+
+              <EditBtn onClick={handleDeleteGoal} >삭제</EditBtn>
+            </Box>
+          )}
         </HabitDetailTitle>
 
         <HabitContainBox container spacing={2}>
@@ -119,7 +167,16 @@ const HabitDetailPage = () => {
 
         </HabitContainBox>
 
-      </HabitDetailBox>
+      </HabitDetailBox >
+
+      {/* 수정 폼 모달 */}
+      {data && (
+        <EditHabitDetailModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          goal={data} // 현재 목표 데이터를 prop으로 전달
+        />
+      )}
     </>
   )
 }

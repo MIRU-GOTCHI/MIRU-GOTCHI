@@ -1,8 +1,9 @@
 import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
-
 import { db } from '../../firebase';
+import { convertTimestampToDate } from '@utils/timeStampConverter';
+import type { Log, LogFirestore } from '@models/log';
 
-export const getTodayLog = async (userId: string, goalId: string) => {
+export const getTodayLog = async (userId: string, goalId: string): Promise<Log | null> => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const start = Timestamp.fromDate(today);
@@ -16,8 +17,17 @@ export const getTodayLog = async (userId: string, goalId: string) => {
 
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...(doc.data() as any),
-  }));
+  if (!snapshot.empty) {
+    const docSnap = snapshot.docs[0];
+    const logData = docSnap.data() as LogFirestore;
+    return {
+      id: docSnap.id,
+      checked: logData.checked,
+      createdAt: convertTimestampToDate(logData.createdAt),
+      date: convertTimestampToDate(logData.date),
+      goalId: logData.goalId,
+    };
+  } else {
+    return null;
+  }
 };
