@@ -16,7 +16,8 @@
       "@models/*": ["models/*"],
       "@layout/*": ["layout/*"],
       "@service/*": ["service/*"],
-      "@context/*": ["context/*"]
+      "@context/*": ["context/*"],
+      "@lib/*": ["lib/*"]
     },
 
     "moduleResolution": "node",
