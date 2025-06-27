@@ -9,6 +9,7 @@ import GoalFormCpnt from "./component/GoalFormCpnt"
 import type { CharacterStatus } from "@models/character"
 import type { GrowthStage } from "@models/common"
 import type { CreateGoalData } from "@models/goal"
+import { useNavigate } from "react-router"
 
 const FormPageBox = styled(Box)({
   display: 'flex',
@@ -58,7 +59,7 @@ const FormButton = styled(Button)({
 })
 //-----------------------------------------//
 const FormPage = () => {
-
+  const nav = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     period: '',
@@ -125,7 +126,7 @@ const FormPage = () => {
       // addGoal 뮤테이션 실행
       await addGoal.mutateAsync(newGoalData);
       alert('습관이 성공적으로 등록되었습니다!');
-      // 폼 제출 후 필드 초기화 (선택 사항)
+      nav('/habit');
       setFormData({
         title: '',
         description: '',

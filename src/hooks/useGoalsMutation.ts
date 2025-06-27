@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { convertDatesToTimestamps } from '@utils/timeStampConverter';
-import { collection, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
+import { updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
 
 import { auth, db } from '../firebase';
 import { useAuthContext } from './auth/useAuthContext';
 
 import type { CharacterStatus } from '@models/character';
 import type { CreateGoalData, GoalFirestore } from '@models/goal';
+import { createGoal as createGoalService } from '@service/goalService';
 
 export const useGoalsFirestore = () => {
   const queryClient = useQueryClient();
-  // 컬렉션 이름은 'goals'로 유지하되, users/{userId} 하위 컬렉션으로 사용
   const goalsSubCollectionName = 'goals';
 
   const { userId: contextUserId } = useAuthContext();
@@ -26,24 +26,11 @@ export const useGoalsFirestore = () => {
   // 1. 목표 추가 뮤테이션 훅
   const addGoalMutation = useMutation({
     mutationFn: async (data: CreateGoalData) => {
-      const userId = getUserId(); // userId 가져오기
+      const userId = getUserId();
 
-      const dataForFirestore = convertDatesToTimestamps(data);
-
-      const finalDocData: GoalFirestore = {
-        ...(dataForFirestore as Omit<GoalFirestore, 'userId' | 'createdAt' | 'updatedAt'>),
-        userId,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      };
-
-      // users/{userId}/goals 컬렉션 참조 생성
-      const userGoalsCollectionRef = collection(db, 'users', userId, goalsSubCollectionName);
-      return await addDoc(userGoalsCollectionRef, finalDocData);
+      return await createGoalService(userId, data);
     },
     onSuccess: () => {
-      // 'goals' 컬렉션의 쿼리 키를 무효화하여 모든 목표 목록을 새로고침
-      // 사용자별 쿼리 키를 사용한다면 [collectionName, userId] 형태로 무효화해야 합니다.
       queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName] });
     },
     onError: (error: Error) => {
