@@ -1,5 +1,6 @@
 import { useAuth } from '@hooks/auth/useAuth';
-import { signInWithGoogle } from '@lib/firebaseAuth';
+import { logout, signInWithGoogle } from '@lib/firebaseAuth';
+import { Button } from '@mui/material';
 
 const LoginButton = () => {
   const { user } = useAuth();
@@ -9,10 +10,18 @@ const LoginButton = () => {
       await signInWithGoogle();
     } catch (error) {
       console.error(error);
+      alert('로그인 실패');
     }
   };
 
-  return <button></button>;
+  const handleLogout = () => {
+    logout();
+  };
+  return user ? (
+    <Button onClick={handleLogout}>로그아웃</Button>
+  ) : (
+    <Button onClick={handleLogin}>구글 로그인</Button>
+  );
 };
 
 export default LoginButton;
