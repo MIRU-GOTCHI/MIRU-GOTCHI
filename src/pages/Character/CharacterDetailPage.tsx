@@ -85,7 +85,7 @@ const CharacterDetailPage = () => {
           marginBottom: '1rem',
         }}
       >
-        character room
+        character room(추가 예정)
       </Box>
       <Box
         sx={{
