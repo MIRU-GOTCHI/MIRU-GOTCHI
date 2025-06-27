@@ -15,6 +15,7 @@ export interface Goal {
   totalDays: number;
   createdAt: Date;
   updatedAt: Date;
+  status: 'in_progress' | 'completed' | 'failed';
 }
 
 export interface GoalFirestore {
@@ -29,6 +30,7 @@ export interface GoalFirestore {
   failCount: number;
   createdAt: Timestamp;
   updatedAt: Timestamp;
+  status: 'in_progress' | 'completed' | 'failed';
 }
 
 export interface CreateGoalData {
@@ -40,6 +42,7 @@ export interface CreateGoalData {
   characterStatus: CharacterStatus;
   successCount: number;
   failCount: number;
+  status?: 'in_progress' | 'completed' | 'failed';
 }
 
 export type UpdateGoalData = Partial<Omit<CreateGoalData, 'startDate' | 'endDate'>> & {
