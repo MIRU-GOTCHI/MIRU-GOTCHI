@@ -1,5 +1,5 @@
 import { Box, Grid, styled, Tab, Tabs, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -96,7 +96,7 @@ const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
 const CharacterPage = () => {
   const [value, setValue] = useState(0);
 
-  const handleChange = (e, newValue: number) => {
+  const handleChange = (_e: any, newValue: number) => {
     setValue(newValue);
   };
 
