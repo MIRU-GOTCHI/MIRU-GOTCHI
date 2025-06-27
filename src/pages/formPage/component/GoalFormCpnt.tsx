@@ -1,4 +1,4 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField, styled } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, styled } from '@mui/material';
 
 const GoalFormBox = styled(Grid)({
   width: '100%',
