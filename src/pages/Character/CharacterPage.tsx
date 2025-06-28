@@ -1,5 +1,4 @@
-import { useAuthContext } from '@hooks/auth/useAuthContext';
-import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
+import { useAuth } from '@hooks/auth/useAuth';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Grid, styled, Tab, Tabs, Typography } from '@mui/material';
 import React, { useState } from 'react';
@@ -115,8 +114,8 @@ const CharacterPage = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
 
-  const { userId } = useAuthContext();
-  const { data: allGoalData } = useGetGoals(userId);
+  const { userId } = useAuth();
+  const { data: allGoalData } = useGetGoals(userId ?? '');
 
   const onGoingGoals = allGoalData ? allGoalData.filter((goal) => !goal.characterStatus.gone) : [];
   const completedGoals = allGoalData ? allGoalData.filter((goal) => goal.characterStatus.gone) : [];

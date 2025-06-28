@@ -1,8 +1,28 @@
+import Loading from '@common/components/Loading';
 import { AuthContext } from '@context/AuthContext';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
+
+import { auth } from '../firebase';
+
+import type { User } from 'firebase/auth';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // 나중에 여기에 Firebase 로그인 후 추가
-  const userId = 'testUserId';
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  return <AuthContext.Provider value={{ userId }}>{children}</AuthContext.Provider>;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const userId = user?.uid || null;
+
+  if (loading) return <Loading />;
+
+  return <AuthContext.Provider value={{ user, userId }}>{children}</AuthContext.Provider>;
 };

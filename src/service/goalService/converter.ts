@@ -11,6 +11,7 @@ export const convertGoalDate = (data: GoalFirestore, id: string): Goal => {
 
   return {
     id,
+    status: data.status,
     userId: data.userId,
     title: data.title,
     description: data.description,

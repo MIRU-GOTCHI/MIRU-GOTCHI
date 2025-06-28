@@ -1,3 +1,4 @@
+import { createGoal as createGoalService } from '@service/goalService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { convertDatesToTimestamps } from '@utils/timeStampConverter';
 import { updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
@@ -7,7 +8,6 @@ import { useAuthContext } from './auth/useAuthContext';
 
 import type { CharacterStatus } from '@models/character';
 import type { CreateGoalData, GoalFirestore } from '@models/goal';
-import { createGoal as createGoalService } from '@service/goalService';
 
 export const useGoalsFirestore = () => {
   const queryClient = useQueryClient();

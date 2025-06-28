@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -16,7 +18,9 @@
       "@models/*": ["models/*"],
       "@layout/*": ["layout/*"],
       "@service/*": ["service/*"],
-      "@context/*": ["context/*"]
+      "@context/*": ["context/*"],
+      "@lib/*": ["lib/*"],
+      "@assets/*": ["assets/*"]
     },
 
     "moduleResolution": "node",

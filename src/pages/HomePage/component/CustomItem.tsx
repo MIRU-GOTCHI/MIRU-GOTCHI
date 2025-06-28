@@ -1,11 +1,13 @@
-import { Checkbox } from '@mui/material';
-import styled from 'styled-components';
-import LogoImage from '../../../assets/images/logo.png';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import type { Goal } from '@models/goal';
 import { useGetTodayLog } from '@hooks/useGetTodayLog';
+import { Checkbox } from '@mui/material';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import LogoImage from '../../../assets/images/logo.png';
+
 import type { CharacterStatus } from '@models/character';
+import type { Goal } from '@models/goal';
 
 interface CustomItemProps {
   id: string;
@@ -76,7 +78,7 @@ const CustomItem = ({items}:CustomItemProps) => {
   console.log(data)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let checkbox = event.target;
+    const checkbox = event.target;
     if(checkbox.checked) {
       console.log(event.target.name)
       // console.log(userId)
