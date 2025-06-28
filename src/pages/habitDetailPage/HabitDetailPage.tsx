@@ -44,14 +44,14 @@ const HabitContainBox = styled(Grid)({
   gap: 10,
 });
 const CharacterGrid = styled(Grid)({
-  width: '100%', 
-  height:'auto', maxHeight: '400px',
+  width: '100%', flexGrow: 1,
+  height: 'auto', maxHeight: '400px',
   display: 'flex',
-  alignItems: 'center',justifyContent:'center',
+  alignItems: 'center', justifyContent: 'center',
 });
 const CharBox = styled(Box)({
-  width: '80%', aspectRatio:'1/1.2',
-  '@media (max-width: 600px)': { maxWidth:'230px' }
+  width: '80%', aspectRatio: '1/1',
+  '@media (max-width: 600px)': { maxWidth: '230px' }
 });
 const HabitDescBox = styled(Box)({
   width: '100%',
@@ -59,12 +59,12 @@ const HabitDescBox = styled(Box)({
   flexGrow: 1,
   borderRadius: '10px',
   padding: '20px',
-  '@media (max-width: 600px)': { 
-    maxHeight:'260px', overflowY:'auto',
-    '@media (max-height: 740px)': { 
-    maxHeight:'90px', overflowY:'auto',
+  '@media (max-width: 600px)': {
+    maxHeight: '260px', overflowY: 'auto',
+    '@media (max-height: 740px)': {
+      maxHeight: '90px', overflowY: 'auto',
 
-  }
+    }
   },
 });
 const HabitContSecGrid = styled(Grid)({
@@ -152,11 +152,11 @@ const HabitDetailPage = () => {
         <HabitDetailTitle>
           <h2>{data?.title}</h2>
 
-          {!isEditable ? (
+          {data.status === 'failed' ? (
             ''
           ) : (
             <Box sx={{ marginLeft: 'auto' }}>
-              {data.failCount > 2 ? '' : <EditBtn onClick={handleOpenEditModal}>수정</EditBtn>} |
+              {!isEditable ? '' : <><EditBtn onClick={handleOpenEditModal}>수정</EditBtn> | </> }
               <EditBtn onClick={handleDeleteGoal}>삭제</EditBtn>
             </Box>
           )}
@@ -165,19 +165,19 @@ const HabitDetailPage = () => {
         <HabitContainBox container spacing={2}>
           <CharacterGrid size={{ xs: 12, sm: 6 }}>
             <CharBox>
-              <CharacterBox 
-              failCount={data.failCount}
-              totalDays={data.totalDays}
-              characterId={data.characterId}
-              characterStatus={data.characterStatus}
+              <CharacterBox
+                failCount={data.failCount}
+                totalDays={data.totalDays}
+                characterId={data.characterId}
+                characterStatus={data.characterStatus}
               />
             </CharBox>
           </CharacterGrid>
 
           <HabitContSecGrid size={{ xs: 12, sm: 6 }}>
             <InformHeadBox>
-                목표기간 : {data?.startDate.toLocaleDateString()}~
-                {data?.endDate.toLocaleDateString()}
+              목표기간 : {data?.startDate.toLocaleDateString()}~
+              {data?.endDate.toLocaleDateString()}
             </InformHeadBox>
             <HabitDescBox>
               <p>{data?.description}</p>
