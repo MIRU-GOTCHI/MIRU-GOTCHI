@@ -136,7 +136,17 @@ const CharacterDetailPage = () => {
         </BeforeBtnWrapper>
       </ContentTitle>
 
-      <CharacterBox />
+      {goalData && (
+        <CharacterBox
+          failCount={goalData.failCount}
+          title={goalData.title}
+          characterStatus={goalData.characterStatus}
+          characterId={goalData.characterId}
+          totalDays={goalData.totalDays}
+          successCount={goalData.successCount}
+          bubbleTalk="습관은 습관으로 극복할 수 있다."
+        />
+      )}
 
       <GrowthStageContainer>
         <GrowthTitle>쑥쑥! 성장기록</GrowthTitle>
