@@ -75,7 +75,7 @@ const CharacterFormCont: React.FC<CharacterFormContProps> = ({
   onCharacterChange,
 }) => {
   const handleCharacterSelection = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newCharacterId: string | null,
   ) => {
     if (newCharacterId !== null) {

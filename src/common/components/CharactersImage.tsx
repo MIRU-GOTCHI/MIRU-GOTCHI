@@ -1,6 +1,8 @@
-import type { CharacterStatus } from "@models/character";
-import { characterImageMap } from "../../constants/characterImages";
 import { styled } from "styled-components";
+
+import { characterImageMap } from "../../constants/characterImages";
+
+import type { CharacterStatus } from "@models/character";
 
 interface CharactersImageProps {
   characterId?: string;

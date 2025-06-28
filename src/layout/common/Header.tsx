@@ -49,9 +49,9 @@ const Logo = styled('h1')({
   },
 });
 
-const LogOutBtn = styled('button')({
-  backgroundColor: 'transparent',
-});
+// const LogOutBtn = styled('button')({
+//   backgroundColor: 'transparent',
+// });
 
 const AppHeader = () => {
   return (
