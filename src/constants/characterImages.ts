@@ -6,6 +6,7 @@ import DogAdult from '../assets/images/character/dog/dog-adult.png';
 import DogBaby from '../assets/images/character/dog/dog-baby.png';
 import DogEgg from '../assets/images/character/dog/dog-egg.png';
 import DogTeen from '../assets/images/character/dog/dog-teen.png';
+import Gone from '../assets/images/character/gone.png';
 import HamsterAdult from '../assets/images/character/hamster/hamster-adult.png';
 import HamsterBaby from '../assets/images/character/hamster/hamster-baby.png';
 import HamsterEgg from '../assets/images/character/hamster/hamster-egg.png';
@@ -19,13 +20,20 @@ import TitBaby from '../assets/images/character/tit/tit-baby.png';
 import TitEgg from '../assets/images/character/tit/tit-egg.png';
 import TitTeen from '../assets/images/character/tit/tit-teen.png';
 
-export const characterImageMap = {
+type CharacterStage = 'egg' | 'baby' | 'teen' | 'adult' | 'gone';
+
+type CharacterImageSet = {
+  [key in CharacterStage]: string;
+};
+
+export const characterImageMap: Record<string, CharacterImageSet> = {
   // 미루찌
   DZ1OHxn48Z5zRwtt50TP: {
     egg: HamsterEgg,
     baby: HamsterBaby,
     teen: HamsterTeen,
     adult: HamsterAdult,
+    gone: Gone,
   },
   // 늦잠멍
   YYlClvXJADbJO9ru1VG3: {
@@ -33,6 +41,7 @@ export const characterImageMap = {
     baby: DogBaby,
     teen: DogTeen,
     adult: DogAdult,
+    gone: Gone,
   },
   // 레이토
   bEFnSlfFSbK9QVq0arjT: {
@@ -40,6 +49,7 @@ export const characterImageMap = {
     baby: RabbitBaby,
     teen: RabbitTeen,
     adult: RabbitAdult,
+    gone: Gone,
   },
   // 나중삐
   cJb5qHB1Z7GFm79SCitA: {
@@ -47,6 +57,7 @@ export const characterImageMap = {
     baby: TitBaby,
     teen: TitTeen,
     adult: TitAdult,
+    gone: Gone,
   },
   // 미루냥
   t0vhk3H3NCZACFLL7c0s: {
@@ -54,5 +65,6 @@ export const characterImageMap = {
     baby: CatBaby,
     teen: CatTeen,
     adult: CatAdult,
+    gone: Gone,
   },
 };

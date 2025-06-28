@@ -120,9 +120,7 @@ const CharacterPage = () => {
   const onGoingGoals = allGoalData ? allGoalData.filter((goal) => !goal.characterStatus.gone) : [];
   const completedGoals = allGoalData ? allGoalData.filter((goal) => goal.characterStatus.gone) : [];
 
-  // console.log('dd', allGoalData);
-
-  const handleChange = (e, newValue: number) => {
+  const handleChange = (_e: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
