@@ -1,14 +1,14 @@
 import BeforeBtn from '@common/components/BeforeBtn';
+import CharacterBox from '@common/components/CharacterBox';
 import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoalDetail } from '@hooks/useGetGoalDetail';
 import { useGoalsFirestore } from '@hooks/useGoalsMutation';
+import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
 import { Box, Button, Grid, styled } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
-import CharacterBox from '@common/components/CharacterBox';
-import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
 
 const HabitDetailBox = styled(Box)({
   display: 'flex',

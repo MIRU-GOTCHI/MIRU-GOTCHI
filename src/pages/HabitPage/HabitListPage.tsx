@@ -1,6 +1,7 @@
+import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
-import { Box, Switch, Typography, CircularProgress, Button } from '@mui/material';
+import { Box, Switch, Typography, Button } from '@mui/material';
 import HabitItem from '@pages/HabitPage/components/HabitItem';
 import { getGoalsList } from '@service/goalService';
 import { completeTodayLog, getTodayLog } from '@service/logService';
@@ -86,7 +87,7 @@ const HabitListPage = () => {
     showInProgress ? goal.status === 'in_progress' : goal.status !== 'in_progress',
   );
 
-  if (loading || isCharactersLoading) return <CircularProgress />;
+  if (loading || isCharactersLoading) return <Loading />;
 
   return (
     <Container>
