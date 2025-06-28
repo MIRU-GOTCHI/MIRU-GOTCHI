@@ -25,7 +25,7 @@ const HabitDetailBox = styled(Box)({
 const HabitDetailTitle = styled(Grid)({
   width: '100%',
   height: '6vh',
-  display: 'flex'
+  display: 'flex',
 });
 const EditBtn = styled('button')({
   background: 'none',
@@ -42,21 +42,27 @@ const HabitContainBox = styled(Grid)({
   flexGrow: 1,
   display: 'flex',
   gap: 10,
-   '@media (max-width: 600px)': {flexGrow:0}
+  '@media (max-width: 600px)': { flexGrow: 0 },
 });
 const CharacterGrid = styled(Grid)({
-  width: '100%', flexGrow: 1,
+  width: '100%',
+  flexGrow: 1,
   display: 'flex',
-  alignItems: 'center', justifyContent: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
 const CharBox = styled(Box)({
-  width: '80%', aspectRatio: '1/1.14',display: 'flex',justifyContent: 'center',
-  '@media (max-width: 600px)': { maxWidth: '230px' }
+  width: '80%',
+  aspectRatio: '1/1.14',
+  display: 'flex',
+  justifyContent: 'center',
+  '@media (max-width: 600px)': { maxWidth: '230px' },
 });
 const HabitContSecGrid = styled(Grid)({
   width: '100%',
   gap: 10,
-  display: 'flex',flexGrow: 1,
+  display: 'flex',
+  flexGrow: 1,
   flexDirection: 'column',
 });
 const HabitDescBox = styled(Box)({
@@ -66,7 +72,8 @@ const HabitDescBox = styled(Box)({
   borderRadius: '10px',
   padding: '20px',
   '@media (max-width: 600px)': {
-    maxHeight: 'calc(100vh - 550px)', overflowY: 'auto',
+    maxHeight: 'calc(100vh - 550px)',
+    overflowY: 'auto',
   },
 });
 const InformHeadBox = styled(Box)({
@@ -86,12 +93,7 @@ const HabitDetailPage = () => {
 
   const { deleteGoal } = useGoalsFirestore();
   const { data, isLoading } = useGetGoalDetail(userId, id);
-  const {
-    isChecked,
-    checkLog,
-    uncheckLog,
-    isUpdatingLog,
-  } = useTodayLogStatus(id);
+  const { isChecked, checkLog, uncheckLog, isUpdatingLog } = useTodayLogStatus(id);
   // 모달
   const [openEditModal, setOpenEditModal] = useState(false);
   // 로그
@@ -152,7 +154,13 @@ const HabitDetailPage = () => {
             ''
           ) : (
             <Box sx={{ marginLeft: 'auto' }}>
-              {!isEditable ? '' : <><EditBtn onClick={handleOpenEditModal}>수정</EditBtn> | </> }
+              {!isEditable ? (
+                ''
+              ) : (
+                <>
+                  <EditBtn onClick={handleOpenEditModal}>수정</EditBtn> |{' '}
+                </>
+              )}
               <EditBtn onClick={handleDeleteGoal}>삭제</EditBtn>
             </Box>
           )}
@@ -162,6 +170,7 @@ const HabitDetailPage = () => {
           <CharacterGrid size={{ xs: 12, sm: 6 }}>
             <CharBox>
               <CharacterBox
+                successCount={data.successCount}
                 failCount={data.failCount}
                 totalDays={data.totalDays}
                 characterId={data.characterId}
@@ -172,37 +181,36 @@ const HabitDetailPage = () => {
 
           <HabitContSecGrid size={{ xs: 12, sm: 6 }}>
             <InformHeadBox>
-              목표기간 : {data?.startDate.toLocaleDateString()}~
-              {data?.endDate.toLocaleDateString()}
+              목표기간 : {data?.startDate.toLocaleDateString()}~{data?.endDate.toLocaleDateString()}
             </InformHeadBox>
             <HabitDescBox>
               <p>{data?.description}</p>
             </HabitDescBox>
             {/* 완료 버튼 */}
 
-            < HabitDoneBtn
+            <HabitDoneBtn
               variant="contained"
               onClick={isChecked ? uncheckLog : checkLog}
-              color={isChecked ? "primary" : "secondary"}>
-              {isUpdatingLog ? "처리 중..." :
-                (isChecked ? `오늘의 (${data.title.slice(0, 10)}) 취소하기`
-                  : `오늘의 (${data.title.slice(0, 10)}) 완료하기`)}
+              color={isChecked ? 'primary' : 'secondary'}
+            >
+              {isUpdatingLog
+                ? '처리 중...'
+                : isChecked
+                  ? `오늘의 (${data.title.slice(0, 10)}) 취소하기`
+                  : `오늘의 (${data.title.slice(0, 10)}) 완료하기`}
             </HabitDoneBtn>
-
           </HabitContSecGrid>
         </HabitContainBox>
-      </HabitDetailBox >
+      </HabitDetailBox>
 
       {/* 수정 폼 모달 */}
-      {
-        data && (
-          <EditHabitDetailModal
-            open={openEditModal}
-            onClose={handleCloseEditModal}
-            goal={data} // 현재 목표 데이터를 prop으로 전달
-          />
-        )
-      }
+      {data && (
+        <EditHabitDetailModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          goal={data} // 현재 목표 데이터를 prop으로 전달
+        />
+      )}
     </>
   );
 };
