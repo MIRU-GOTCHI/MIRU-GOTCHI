@@ -115,11 +115,6 @@ const HabitDetailPage = () => {
 
   // console.log('data', data)
 
-  // 진행률
-  // const totalDays = data?.totalDays ?? 0;
-  // const successCount = data?.successCount ?? 0;
-  // const progressValue = (successCount / totalDays) * 100;
-
   const now = new Date();
 
   // 삭제 핸들러
@@ -135,7 +130,6 @@ const HabitDetailPage = () => {
         navigate('/habit');
       } catch (err: any) {
         alert('습관 삭제 실패: ' + err.message);
-        console.error('습관 삭제 에러:', err);
       }
     }
   };
