@@ -1,26 +1,33 @@
 import BeforeBtn from '@common/components/BeforeBtn';
+import CharacterBox from '@common/components/CharacterBox';
 import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoal } from '@hooks/useGetGoal';
 import ContentTitle from '@layout/common/ContentTitle';
-import { Box, Grid, styled, Typography } from '@mui/material';
-import React from 'react';
+import { Grid, styled, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import stageLocked from '../../assets/images/lockedStage.png';
 import { characterImageMap } from '../../constants/characterImages';
+
+type CharacterStage = 'egg' | 'baby' | 'teen' | 'adult';
+
+type CharacterImageSet = {
+  [key in CharacterStage]: string;
+};
 
 const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height: '100%',
   backgroundColor: '#F2F2F3',
-  padding: '2rem',
+  padding: '0rem 2rem 6rem 2rem',
 });
 
 const GrowthTitle = styled(Typography)({
   display: 'flex',
   alignContent: 'center',
-  paddingInline: '3rem',
+  marginBottom: '2rem',
+  paddingInline: '1rem',
   fontSize: '32px !important',
   color: '#fafdff !important',
   fontFamily: 'DNFBitBitv2 !important',
@@ -31,11 +38,13 @@ const GrowthStageContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  paddingInline: '2rem',
   width: '100%',
-  maxWidth: '720px',
+  maxWidth: '460px',
   alignSelf: 'center',
   backgroundColor: '#5B93D5',
   paddingBottom: '2rem',
+  borderRadius: '16px',
 });
 
 const GrowthStageArea = styled('div')({
@@ -43,44 +52,71 @@ const GrowthStageArea = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  maxWidth: '720px',
+  maxWidth: '460px',
   alignSelf: 'center',
   backgroundColor: '#5B93D5',
 });
 
+const StageLevelText = styled(Typography)(({ theme }) => ({
+  position: 'absolute',
+  fontFamily: 'DNFBitBitv2',
+  fontSize: '16px',
+  top: '0.5rem',
+  left: '1rem',
+  letterSpacing: '-0.5px',
+  [theme.breakpoints.down('sm')]: {
+    top: '0.25rem',
+    left: '0.6rem',
+    fontSize: '0.825rem',
+  },
+}));
+
+const LockedStageImg = styled('img')({
+  position: 'absolute',
+  fontFamily: 'DNFBitBitv2',
+  bottom: '10%',
+  width: '70%',
+  height: '70%',
+  objectFit: 'contain',
+});
 const UnlockedStage = styled('div')({
+  position: 'relative',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: 'white',
   width: '100%',
-  maxWidth: '256px',
+  maxWidth: '160px',
   minWidth: '64px',
   aspectRatio: '1 / 1',
+  borderRadius: '12px',
 });
 
 const LockedStage = styled('div')({
+  position: 'relative',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  backgroundColor: 'white',
   fontSize: '32px',
-  color: '#fafdff',
-  backgroundColor: 'black',
+  color: '#050505',
   width: '100%',
-  maxWidth: '256px',
+  maxWidth: '160px',
   minWidth: '64px',
   aspectRatio: '1 / 1',
+  borderRadius: '12px',
 });
+
+const BeforeBtnWrapper = styled('div')({});
 
 const CharacterDetailPage = () => {
   const navigate = useNavigate();
-
   const { userId } = useAuthContext();
 
   const { id } = useParams();
-  const { data: goalData } = useGetGoal(userId, id);
+  const { data: goalData } = useGetGoal(userId ?? '', id ?? '');
 
-  const growthStages = [
+  const growthStages: { level: number; label: string; key: keyof CharacterImageSet }[] = [
     { level: 0, label: '알', key: 'egg' },
     { level: 1, label: '아기', key: 'baby' },
     { level: 2, label: '청소년', key: 'teen' },
@@ -95,47 +131,21 @@ const CharacterDetailPage = () => {
   return (
     <Container>
       <ContentTitle>
-        <BeforeBtn />
+        <BeforeBtnWrapper onClick={() => navigate(`/character`)}>
+          <BeforeBtn />
+        </BeforeBtnWrapper>
       </ContentTitle>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-          color: '#fafdff',
-          backgroundColor: 'blue',
-          width: '100%',
-          maxWidth: '720px',
-          aspectRatio: '1/1',
-          marginBottom: '1rem',
-        }}
-      >
-        character room(추가 예정)
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-          width: '100%',
-          maxWidth: '720px',
-          height: '50px',
-          backgroundColor: 'blue',
-          color: '#fafdff',
-          marginBottom: '1rem',
-        }}
-      >
-        경험치 바
-      </Box>
+      <CharacterBox />
+
       <GrowthStageContainer>
         <GrowthTitle>쑥쑥! 성장기록</GrowthTitle>
         <GrowthStageArea>
-          <Grid container rowSpacing={8} columnSpacing={1} sx={{ width: '100%' }}>
-            {growthStages.map((stage, index) => {
-              const isUnlocked = goalData?.characterStatus?.level >= stage.level;
+          <Grid container rowSpacing={4} columnSpacing={1} sx={{ width: '100%' }}>
+            {growthStages.map((stage) => {
+              const isUnlocked =
+                goalData?.characterStatus?.level !== undefined &&
+                goalData?.characterStatus?.level >= stage.level;
 
               return (
                 <Grid
@@ -145,6 +155,7 @@ const CharacterDetailPage = () => {
                 >
                   {isUnlocked ? (
                     <UnlockedStage>
+                      <StageLevelText>Lv. {stage.level}</StageLevelText>
                       {charImages && (
                         <img
                           src={charImages[stage.key]}
@@ -155,9 +166,8 @@ const CharacterDetailPage = () => {
                     </UnlockedStage>
                   ) : (
                     <LockedStage>
-                      <Typography fontFamily="DNFBitBitv2" fontSize={'96px'}>
-                        ?
-                      </Typography>
+                      <StageLevelText>Lv. {stage.level}</StageLevelText>
+                      <LockedStageImg src={stageLocked} />
                     </LockedStage>
                   )}
                 </Grid>
