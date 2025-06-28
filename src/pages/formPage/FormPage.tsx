@@ -15,10 +15,11 @@ const FormPageBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  maxWidth: '800px',
+  maxWidth: '1200px',
   flexGrow: 1,
   fontFamily: 'Galmuri14',
-  margin: '0 auto'
+  margin: '0 auto',
+  '@media (max-width: 1490px)': {maxWidth: '1000px',}
 })
 const FormTitle = styled(Box)({
   height: '7vh',

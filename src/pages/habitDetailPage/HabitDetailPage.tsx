@@ -25,7 +25,7 @@ const HabitDetailBox = styled(Box)({
 const HabitDetailTitle = styled(Grid)({
   width: '100%',
   height: '6vh',
-  display: 'flex',
+  display: 'flex'
 });
 const EditBtn = styled('button')({
   background: 'none',
@@ -42,16 +42,22 @@ const HabitContainBox = styled(Grid)({
   flexGrow: 1,
   display: 'flex',
   gap: 10,
+   '@media (max-width: 600px)': {flexGrow:0}
 });
 const CharacterGrid = styled(Grid)({
-  width: '100%', 
-  height:'auto', maxHeight: '400px',
+  width: '100%', flexGrow: 1,
   display: 'flex',
-  alignItems: 'center',justifyContent:'center',
+  alignItems: 'center', justifyContent: 'center',
 });
 const CharBox = styled(Box)({
-  width: '80%', aspectRatio:'1/1.2',
-  '@media (max-width: 600px)': { maxWidth:'230px' }
+  width: '80%', aspectRatio: '1/1.14',display: 'flex',justifyContent: 'center',
+  '@media (max-width: 600px)': { maxWidth: '230px' }
+});
+const HabitContSecGrid = styled(Grid)({
+  width: '100%',
+  gap: 10,
+  display: 'flex',flexGrow: 1,
+  flexDirection: 'column',
 });
 const HabitDescBox = styled(Box)({
   width: '100%',
@@ -59,19 +65,9 @@ const HabitDescBox = styled(Box)({
   flexGrow: 1,
   borderRadius: '10px',
   padding: '20px',
-  '@media (max-width: 600px)': { 
-    maxHeight:'260px', overflowY:'auto',
-    '@media (max-height: 740px)': { 
-    maxHeight:'90px', overflowY:'auto',
-
-  }
+  '@media (max-width: 600px)': {
+    maxHeight: 'calc(100vh - 550px)', overflowY: 'auto',
   },
-});
-const HabitContSecGrid = styled(Grid)({
-  width: '100%',
-  gap: 10,
-  display: 'flex',
-  flexDirection: 'column',
 });
 const InformHeadBox = styled(Box)({
   display: 'flex',
@@ -107,18 +103,13 @@ const HabitDetailPage = () => {
     return <div>로그인이 필요합니다.</div>;
   }
   if (!data) {
-    return <div>⚠️오류: 존재하지않는 습관입니다.</div>;
+    return <CharacterGrid>⚠️오류: 존재하지않는 습관입니다.</CharacterGrid>;
   }
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
 
   // console.log('data', data)
-
-  // 진행률
-  // const totalDays = data?.totalDays ?? 0;
-  // const successCount = data?.successCount ?? 0;
-  // const progressValue = (successCount / totalDays) * 100;
 
   const now = new Date();
 
@@ -135,7 +126,6 @@ const HabitDetailPage = () => {
         navigate('/habit');
       } catch (err: any) {
         alert('습관 삭제 실패: ' + err.message);
-        console.error('습관 삭제 에러:', err);
       }
     }
   };
@@ -158,11 +148,11 @@ const HabitDetailPage = () => {
         <HabitDetailTitle>
           <h2>{data?.title}</h2>
 
-          {!isEditable ? (
+          {data.status === 'failed' ? (
             ''
           ) : (
             <Box sx={{ marginLeft: 'auto' }}>
-              {data.failCount > 2 ? '' : <EditBtn onClick={handleOpenEditModal}>수정</EditBtn>} |
+              {!isEditable ? '' : <><EditBtn onClick={handleOpenEditModal}>수정</EditBtn> | </> }
               <EditBtn onClick={handleDeleteGoal}>삭제</EditBtn>
             </Box>
           )}
@@ -171,19 +161,19 @@ const HabitDetailPage = () => {
         <HabitContainBox container spacing={2}>
           <CharacterGrid size={{ xs: 12, sm: 6 }}>
             <CharBox>
-              <CharacterBox 
-              failCount={data.failCount}
-              totalDays={data.totalDays}
-              characterId={data.characterId}
-              characterStatus={data.characterStatus}
+              <CharacterBox
+                failCount={data.failCount}
+                totalDays={data.totalDays}
+                characterId={data.characterId}
+                characterStatus={data.characterStatus}
               />
             </CharBox>
           </CharacterGrid>
 
           <HabitContSecGrid size={{ xs: 12, sm: 6 }}>
             <InformHeadBox>
-                목표기간 : {data?.startDate.toLocaleDateString()}~
-                {data?.endDate.toLocaleDateString()}
+              목표기간 : {data?.startDate.toLocaleDateString()}~
+              {data?.endDate.toLocaleDateString()}
             </InformHeadBox>
             <HabitDescBox>
               <p>{data?.description}</p>
