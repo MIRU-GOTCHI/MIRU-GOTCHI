@@ -2,16 +2,14 @@ import BeforeBtn from '@common/components/BeforeBtn';
 import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoalDetail } from '@hooks/useGetGoalDetail';
 import { useGoalsFirestore } from '@hooks/useGoalsMutation';
-import { Box, Button, Grid, LinearProgress, styled } from '@mui/material';
+import { Box, Button, Grid, styled } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
+import CharacterBox from '@common/components/CharacterBox';
+import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
 
-const FlexBox = styled(Box)({
-  display: 'flex',
-  gap: 10,
-});
 const HabitDetailBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
@@ -46,16 +44,13 @@ const HabitContainBox = styled(Grid)({
   gap: 10,
 });
 const CharacterGrid = styled(Grid)({
-  width: '100%',
+  width: '100%', 
+  height:'auto', maxHeight: '400px',
   display: 'flex',
-  flexDirection: 'column',
-  gap: 20,
+  alignItems: 'center',justifyContent:'center',
 });
-const HabitProgress = styled(LinearProgress)({
-  height: 15,
-  borderRadius: 15,
-  flexGrow: 1,
-  marginTop: '3px',
+const CharBox = styled(Box)({
+  width: '80%', aspectRatio:'1/1.1',
 });
 const HabitDescBox = styled(Box)({
   width: '100%',
@@ -87,8 +82,15 @@ const HabitDetailPage = () => {
 
   const { deleteGoal } = useGoalsFirestore();
   const { data, isLoading } = useGetGoalDetail(userId, id);
+  const {
+    isChecked,
+    checkLog,
+    uncheckLog,
+    isUpdatingLog,
+  } = useTodayLogStatus(id);
   // 모달
   const [openEditModal, setOpenEditModal] = useState(false);
+  // 로그
 
   if (!id) {
     return <div>오류: 파라미터값이 발견되지 않았습니다.</div>;
@@ -106,9 +108,9 @@ const HabitDetailPage = () => {
   // console.log('data', data)
 
   // 진행률
-  const totalDays = data?.totalDays ?? 0;
-  const successCount = data?.successCount ?? 0;
-  const progressValue = (successCount / totalDays) * 100;
+  // const totalDays = data?.totalDays ?? 0;
+  // const successCount = data?.successCount ?? 0;
+  // const progressValue = (successCount / totalDays) * 100;
 
   const now = new Date();
 
@@ -137,6 +139,7 @@ const HabitDetailPage = () => {
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
   };
+
   // 수정 버튼 조건
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
@@ -158,23 +161,13 @@ const HabitDetailPage = () => {
         </HabitDetailTitle>
 
         <HabitContainBox container spacing={2}>
-          <CharacterGrid size={{ xs: 12, sm: 7 }}>
-            <Box
-              sx={{
-                width: '100%',
-                height: '90%',
-                minHeight: '150px',
-                backgroundColor: '#fff',
-                borderRadius: '10px',
-              }}
-            ></Box>
-            <FlexBox>
-              <div className="fontBitBit">Lv.{data.characterStatus.level} </div>
-              <HabitProgress value={progressValue} variant="determinate" color="secondary" />
-            </FlexBox>
+          <CharacterGrid size={{ xs: 12, sm: 6 }}>
+            <CharBox>
+              <CharacterBox />
+            </CharBox>
           </CharacterGrid>
 
-          <HabitContSecGrid size={{ xs: 12, sm: 5 }}>
+          <HabitContSecGrid size={{ xs: 12, sm: 6 }}>
             <InformHeadBox>
               <p>
                 목표기간 : {data?.startDate.toLocaleDateString()}~
@@ -184,21 +177,31 @@ const HabitDetailPage = () => {
             <HabitDescBox>
               <p>{data?.description}</p>
             </HabitDescBox>
-            <HabitDoneBtn variant="contained" color="secondary">
-              오늘의 ({data?.title.slice(0, 10)}) 완료하기
+            {/* 완료 버튼 */}
+
+            < HabitDoneBtn
+              variant="contained"
+              onClick={isChecked ? uncheckLog : checkLog}
+              color={isChecked ? "primary" : "secondary"}>
+              {isUpdatingLog ? "처리 중..." :
+                (isChecked ? `오늘의 (${data.title.slice(0, 10)}) 취소하기`
+                  : `오늘의 (${data.title.slice(0, 10)}) 완료하기`)}
             </HabitDoneBtn>
+
           </HabitContSecGrid>
         </HabitContainBox>
-      </HabitDetailBox>
+      </HabitDetailBox >
 
       {/* 수정 폼 모달 */}
-      {data && (
-        <EditHabitDetailModal
-          open={openEditModal}
-          onClose={handleCloseEditModal}
-          goal={data} // 현재 목표 데이터를 prop으로 전달
-        />
-      )}
+      {
+        data && (
+          <EditHabitDetailModal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            goal={data} // 현재 목표 데이터를 prop으로 전달
+          />
+        )
+      }
     </>
   );
 };
