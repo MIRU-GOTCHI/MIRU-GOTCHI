@@ -3,7 +3,7 @@ import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { Box, Switch, Typography } from '@mui/material';
-import HabitItem from '@pages/HabitPage/components/HabitItem';
+import HabitList from '@pages/HabitPage/components/HabitList';
 import { getGoalsList } from '@service/goalService';
 import { completeTodayLog, getTodayLog } from '@service/logService';
 import { useEffect, useState } from 'react';
@@ -79,18 +79,12 @@ const HabitListPage = () => {
       {filteredGoals.length === 0 ? (
         <Typography>습관이 없습니다</Typography>
       ) : (
-        filteredGoals.map((goal) => {
-          const character = characters.find((c) => c.id === goal.characterId);
-          return (
-            <HabitItem
-              key={goal.id}
-              goal={goal}
-              character={character}
-              log={logs[goal.id] ?? null}
-              onCheck={handleCheck}
-            />
-          );
-        })
+        <HabitList
+          goals={filteredGoals}
+          logs={logs}
+          characters={characters}
+          onCheck={handleCheck}
+        />
       )}{' '}
       <AddNewGoalButton />
     </Container>
