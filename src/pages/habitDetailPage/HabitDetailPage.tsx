@@ -25,7 +25,7 @@ const HabitDetailBox = styled(Box)({
 const HabitDetailTitle = styled(Grid)({
   width: '100%',
   height: '6vh',
-  display: 'flex',
+  display: 'flex'
 });
 const EditBtn = styled('button')({
   background: 'none',
@@ -42,16 +42,22 @@ const HabitContainBox = styled(Grid)({
   flexGrow: 1,
   display: 'flex',
   gap: 10,
+   '@media (max-width: 600px)': {flexGrow:0}
 });
 const CharacterGrid = styled(Grid)({
   width: '100%', flexGrow: 1,
-  height: 'auto', maxHeight: '400px',
   display: 'flex',
   alignItems: 'center', justifyContent: 'center',
 });
 const CharBox = styled(Box)({
-  width: '80%', aspectRatio: '1/1',
+  width: '80%', aspectRatio: '1/1.14',display: 'flex',justifyContent: 'center',
   '@media (max-width: 600px)': { maxWidth: '230px' }
+});
+const HabitContSecGrid = styled(Grid)({
+  width: '100%',
+  gap: 10,
+  display: 'flex',flexGrow: 1,
+  flexDirection: 'column',
 });
 const HabitDescBox = styled(Box)({
   width: '100%',
@@ -60,18 +66,8 @@ const HabitDescBox = styled(Box)({
   borderRadius: '10px',
   padding: '20px',
   '@media (max-width: 600px)': {
-    maxHeight: '260px', overflowY: 'auto',
-    '@media (max-height: 740px)': {
-      maxHeight: '90px', overflowY: 'auto',
-
-    }
+    maxHeight: 'calc(100vh - 550px)', overflowY: 'auto',
   },
-});
-const HabitContSecGrid = styled(Grid)({
-  width: '100%',
-  gap: 10,
-  display: 'flex',
-  flexDirection: 'column',
 });
 const InformHeadBox = styled(Box)({
   display: 'flex',
@@ -107,7 +103,7 @@ const HabitDetailPage = () => {
     return <div>로그인이 필요합니다.</div>;
   }
   if (!data) {
-    return <div>⚠️오류: 존재하지않는 습관입니다.</div>;
+    return <CharacterGrid>⚠️오류: 존재하지않는 습관입니다.</CharacterGrid>;
   }
   if (isLoading) {
     return <div>로딩 중...</div>;
