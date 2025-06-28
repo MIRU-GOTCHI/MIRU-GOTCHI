@@ -20,6 +20,29 @@ const calculateGrowthStage = (successRatio: number): GrowthStage => {
   return 'egg';
 };
 
+const calculateLevel = (successRatio: number, totalDays: number): number => {
+  const isLongTerm = totalDays >= 28;
+
+  if (isLongTerm) {
+    if (successRatio >= 0.9) return 10;
+    if (successRatio >= 0.8) return 9;
+    if (successRatio >= 0.7) return 8;
+    if (successRatio >= 0.6) return 7;
+    if (successRatio >= 0.5) return 6;
+    if (successRatio >= 0.4) return 5;
+    if (successRatio >= 0.3) return 4;
+    if (successRatio >= 0.2) return 3;
+    if (successRatio >= 0.1) return 2;
+    return 1;
+  } else {
+    if (successRatio >= 0.9) return 5;
+    if (successRatio >= 0.7) return 4;
+    if (successRatio >= 0.5) return 3;
+    if (successRatio >= 0.3) return 2;
+    return 1;
+  }
+};
+
 export const updateGoalProgress = async (userId: string, goalId: string): Promise<void> => {
   const goalRef = doc(db, 'users', userId, 'goals', goalId);
   const goalSnap = await getDoc(goalRef);
@@ -66,7 +89,7 @@ export const updateGoalProgress = async (userId: string, goalId: string): Promis
     status,
     characterStatus: {
       growthStage,
-      level: goalData.characterStatus.level,
+      level: calculateLevel(successRatio, totalDays),
       gone,
     },
     updatedAt: Timestamp.now(),
