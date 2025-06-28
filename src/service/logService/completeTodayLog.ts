@@ -13,4 +13,5 @@ export const completeTodayLog = async (userId: string, goalId: string, logId: st
   await updateDoc(goalRef, {
     successCount: increment(1),
   });
+
 };
