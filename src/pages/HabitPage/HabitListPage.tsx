@@ -2,13 +2,12 @@ import AddNewGoalButton from '@common/components/AddNewGoalButton';
 import CustomSwitch from '@common/components/CustomSwitch';
 import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
+import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Typography, Tabs, Tab } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import HabitList from '@pages/HabitPage/components/HabitList';
-import { completeTodayLog } from '@service/logService';
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -42,22 +41,25 @@ const HabitListPage = () => {
   const { userId } = useAuth();
   const [showInProgress, setShowInProgress] = useState(true);
   const [doneTab, setDoneTab] = useState<'completed' | 'failed'>('completed');
-  const queryClient = useQueryClient();
 
   const { data: goals = [], isLoading: isGoalLoading } = useGetGoals(userId ?? '');
   const { data: characters = [], isLoading: isCharactersLoading } = useGetAllCharacters();
+  const completeTodayLogMutation = useCompleteTodayLog();
 
   const handleSwitchChange = () => setShowInProgress((prev) => !prev);
 
   const handleCheck = async (goalId: string, logId?: string) => {
-    if (!logId) return;
-    await completeTodayLog(userId ?? '', goalId, logId);
+    if (!logId || !userId) return;
 
-    const todayKey = new Date().toISOString().split('T')[0];
-    queryClient.invalidateQueries({
-      queryKey: ['todayLog', goalId, todayKey, userId],
-      exact: true,
-    });
+    try {
+      await completeTodayLogMutation.mutateAsync({
+        userId,
+        goalId,
+        logId,
+      });
+    } catch (error) {
+      console.error('Failed to complete today log:', error);
+    }
   };
 
   const filteredGoals = goals.filter((goal) => {

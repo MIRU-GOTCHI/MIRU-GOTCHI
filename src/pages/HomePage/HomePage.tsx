@@ -1,11 +1,12 @@
 import CharacterBox from '@common/components/CharacterBox';
 import { useAuth } from '@hooks/auth/useAuth';
+import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { FormGroup } from '@mui/material';
 import HomeHabitList from '@pages/HomePage/component/HomeHabitList';
-import { completeTodayLog } from '@service/logService';
-import { useQueryClient } from '@tanstack/react-query';
+import { getTodayCompletedCount } from '@service/logService/getTodayCompletedCount';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const MainContent = styled('div')({
@@ -62,22 +63,45 @@ const HomePage = () => {
   const { userId } = useAuth();
   const { data = [] } = useGetGoals(userId ?? '');
   const { data: characters = [] } = useGetAllCharacters();
-  const queryClient = useQueryClient();
+  const [completedCount, setCompletedCount] = useState(0);
+
+  const completeTodayLogMutation = useCompleteTodayLog();
 
   const todayDate = new Date();
   const dateFormat = `${todayDate.getMonth() + 1} 월 ${todayDate.getDate()}일`;
 
   const inProgressGoals = data.filter((data) => data.status === 'in_progress');
 
-  const handleCheck = async (goalId: string, logId?: string) => {
-    if (!logId) return;
-    await completeTodayLog(userId ?? '', goalId, logId);
+  const fetchCompletedCount = async () => {
+    if (!userId || data.length === 0) return;
 
-    const todayKey = new Date().toISOString().split('T')[0];
-    queryClient.invalidateQueries({
-      queryKey: ['todayLog', goalId, todayKey, userId],
-      exact: true,
-    });
+    const goalIds = data.map((goal) => goal.id);
+    try {
+      const count = await getTodayCompletedCount(userId, goalIds);
+      setCompletedCount(count);
+    } catch (error) {
+      console.error('Failed to fetch completed count:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCompletedCount();
+  }, [userId, data]);
+
+  const handleCheck = async (goalId: string, logId?: string) => {
+    if (!logId || !userId) return;
+
+    try {
+      await completeTodayLogMutation.mutateAsync({
+        userId,
+        goalId,
+        logId,
+      });
+
+      fetchCompletedCount();
+    } catch (error) {
+      console.error('Failed to complete today log:', error);
+    }
   };
 
   return (
@@ -104,8 +128,8 @@ const HomePage = () => {
             <div className="right">
               <p className="totalCounter">
                 <span>완료 : </span>
-                <span className="counter">4</span>
-                <span className="total">/ {data ? data.length : '0'}</span>
+                <span className="counter">{completedCount}</span>
+                <span className="total">/ {data.length > 0 ? data.length : '0'}</span>
               </p>
             </div>
           </CustomHead>

@@ -15,12 +15,11 @@ const HabitCard = styled(Box)<{ checked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   color: #444;
 
-  background-color: ${({ checked }) => (checked ? '#E8E8E8' : '#8babd1')};
+  background-color: ${({ checked }) => (checked ? '#E8E8E8' : '#ADC9EA')};
 
   &:hover {
     background-color: ${({ checked }) => (checked ? '#D3D3D3' : '#7DACE2')};
@@ -74,11 +73,18 @@ const TextContainer = muiStyled(Box)({
   flex: 1,
 });
 
-const TruncatedTypography = muiStyled(Typography)({
+const TruncatedTypography = muiStyled(Typography)(({ theme }) => ({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-});
+  fontSize: '20px',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '14px',
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '12px',
+  },
+}));
 
 interface HomeHabitItemProps {
   goal: Goal;
@@ -120,7 +126,7 @@ const HomeHabitItem = ({ goal, character, onCheck }: HomeHabitItemProps) => {
               <TruncatedTypography
                 variant="body1"
                 sx={{
-                  color: isTodayCompleted ? '#666' : '#444',
+                  color: isTodayCompleted ? '#666' : '#050505',
                   fontWeight: 500,
                 }}
               >
