@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
-import { useTodayLogStatus } from '@hooks/useGetTodayLog';
 import CharacterBox from '@common/components/CharacterBox';
+import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
 
 const HabitDetailBox = styled(Box)({
   display: 'flex',
