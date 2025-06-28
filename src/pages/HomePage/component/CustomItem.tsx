@@ -1,13 +1,13 @@
 import { useGetTodayLog } from '@hooks/useGetTodayLog';
 import { Checkbox } from '@mui/material';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import LogoImage from '../../../assets/images/logo.png';
 
 import type { CharacterStatus } from '@models/character';
-import type { Goal } from '@models/goal';
+import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 
 interface CustomItemProps {
   id: string;
@@ -72,19 +72,32 @@ const TxtField = styled("div") ({
 })
 
 const CustomItem = ({items}:CustomItemProps) => {
-  const {data} = useGetTodayLog(items.id);
+  const {data:loglist} = useGetTodayLog(items.id);
+  const today = new Date().toDateString();
+  // const [todayChecked, setTodayChecked] = useState<boolean>(false);
+  // const [thisLogItem, setThisLogItem] = useState<string[]>([]);
+  // const [logCheckCount, setLogCheckCount] = useState<number>(0);
+
   
-  console.log(items)
-  console.log(data)
+  // const handleCheckCheck = () => {
+  //   loglist ? setThisLogItem(loglist.filter(logitem => today == logitem.date.toDateString())) : [];
+  // }
+
+  // const handleChangeChecked = (goalId: string, logId: string) => {
+  //     useCompleteTodayLog(items.userId, goalId, logId)
+  // }
+
+  //const handleDateCheck = (todaydate:string) => {
+    // loglist && loglist.filter(logitem => todaydate == logitem.date.toDateString()).map(logitem => {return setThisLogItem(logitem)});
+  //}
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checkbox = event.target;
     if(checkbox.checked) {
       console.log(event.target.name)
-      // console.log(userId)
     }
-  };
 
+  };
 
   return (
     <>  
@@ -101,6 +114,7 @@ const CustomItem = ({items}:CustomItemProps) => {
             className="itemCheckbox"
             name={items.id}
             onChange={handleChange}
+            // {...loglist && loglist.filter(logitem => today == logitem.date.toDateString()).map(logitem => {return logitem.checked ? true : 'checked' })}
           />
         </Item>
     </>

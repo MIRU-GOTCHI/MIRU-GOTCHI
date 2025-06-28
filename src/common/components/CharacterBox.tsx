@@ -3,33 +3,16 @@ import LinearProgress from '@mui/material/LinearProgress';
 import styled from 'styled-components';
 
 import CatBackground from '../../assets/images/background/cat-background.png';
-import CatTeen from '../../assets/images/character/cat/cat-teen.png';
+import DogBackground from '../../assets/images/background/dog-background.png';
+import HamsterBackground from '../../assets/images/background/hamster-background.png';
+import RabbitBackground from '../../assets/images/background/rabbit-background.png';
+import TitBackground from '../../assets/images/background/tit-background.png';
+
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-// import DogBackground from '../../assets/images/background/dog-background.png';
-// import HamsterBackground from '../../assets/images/background/hamster-background.png';
-// import RabbitBackground from '../../assets/images/background/rabbit-background.png';
-// import TitBackground from '../../assets/images/background/tit-background.png';
-// import CatAdult from "../../assets/images/character/cat/cat-adult.png";
-// import CatBaby from "../../assets/images/character/cat/cat-baby.png";
-// import CatEgg from "../../assets/images/character/cat/cat-egg.png";
-// import DogAdult from "../../assets/images/character/dog/dog-adult.png";
-// import DogBaby from "../../assets/images/character/dog/dog-baby.png";
-// import DogEgg from "../../assets/images/character/dog/dog-egg.png";
-// import DogTeen from "../../assets/images/character/dog/dog-teen.png";
-// import HamsterAdult from "../../assets/images/character/hamster/hamster-adult.png";
-// import HamsterBaby from "../../assets/images/character/hamster/hamster-baby.png";
-// import HamsterEgg from "../../assets/images/character/hamster/hamster-egg.png";
-// import HamsterTeen from "../../assets/images/character/hamster/hamster-teen.png";
-// import RabbitBaby from "../../assets/images/character/rabbit/rabbit-baby.png";
-// import RabbitEgg from "../../assets/images/character/rabbit/rabbit-egg.png";
-// import RabbitTeen from "../../assets/images/character/rabbit/rabbit-teen.png";
-// import TitAdult from "../../assets/images/character/tit/tit-adult.png";
-// import TitBaby from "../../assets/images/character/tit/tit-baby.png";
-// import TitEgg from "../../assets/images/character/tit/tit-egg.png";
-// import TitTeen from "../../assets/images/character/tit/tit-teen.png";
-// import RabbitAdult from "../../assets/images/character/rabbit/rabbit-adult.png";
 
 import type { CharacterStatus } from '@models/character';
+import CharactersImage from './CharactersImage';
+import LifeIcon from './LifeIcon';
 
 interface CharacterProps {
   failCount?: number;
@@ -38,6 +21,7 @@ interface CharacterProps {
   totalDays?: number;
   successCount?: number;
   characterId?: string;
+  bubbleTalk?: string;
 }
 
 const CharacterContent = styled('div')({
@@ -85,17 +69,14 @@ const CharacterField = styled('div')({
   position: 'relative',
 });
 
-const Life = styled('div')({
+const LifeArea = styled('div')({
   position: 'absolute',
   top: '10%',
   right: '10%',
-  color: '#FF1010',
   textAlign: 'right',
   '& svg': {
     width: '10%',
     height: '10%',
-    stroke: '#2a251e',
-    strokeWidth: 2,
   },
 });
 
@@ -105,18 +86,6 @@ const Character = styled('div')({
   '& img': {
     width: '100%',
   },
-});
-
-const Name = styled('div')({
-  position: 'absolute',
-  bottom: '-8%',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  padding: '2px 5px',
-  borderRadius: '3px',
-  background: '#050505',
-  color: '#fff',
-  fontSize: '12px',
 });
 
 const RandomText = styled('div')({
@@ -168,61 +137,50 @@ const CharacterBox = ({
   characterId,
   totalDays,
   successCount,
+  bubbleTalk,
 }: CharacterProps) => {
+  const characterType: { character: string; name: string; class: string, bg: string }[] = [
+    { character: "DZ1OHxn48Z5zRwtt50TP", name: '미루찌', class: 'hamster', bg: HamsterBackground},
+    { character: "bEFnSlfFSbK9QVq0arjT", name: '레이토', class: 'rabbit', bg: RabbitBackground},
+    { character: "YYlClvXJADbJO9ru1VG3", name: '늦장멍', class: 'dog', bg: DogBackground},
+    { character: "cJb5qHB1Z7GFm79SCitA", name: '나중삐', class: 'tit', bg: TitBackground},
+    { character: "t0vhk3H3NCZACFLL7c0s", name: '미루냥', class: 'cat', bg: CatBackground},
+  ];
+
+  const totalProgressValue = successCount && totalDays ? (successCount / totalDays) * 100 : 0;
+  const characterLevel = characterStatus ? characterStatus.level : 0;
+
+  let characterData = characterType.find((item) => {
+    return item.character === characterId;
+  })
+
+
   return (
     // className : rabbit hamster tit dog cat
-    <CharacterContent className="cat">
+    <CharacterContent className={`${characterStatus?.growthStage} ${characterData?.class}`}>
       <CharacterField>
-        <Life>
-          <FavoriteIcon />
-          <FavoriteIcon />
-          <FavoriteIcon />
-        </Life>
+        <LifeArea>
+          <LifeIcon failCount={failCount}/>
+        </LifeArea>
         <Character className="character">
-          <Name className="fontBitBit">레이토</Name>
-          <RandomText className="fontGalmuri bubble">습관은 습관으로 극복할 수 있다.</RandomText>
-          {/* <img src={RabbitEgg} alt=""/> */}
-          {/* <img src={RabbitBaby} alt=""/> */}
-          {/* <img src={RabbitTeen} alt=""/> */}
-          {/* <img src={RabbitAdult} alt=""/> */}
+          
+          {bubbleTalk && <RandomText className="fontGalmuri bubble">{bubbleTalk}</RandomText>}
 
-          {/* <img src={DogEgg} alt=""/> */}
-          {/* <img src={DogBaby} alt=""/> */}
-          {/* <img src={DogTeen} alt=""/> */}
-          {/* <img src={DogAdult} alt=""/> */}
-
-          {/* <img src={HamsterEgg} alt=""/> */}
-          {/* <img src={HamsterBaby} alt=""/> */}
-          {/* <img src={HamsterTeen} alt=""/> */}
-          {/* <img src={HamsterAdult} alt=""/> */}
-
-          {/* <img src={TitEgg} alt=""/> */}
-          {/* <img src={TitBaby} alt=""/> */}
-          {/* <img src={TitTeen} alt=""/> */}
-          {/* <img src={TitAdult} alt=""/> */}
-
-          {/* <img src={CatEgg} alt=""/> */}
-          {/* <img src={CatBaby} alt=""/> */}
-          <img src={CatTeen} alt="" />
-          {/* <img src={CatAdult} alt=""/> */}
+          <CharactersImage characterId={characterId} characterStatus={characterStatus} name={characterData?.name}/>
         </Character>
-        {/* <img src={RabbitBackground} alt="" className="characterBg"/> */}
-        {/* <img src={DogBackground} alt="" className="characterBg"/> */}
-        {/* <img src={HamsterBackground} alt="" className="characterBg"/> */}
-        {/* <img src={TitBackground} alt="" className="characterBg"/> */}
-        <img src={CatBackground} alt="" className="characterBg" />
+        <img src={characterData?.bg} alt="" className="characterBg" />
       </CharacterField>
 
       <InfoField>
         <LevelBox>
           <Level className="fontBitBit">
-            <span>Lv 2</span>
+            <span>Lv {characterLevel}</span>
           </Level>
           <LevelBar>
-            <LinearProgress variant="determinate" value={50} />
+            <LinearProgress variant="determinate" value={totalProgressValue} />
           </LevelBar>
         </LevelBox>
-        <Title className="fontBitBit">"물 마시기"</Title>
+        {title && <Title className="fontBitBit">{`"${title}"`}</Title>}
       </InfoField>
     </CharacterContent>
   );
