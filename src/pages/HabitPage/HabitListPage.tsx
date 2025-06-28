@@ -2,14 +2,13 @@ import AddNewGoalButton from '@common/components/AddNewGoalButton';
 import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
+import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Switch, Typography } from '@mui/material';
 import HabitList from '@pages/HabitPage/components/HabitList';
-import { getGoalsList } from '@service/goalService';
 import { completeTodayLog, getTodayLog } from '@service/logService';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import type { Goal } from '@models/goal';
 import type { Log } from '@models/log';
 
 const Container = styled.div`
@@ -19,24 +18,22 @@ const Container = styled.div`
     padding: 0px;
   }
 `;
+
 const HabitListPage = () => {
   const { userId } = useAuth();
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [showInProgress, setShowInProgress] = useState(true);
   const [logs, setLogs] = useState<Record<string, Log | null>>({});
+  const [showInProgress, setShowInProgress] = useState(true);
 
-  const [isGoalLoading, setIsGoalLoading] = useState(true);
+  const { data: goals = [], isLoading: isGoalLoading } = useGetGoals(userId ?? '');
 
   const { data: characters = [], isLoading: isCharactersLoading } = useGetAllCharacters();
 
   useEffect(() => {
-    const fetchGoals = async () => {
-      if (!userId) return;
-      const goalList = await getGoalsList(userId);
-      setGoals(goalList);
+    const fetchLogs = async () => {
+      if (!userId || !goals.length) return;
 
       const logsMap: Record<string, Log | null> = {};
-      for (const goal of goalList) {
+      for (const goal of goals) {
         if (goal.status === 'in_progress') {
           const todayLogs = await getTodayLog(userId, goal.id);
           logsMap[goal.id] = todayLogs[0] || null;
@@ -44,11 +41,10 @@ const HabitListPage = () => {
       }
 
       setLogs(logsMap);
-      setIsGoalLoading(false);
     };
 
-    fetchGoals();
-  }, [userId]);
+    fetchLogs();
+  }, [userId, goals]);
 
   const handleSwitchChange = () => {
     setShowInProgress((prev) => !prev);
@@ -85,7 +81,7 @@ const HabitListPage = () => {
           characters={characters}
           onCheck={handleCheck}
         />
-      )}{' '}
+      )}
       <AddNewGoalButton />
     </Container>
   );
