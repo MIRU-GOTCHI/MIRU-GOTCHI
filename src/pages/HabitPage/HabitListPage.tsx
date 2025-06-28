@@ -1,12 +1,12 @@
+import AddNewGoalButton from '@common/components/AddNewGoalButton';
 import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
-import { Box, Switch, Typography, Button } from '@mui/material';
+import { Box, Switch, Typography } from '@mui/material';
 import HabitItem from '@pages/HabitPage/components/HabitItem';
 import { getGoalsList } from '@service/goalService';
 import { completeTodayLog, getTodayLog } from '@service/logService';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import type { Goal } from '@models/goal';
@@ -19,33 +19,13 @@ const Container = styled.div`
     padding: 0px;
   }
 `;
-const FloatingButton = styled(Button)`
-  && {
-    position: fixed;
-    bottom: 80px;
-    right: 24px;
-    width: 56px;
-    height: 56px;
-    color: white;
-    border-radius: 50%;
-    font-size: 32px;
-    line-height: 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    min-width: 0;
-    z-index: 10;
-
-    &:hover {
-      background-color: #1565c0;
-    }
-  }
-`;
 const HabitListPage = () => {
   const { userId } = useAuth();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [showInProgress, setShowInProgress] = useState(true);
   const [logs, setLogs] = useState<Record<string, Log | null>>({});
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
+  const [isGoalLoading, setIsGoalLoading] = useState(true);
 
   const { data: characters = [], isLoading: isCharactersLoading } = useGetAllCharacters();
 
@@ -64,11 +44,11 @@ const HabitListPage = () => {
       }
 
       setLogs(logsMap);
-      setLoading(false);
+      setIsGoalLoading(false);
     };
 
     fetchGoals();
-  }, [userId, showInProgress]);
+  }, [userId]);
 
   const handleSwitchChange = () => {
     setShowInProgress((prev) => !prev);
@@ -87,7 +67,7 @@ const HabitListPage = () => {
     showInProgress ? goal.status === 'in_progress' : goal.status !== 'in_progress',
   );
 
-  if (loading || isCharactersLoading) return <Loading />;
+  if (isGoalLoading || isCharactersLoading) return <Loading />;
 
   return (
     <Container>
@@ -112,9 +92,7 @@ const HabitListPage = () => {
           );
         })
       )}{' '}
-      <FloatingButton onClick={() => navigate('/new')} variant="contained">
-        +
-      </FloatingButton>
+      <AddNewGoalButton />
     </Container>
   );
 };
