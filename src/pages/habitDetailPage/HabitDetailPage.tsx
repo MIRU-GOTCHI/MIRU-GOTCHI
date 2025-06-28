@@ -50,7 +50,8 @@ const CharacterGrid = styled(Grid)({
   alignItems: 'center',justifyContent:'center',
 });
 const CharBox = styled(Box)({
-  width: '80%', aspectRatio:'1/1.1',
+  width: '80%', aspectRatio:'1/1.2',
+  '@media (max-width: 600px)': { maxWidth:'230px' }
 });
 const HabitDescBox = styled(Box)({
   width: '100%',
@@ -58,6 +59,13 @@ const HabitDescBox = styled(Box)({
   flexGrow: 1,
   borderRadius: '10px',
   padding: '20px',
+  '@media (max-width: 600px)': { 
+    maxHeight:'260px', overflowY:'auto',
+    '@media (max-height: 740px)': { 
+    maxHeight:'90px', overflowY:'auto',
+
+  }
+  },
 });
 const HabitContSecGrid = styled(Grid)({
   width: '100%',
@@ -169,10 +177,8 @@ const HabitDetailPage = () => {
 
           <HabitContSecGrid size={{ xs: 12, sm: 6 }}>
             <InformHeadBox>
-              <p>
                 목표기간 : {data?.startDate.toLocaleDateString()}~
                 {data?.endDate.toLocaleDateString()}
-              </p>
             </InformHeadBox>
             <HabitDescBox>
               <p>{data?.description}</p>

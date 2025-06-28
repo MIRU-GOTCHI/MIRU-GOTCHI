@@ -11,7 +11,7 @@ const CharacterDetailPage = React.lazy(() => import('@pages/Character/CharacterD
 const LoginPage = React.lazy(() => import('@pages/LoginPage/LoginPage'));
 const FormPage = React.lazy(() => import('@pages/formPage/FormPage'));
 const HabitDetailPage = React.lazy(() => import('@pages/habitDetailPage/HabitDetailPage'));
-const HabitListPage = React.lazy(() => import('@pages/habitList/habitListPage'));
+const HabitListPage = React.lazy(() => import('@pages/habitList/HabitListPage'));
 
 function App() {
   return (
