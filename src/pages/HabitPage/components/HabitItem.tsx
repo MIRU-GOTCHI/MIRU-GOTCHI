@@ -1,5 +1,6 @@
 import { useGetTodayLog } from '@hooks/useGetTodayLog';
 import { Box, Typography, Checkbox, CircularProgress } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -13,6 +14,7 @@ const HabitCard = styled(Box)<{ checked: boolean }>`
   margin-bottom: 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -23,10 +25,21 @@ const HabitCard = styled(Box)<{ checked: boolean }>`
     background-color: ${({ checked }) => (checked ? '#A0D400' : '#4A80BF')};
   }
 `;
+const ContentsWrapper = muiStyled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
+});
 const CharacterContainer = styled.div`
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 20vw;
+  max-width: 80px;
+  height: 20vw;
+  max-height: 80px;
+  @media (max-width: 600px) {
+    width: 24vw;
+    height: 24vw;
+  }
 `;
 
 const CharacterImage = styled.img`
@@ -54,6 +67,38 @@ const CompletedLabel = styled(Typography)`
   margin-left: 8px;
 `;
 
+const CustomCheckbox = muiStyled(Checkbox)({
+  color: '#fff',
+  '&.Mui-checked': {
+    color: '#5B93D5',
+  },
+  '&.Mui-disabled': {
+    color: '#555',
+  },
+  '& .MuiSvgIcon-root': {
+    fontSize: 32,
+  },
+  marginRight: 12,
+});
+const TextContainer = muiStyled(Box)({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  maxWidth: '40vw',
+  flex: 1,
+});
+const GoalInfoContainer = muiStyled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 4,
+});
+
+const TruncatedTypography = muiStyled(Typography)({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+});
+
 interface HabitItemProps {
   goal: Goal;
   character?: Character;
@@ -75,30 +120,38 @@ const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
     <HabitCard onClick={() => navigate(`/habit/${goal.id}`)} checked={!!isTodayCompleted}>
       {character && (
         <>
-          <CharacterContainer>
-            <CharacterImage src={imagePath} alt={character.name} />
-            <CharacterNameOverlay>{character.name}</CharacterNameOverlay>
-          </CharacterContainer>
-
-          <Box flex={1}>
-            <Typography variant="h6" sx={{ color: isTodayCompleted ? '#666' : '' }}>
-              {goal.title}
+          {isLoading && (
+            <Typography color="text.secondary" fontSize={14}>
+              <CircularProgress size={18} sx={{ mr: 1, verticalAlign: 'middle' }} />
+              오늘 목표 불러오는 중...
             </Typography>
-            {isLoading && (
-              <Typography color="text.secondary" fontSize={14}>
-                <CircularProgress size={18} sx={{ mr: 1, verticalAlign: 'middle' }} />
-                오늘 목표 불러오는 중...
-              </Typography>
-            )}
-            {isError && (
-              <Typography color="error" fontSize={14}>
-                오늘의 목표를 불러오지 못했습니다.
-              </Typography>
-            )}
-            {log && isTodayCompleted && <CompletedLabel>오늘 목표 완료!</CompletedLabel>}
-          </Box>
+          )}
+          {isError && (
+            <Typography color="error" fontSize={14}>
+              오늘의 목표를 불러오지 못했습니다.
+            </Typography>
+          )}
+          <ContentsWrapper>
+            <CharacterContainer>
+              <CharacterImage src={imagePath} alt={character.name} />
+              <CharacterNameOverlay>{character.name}</CharacterNameOverlay>
+            </CharacterContainer>
+            <TextContainer>
+              <GoalInfoContainer>
+                <TruncatedTypography variant="h6" sx={{ color: isTodayCompleted ? '#666' : '' }}>
+                  {goal.title}
+                </TruncatedTypography>
+                {goal.description.length > 0 && (
+                  <TruncatedTypography sx={{ color: isTodayCompleted ? '#666' : '' }}>
+                    설명 : {goal.description}
+                  </TruncatedTypography>
+                )}
+              </GoalInfoContainer>
+              {log && isTodayCompleted && <CompletedLabel>오늘 목표 완료!</CompletedLabel>}
+            </TextContainer>
+          </ContentsWrapper>
           {goal.status === 'in_progress' && log && (
-            <Checkbox
+            <CustomCheckbox
               checked={log.checked || false}
               disabled={log.checked}
               onClick={(e) => {
