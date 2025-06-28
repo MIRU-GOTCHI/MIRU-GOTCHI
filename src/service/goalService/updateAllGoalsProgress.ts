@@ -1,6 +1,7 @@
 import { updateGoalProgress } from '@service/goalService/updateGoalProgress';
-import { db } from 'firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+
+import { db } from '../../firebase';
 
 export const updateAllGoalsProgress = async (userId: string) => {
   const goalsRef = collection(db, 'users', userId, 'goals');
