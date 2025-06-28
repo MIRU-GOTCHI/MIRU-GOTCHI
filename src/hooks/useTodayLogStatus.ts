@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { collection, query, where, getDocs, addDoc, updateDoc, doc, Timestamp } from 'firebase/firestore';
-import { db, auth } from '../firebase';
-import { useAuthContext } from './auth/useAuthContext'; 
-import type { Log, LogFirestore } from '@models/log'; 
 import { convertTimestampToDate } from '@utils/timeStampConverter';
+import { collection, query, where, getDocs, addDoc, updateDoc, doc, Timestamp } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
+
+import { db, auth } from '../firebase';
+import { useAuthContext } from './auth/useAuthContext';
+ 
+import type { Log, LogFirestore } from '@models/log';
+ 
 
 
 const _getStartOfTodayTimestamp = (): Timestamp => {
