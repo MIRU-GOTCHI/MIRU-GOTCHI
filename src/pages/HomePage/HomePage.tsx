@@ -1,8 +1,11 @@
 import CharacterBox from '@common/components/CharacterBox';
-import { useAuthContext } from '@hooks/auth/useAuthContext';
+import { useAuth } from '@hooks/auth/useAuth';
+import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { FormGroup } from '@mui/material';
-import CustomItem from '@pages/HomePage/component/CustomItem';
+import HomeHabitList from '@pages/HomePage/component/HomeHabitList';
+import { completeTodayLog } from '@service/logService';
+import { useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 const MainContent = styled('div')({
@@ -21,33 +24,31 @@ const CustomBox = styled('div')({
   padding: '20px 20px 0',
 });
 
-const CustomHead = styled("div") ({
-  display: "flex",
-  marginBottom: "15px",
-  justifyContent: "space-between",
-  ".today": {
-    color: "#5B93D5",
+const CustomHead = styled('div')({
+  display: 'flex',
+  marginBottom: '15px',
+  justifyContent: 'space-between',
+  '.today': {
+    color: '#5B93D5',
     fontWeight: 600,
-    fontSize: "16px",
+    fontSize: '16px',
   },
-  "& .totalCounter": {
-    fontSize: "11px",
-    color: "#898989",
-    ".counter": {
-      marginLeft: "5px",
-      color: "#5B93D5",
+  '& .totalCounter': {
+    fontSize: '11px',
+    color: '#898989',
+    '.counter': {
+      marginLeft: '5px',
+      color: '#5B93D5',
       fontWeight: 600,
-      fontSize: "16px",
+      fontSize: '16px',
     },
-    "& .total": {
-      marginLeft: "5px",
+    '& .total': {
+      marginLeft: '5px',
       fontWeight: 600,
     },
   },
-  "& .left, .right" : {
-
-  }
-})
+  '& .left, .right': {},
+});
 
 const CustomList = styled('div')({
   // height: "calc(100% - 37px)",
@@ -58,17 +59,31 @@ const CustomList = styled('div')({
 });
 
 const HomePage = () => {
-  const { userId } = useAuthContext();
-  const { data } = useGetGoals(userId);
+  const { userId } = useAuth();
+  const { data = [] } = useGetGoals(userId ?? '');
+  const { data: characters = [] } = useGetAllCharacters();
+  const queryClient = useQueryClient();
+
   const todayDate = new Date();
   const dateFormat = `${todayDate.getMonth() + 1} 월 ${todayDate.getDate()}일`;
 
-  console.log(data);
+  const inProgressGoals = data.filter((data) => data.status === 'in_progress');
+
+  const handleCheck = async (goalId: string, logId?: string) => {
+    if (!logId) return;
+    await completeTodayLog(userId ?? '', goalId, logId);
+
+    const todayKey = new Date().toISOString().split('T')[0];
+    queryClient.invalidateQueries({
+      queryKey: ['todayLog', goalId, todayKey, userId],
+      exact: true,
+    });
+  };
 
   return (
     <MainContent>
       <CharacterArea>
-        {data && (
+        {data.length > 0 && (
           <CharacterBox
             failCount={data[0].failCount}
             title={data[0].title}
@@ -76,7 +91,7 @@ const HomePage = () => {
             characterId={data[0].characterId}
             totalDays={data[0].totalDays}
             successCount={data[0].successCount}
-            bubbleTalk='습관은 습관으로 극복할 수 있다.'
+            bubbleTalk="습관은 습관으로 극복할 수 있다."
           />
         )}
       </CharacterArea>
@@ -90,14 +105,12 @@ const HomePage = () => {
               <p className="totalCounter">
                 <span>완료 : </span>
                 <span className="counter">4</span>
-                <span className="total">/ {data ? data.length : "0"}</span>
+                <span className="total">/ {data ? data.length : '0'}</span>
               </p>
             </div>
           </CustomHead>
           <CustomList>
-            {data && data.length > 0
-              ? data.map((item) => <CustomItem items={item} key={item.id} />)
-              : '데이터 없음'}
+            <HomeHabitList goals={inProgressGoals} characters={characters} onCheck={handleCheck} />
           </CustomList>
         </CustomBox>
       </FormGroup>
