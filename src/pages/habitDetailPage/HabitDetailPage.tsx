@@ -171,7 +171,12 @@ const HabitDetailPage = () => {
         <HabitContainBox container spacing={2}>
           <CharacterGrid size={{ xs: 12, sm: 6 }}>
             <CharBox>
-              <CharacterBox />
+              <CharacterBox 
+              failCount={data.failCount}
+              totalDays={data.totalDays}
+              characterId={data.characterId}
+              characterStatus={data.characterStatus}
+              />
             </CharBox>
           </CharacterGrid>
 
