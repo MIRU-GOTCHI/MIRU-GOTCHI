@@ -1,4 +1,5 @@
 import BeforeBtn from '@common/components/BeforeBtn';
+import CharacterBox from '@common/components/CharacterBox';
 import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoal } from '@hooks/useGetGoal';
 import ContentTitle from '@layout/common/ContentTitle';
@@ -12,7 +13,6 @@ const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height: '100%',
   backgroundColor: '#F2F2F3',
   padding: '2rem',
 });
@@ -65,7 +65,6 @@ const LockedStage = styled('div')({
   alignItems: 'center',
   fontSize: '32px',
   color: '#fafdff',
-  backgroundColor: 'black',
   width: '100%',
   maxWidth: '256px',
   minWidth: '64px',
@@ -98,7 +97,8 @@ const CharacterDetailPage = () => {
         <BeforeBtn />
       </ContentTitle>
 
-      <Box
+      <CharacterBox />
+      {/* <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -113,7 +113,7 @@ const CharacterDetailPage = () => {
         }}
       >
         character room(추가 예정)
-      </Box>
+      </Box> */}
       <Box
         sx={{
           display: 'flex',
