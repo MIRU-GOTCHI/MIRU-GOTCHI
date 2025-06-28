@@ -48,7 +48,7 @@ const LoginButton = () => {
     logout();
   };
   return user ? (
-    <Button onClick={handleLogout}>로그아웃</Button>
+    <Button onClick={handleLogout} className='logoutBtn'>로그아웃</Button>
   ) : (
     <GoogleLoginButton startIcon={<GoogleIcon />} onClick={handleLogin}>
       <Typography variant="h6"> 구글로 시작하기!</Typography>

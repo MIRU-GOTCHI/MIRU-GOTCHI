@@ -131,9 +131,7 @@ const CharacterDetailPage = () => {
   return (
     <Container>
       <ContentTitle>
-        <BeforeBtnWrapper onClick={() => navigate(`/character`)}>
-          <BeforeBtn />
-        </BeforeBtnWrapper>
+        <BeforeBtn handleClick={() => navigate(`/character`)}/>
       </ContentTitle>
 
       {goalData && (
