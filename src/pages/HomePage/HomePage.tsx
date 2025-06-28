@@ -5,7 +5,7 @@ import { useGetGoalsWithTodyLog } from '@hooks/useGetGoalsWithTodyLog';
 import { useGetLogs } from '@hooks/useGetLogs';
 import { FormGroup } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import CustomItem from '@pages/HomPage/component/CustomItem';
+import CustomItem from '@pages/HomePage/component/CustomItem';
 import { getGoalsList, getGoalsWithTodayLog } from '@service/goalService';
 import { getTodayLog } from '@service/logService';
 import { useState } from 'react';
