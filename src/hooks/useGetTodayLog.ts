@@ -21,20 +21,6 @@ const _getStartOfTomorrowTimestamp = (): Timestamp => {
   return Timestamp.fromDate(tomorrow);
 };
 
-
-/**
- * 특정 목표의 오늘 습관 완료 상태(checked)를 관리하는 독자적인 커스텀 훅
- * @param goalId 목표 ID (string | undefined)
- * @returns {
- *   isChecked: boolean,    // 오늘의 로그가 체크되었는지 여부
- *   checkLog: () => void,  // 로그를 체크 상태(true)로 변경하는 함수
- *   uncheckLog: () => void // 로그를 언체크 상태(false)로 변경하는 함수
- *   isLoadingLog: boolean, // 로그 데이터 로딩 중 여부
- *   isUpdatingLog: boolean, // 로그 업데이트/생성 중 여부
- *   logError: Error | null, // 로그 데이터 가져오기 오류
- *   logMutationError: Error | null // 로그 업데이트/생성 오류
- * }
- */
 export const useTodayLogStatus = (goalId: string | undefined) => {
   const queryClient = useQueryClient();
   const { userId: authContextUserId } = useAuthContext(); 
