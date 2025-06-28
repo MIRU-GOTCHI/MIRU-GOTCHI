@@ -1,3 +1,8 @@
 import { createContext } from 'react';
 
-export const AuthContext = createContext<{ userId: string | null }>({ userId: 'testUserId' });
+import type { User } from 'firebase/auth';
+
+export const AuthContext = createContext<{ user: User | null; userId: string | null }>({
+  user: null,
+  userId: null,
+});

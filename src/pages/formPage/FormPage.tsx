@@ -2,6 +2,7 @@ import BeforeBtn from "@common/components/BeforeBtn"
 import { useGoalsFirestore } from "@hooks/useGoalsMutation"
 import { Box, Button, Grid, styled } from "@mui/material"
 import { useState } from "react"
+import { useNavigate } from "react-router"
 
 import CharacterFormCont from "./component/CharacterFormCont"
 import GoalFormCpnt from "./component/GoalFormCpnt"
@@ -9,7 +10,6 @@ import GoalFormCpnt from "./component/GoalFormCpnt"
 import type { CharacterStatus } from "@models/character"
 import type { GrowthStage } from "@models/common"
 import type { CreateGoalData } from "@models/goal"
-import { useNavigate } from "react-router"
 
 const FormPageBox = styled(Box)({
   display: 'flex',

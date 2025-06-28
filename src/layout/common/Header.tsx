@@ -1,3 +1,4 @@
+import LoginButton from '@pages/LoginPage/component/LoginButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -62,7 +63,8 @@ const AppHeader = () => {
             <span className="hideTxt">미루고치</span>
           </Link>
         </Logo>
-        <LogOutBtn type="button">로그아웃</LogOutBtn>
+        {/* <LogOutBtn type="button">로그아웃</LogOutBtn> */}
+        <LoginButton />
       </Inner>
     </HeaderArea>
   );
