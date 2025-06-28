@@ -1,97 +1,121 @@
 import AddNewGoalButton from '@common/components/AddNewGoalButton';
+import CustomSwitch from '@common/components/CustomSwitch';
 import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
+import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
-import { Box, Switch, Typography } from '@mui/material';
-import HabitItem from '@pages/HabitPage/components/HabitItem';
-import { getGoalsList } from '@service/goalService';
-import { completeTodayLog, getTodayLog } from '@service/logService';
-import { useEffect, useState } from 'react';
+import { useGetGoals } from '@hooks/useGetGoals';
+import { Box, Typography, Tabs, Tab } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
+import HabitList from '@pages/HabitPage/components/HabitList';
+import { useState } from 'react';
 import styled from 'styled-components';
-
-import type { Goal } from '@models/goal';
-import type { Log } from '@models/log';
 
 const Container = styled.div`
   padding: 16px;
-
   @media (max-width: 600px) {
     padding: 0px;
   }
 `;
+
+const TitleContainer = muiStyled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'start',
+  justifyContent: 'space-between',
+  marginBottom: 30,
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1, 1.5),
+    gap: theme.spacing(1),
+    marginBottom: 0,
+  },
+}));
+
+const SwitchContainer = muiStyled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'end',
+  gap: 4,
+}));
+
 const HabitListPage = () => {
   const { userId } = useAuth();
-  const [goals, setGoals] = useState<Goal[]>([]);
   const [showInProgress, setShowInProgress] = useState(true);
-  const [logs, setLogs] = useState<Record<string, Log | null>>({});
+  const [doneTab, setDoneTab] = useState<'completed' | 'failed'>('completed');
 
-  const [isGoalLoading, setIsGoalLoading] = useState(true);
-
+  const { data: goals = [], isLoading: isGoalLoading } = useGetGoals(userId ?? '');
   const { data: characters = [], isLoading: isCharactersLoading } = useGetAllCharacters();
+  const completeTodayLogMutation = useCompleteTodayLog();
 
-  useEffect(() => {
-    const fetchGoals = async () => {
-      if (!userId) return;
-      const goalList = await getGoalsList(userId);
-      setGoals(goalList);
-
-      const logsMap: Record<string, Log | null> = {};
-      for (const goal of goalList) {
-        if (goal.status === 'in_progress') {
-          const todayLogs = await getTodayLog(userId, goal.id);
-          logsMap[goal.id] = todayLogs[0] || null;
-        }
-      }
-
-      setLogs(logsMap);
-      setIsGoalLoading(false);
-    };
-
-    fetchGoals();
-  }, [userId]);
-
-  const handleSwitchChange = () => {
-    setShowInProgress((prev) => !prev);
-  };
+  const handleSwitchChange = () => setShowInProgress((prev) => !prev);
 
   const handleCheck = async (goalId: string, logId?: string) => {
-    if (!logId) return;
-    await completeTodayLog(userId ?? '', goalId, logId);
-    setLogs((prev) => ({
-      ...prev,
-      [goalId]: prev[goalId] ? { ...prev[goalId]!, checked: true } : null,
-    }));
+    if (!logId || !userId) return;
+
+    try {
+      await completeTodayLogMutation.mutateAsync({
+        userId,
+        goalId,
+        logId,
+      });
+    } catch (error) {
+      console.error('Failed to complete today log:', error);
+    }
   };
 
-  const filteredGoals = goals.filter((goal) =>
-    showInProgress ? goal.status === 'in_progress' : goal.status !== 'in_progress',
-  );
+  const filteredGoals = goals.filter((goal) => {
+    if (showInProgress) return goal.status === 'in_progress';
+    return goal.status === doneTab;
+  });
 
   if (isGoalLoading || isCharactersLoading) return <Loading />;
 
   return (
     <Container>
-      <Typography variant="h4">나의 습관 리스트</Typography>
-      <Box display="flex" alignItems="center" mb={2}>
-        <Typography>진행중만 보기</Typography>
-        <Switch checked={showInProgress} onChange={handleSwitchChange} />
-      </Box>
+      <TitleContainer>
+        <Typography
+          sx={{
+            fontSize: {
+              xs: '2.2rem',
+              sm: '2.8rem',
+              md: '2.9rem',
+            },
+            lineHeight: {
+              xs: '2',
+              sm: '1.6',
+            },
+          }}
+          variant="h4"
+        >
+          나의 습관 리스트
+        </Typography>
+
+        <SwitchContainer>
+          <Typography>{showInProgress ? '진행 중 목표' : '완료 목표'}</Typography>
+          <CustomSwitch checked={showInProgress} onChange={handleSwitchChange} />
+        </SwitchContainer>
+      </TitleContainer>
+
+      {!showInProgress && (
+        <Tabs
+          value={doneTab}
+          onChange={(_, newValue) => setDoneTab(newValue)}
+          sx={{
+            mb: 2,
+          }}
+        >
+          <Tab value="completed" label="완료된 목표" />
+          <Tab value="failed" label="실패한 목표" />
+        </Tabs>
+      )}
+
       {filteredGoals.length === 0 ? (
-        <Typography>습관이 없습니다</Typography>
+        <Box sx={{ minHeight: '40vh' }}>
+          <Typography sx={{ lineHeight: 40, textAlign: 'center' }}>습관이 없습니다</Typography>
+        </Box>
       ) : (
-        filteredGoals.map((goal) => {
-          const character = characters.find((c) => c.id === goal.characterId);
-          return (
-            <HabitItem
-              key={goal.id}
-              goal={goal}
-              character={character}
-              log={logs[goal.id] ?? null}
-              onCheck={handleCheck}
-            />
-          );
-        })
-      )}{' '}
+        <HabitList goals={filteredGoals} characters={characters} onCheck={handleCheck} />
+      )}
+
       <AddNewGoalButton />
     </Container>
   );

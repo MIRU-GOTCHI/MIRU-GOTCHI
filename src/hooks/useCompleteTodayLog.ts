@@ -1,10 +1,37 @@
-import { completeTodayLog } from "@service/logService/completeTodayLog";
-import { useQuery } from "@tanstack/react-query";
+import { completeTodayLog } from '@service/logService/completeTodayLog';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const useCompleteTodayLog = (userId: string, goalId: string, logId: string) => {
-  return useQuery({
-    queryKey: ['complete-today-log', userId, goalId, logId],
-    queryFn: () => completeTodayLog(userId, goalId, logId),
-    enabled: !!userId && !!goalId && !!logId,
+interface CompleteTodayLogParams {
+  userId: string;
+  goalId: string;
+  logId: string;
+}
+
+export const useCompleteTodayLog = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId, goalId, logId }: CompleteTodayLogParams) => {
+      return completeTodayLog(userId, goalId, logId);
+    },
+    onSuccess: (_, { userId, goalId }) => {
+      const todayKey = new Date().toISOString().split('T')[0];
+
+      queryClient.invalidateQueries({
+        queryKey: ['todayLog', goalId, todayKey, userId],
+        exact: true,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['goals', userId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['goals', userId, goalId],
+      });
+    },
+    onError: (error) => {
+      console.error('Failed to complete today log:', error);
+    },
   });
 };

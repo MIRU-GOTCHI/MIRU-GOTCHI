@@ -28,7 +28,7 @@ const LifeGroup = styled("div") ({
 });
 
 const LifeIcon = ({failCount = 0}:lifeProps) => {
-  let life = 3 - failCount;
+  const life = 3 - failCount;
   return (
     <LifeGroup className={`lifeGrop ${life <= 3 ? `life${life}`: ""}`}>
       <FavoriteIcon />

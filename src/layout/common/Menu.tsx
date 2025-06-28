@@ -53,13 +53,13 @@ const Menu = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/">
+          <NavLink to="/habit">
             <ListIcon />
             {/* <DensitySmallIcon />
             <EditNoteIcon /> */}
           </NavLink>
         </li>
-        <li> 
+        <li>
           {/* 임시 가이드 메뉴 */}
           <NavLink to="/guide">
             <ViewSidebarIcon />
