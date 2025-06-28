@@ -5,11 +5,10 @@ import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Switch, Typography } from '@mui/material';
 import HabitList from '@pages/HabitPage/components/HabitList';
-import { completeTodayLog, getTodayLog } from '@service/logService';
-import { useEffect, useState } from 'react';
+import { completeTodayLog } from '@service/logService';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import styled from 'styled-components';
-
-import type { Log } from '@models/log';
 
 const Container = styled.div`
   padding: 16px;
@@ -21,42 +20,23 @@ const Container = styled.div`
 
 const HabitListPage = () => {
   const { userId } = useAuth();
-  const [logs, setLogs] = useState<Record<string, Log | null>>({});
   const [showInProgress, setShowInProgress] = useState(true);
+  const queryClient = useQueryClient();
 
   const { data: goals = [], isLoading: isGoalLoading } = useGetGoals(userId ?? '');
-
   const { data: characters = [], isLoading: isCharactersLoading } = useGetAllCharacters();
 
-  useEffect(() => {
-    const fetchLogs = async () => {
-      if (!userId || !goals.length) return;
-
-      const logsMap: Record<string, Log | null> = {};
-      for (const goal of goals) {
-        if (goal.status === 'in_progress') {
-          const todayLogs = await getTodayLog(userId, goal.id);
-          logsMap[goal.id] = todayLogs[0] || null;
-        }
-      }
-
-      setLogs(logsMap);
-    };
-
-    fetchLogs();
-  }, [userId, goals]);
-
-  const handleSwitchChange = () => {
-    setShowInProgress((prev) => !prev);
-  };
+  const handleSwitchChange = () => setShowInProgress((prev) => !prev);
 
   const handleCheck = async (goalId: string, logId?: string) => {
     if (!logId) return;
     await completeTodayLog(userId ?? '', goalId, logId);
-    setLogs((prev) => ({
-      ...prev,
-      [goalId]: prev[goalId] ? { ...prev[goalId]!, checked: true } : null,
-    }));
+
+    const todayKey = new Date().toISOString().split('T')[0];
+    queryClient.invalidateQueries({
+      queryKey: ['todayLog', goalId, todayKey, userId],
+      exact: true,
+    });
   };
 
   const filteredGoals = goals.filter((goal) =>
@@ -75,12 +55,7 @@ const HabitListPage = () => {
       {filteredGoals.length === 0 ? (
         <Typography>습관이 없습니다</Typography>
       ) : (
-        <HabitList
-          goals={filteredGoals}
-          logs={logs}
-          characters={characters}
-          onCheck={handleCheck}
-        />
+        <HabitList goals={filteredGoals} characters={characters} onCheck={handleCheck} />
       )}
       <AddNewGoalButton />
     </Container>

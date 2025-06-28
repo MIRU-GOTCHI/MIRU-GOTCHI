@@ -1,10 +1,10 @@
-import { Box, Typography, Checkbox } from '@mui/material';
+import { useGetTodayLog } from '@hooks/useGetTodayLog';
+import { Box, Typography, Checkbox, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import type { Character } from '@models/character';
 import type { Goal } from '@models/goal';
-import type { Log } from '@models/log';
 
 const HabitCard = styled(Box)<{ checked: boolean }>`
   border: 1px solid #ccc;
@@ -53,17 +53,18 @@ const CompletedLabel = styled(Typography)`
   color: #5b93d5;
   margin-left: 8px;
 `;
+
 interface HabitItemProps {
   goal: Goal;
   character?: Character;
-  log: Log | null;
   onCheck: (goalId: string, logId?: string) => void;
 }
 
-const HabitItem = ({ goal, character, log, onCheck }: HabitItemProps) => {
+const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
   const navigate = useNavigate();
+  const { data: log, isLoading, isError } = useGetTodayLog(goal.id);
 
-  const stage = goal.characterStatus?.gone ? 'gone' : goal.characterStatus.growthStage;
+  const stage = goal.characterStatus?.gone ? 'gone' : goal.characterStatus?.growthStage;
   const imagePath = character
     ? `/assets/images/character/${character.type}/${character.type}-${stage}.png`
     : '';
@@ -83,14 +84,26 @@ const HabitItem = ({ goal, character, log, onCheck }: HabitItemProps) => {
             <Typography variant="h6" sx={{ color: isTodayCompleted ? '#666' : '' }}>
               {goal.title}
             </Typography>
-            {isTodayCompleted && <CompletedLabel>오늘 목표 완료!</CompletedLabel>}
+            {isLoading && (
+              <Typography color="text.secondary" fontSize={14}>
+                <CircularProgress size={18} sx={{ mr: 1, verticalAlign: 'middle' }} />
+                오늘 목표 불러오는 중...
+              </Typography>
+            )}
+            {isError && (
+              <Typography color="error" fontSize={14}>
+                오늘의 목표를 불러오지 못했습니다.
+              </Typography>
+            )}
+            {log && isTodayCompleted && <CompletedLabel>오늘 목표 완료!</CompletedLabel>}
           </Box>
           {goal.status === 'in_progress' && log && (
             <Checkbox
               checked={log.checked || false}
+              disabled={log.checked}
               onClick={(e) => {
                 e.stopPropagation();
-                onCheck(goal.id, log.id);
+                if (!log.checked) onCheck(goal.id, log.id);
               }}
             />
           )}
@@ -99,4 +112,5 @@ const HabitItem = ({ goal, character, log, onCheck }: HabitItemProps) => {
     </HabitCard>
   );
 };
+
 export default HabitItem;
