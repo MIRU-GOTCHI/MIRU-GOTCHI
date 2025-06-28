@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
+import { useTodayLogStatus } from '@hooks/useGetTodayLog';
 
 const FlexBox = styled(Box)({
   display: 'flex',
@@ -87,8 +88,18 @@ const HabitDetailPage = () => {
 
   const { deleteGoal } = useGoalsFirestore();
   const { data, isLoading } = useGetGoalDetail(userId, id);
+    const {
+    isChecked,
+    checkLog,
+    uncheckLog,
+    isLoadingLog, 
+    isUpdatingLog, 
+    logError, 
+    logMutationError 
+  } = useTodayLogStatus(id);
   // 모달
   const [openEditModal, setOpenEditModal] = useState(false);
+  // 로그
 
   if (!id) {
     return <div>오류: 파라미터값이 발견되지 않았습니다.</div>;
@@ -137,6 +148,7 @@ const HabitDetailPage = () => {
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
   };
+
   // 수정 버튼 조건
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
@@ -184,21 +196,31 @@ const HabitDetailPage = () => {
             <HabitDescBox>
               <p>{data?.description}</p>
             </HabitDescBox>
-            <HabitDoneBtn variant="contained" color="secondary">
-              오늘의 ({data?.title.slice(0, 10)}) 완료하기
+            {/* 완료 버튼 */}
+
+            < HabitDoneBtn
+              variant="contained"
+              onClick={isChecked ? uncheckLog : checkLog}
+              color={isChecked ? "primary" : "secondary"}>
+              {isUpdatingLog ? "처리 중..." : 
+              (isChecked ? `오늘의 (${data.title.slice(0, 10)}) 취소하기` 
+              : `오늘의 (${data.title.slice(0, 10)}) 완료하기`)}
             </HabitDoneBtn>
+
           </HabitContSecGrid>
         </HabitContainBox>
-      </HabitDetailBox>
+      </HabitDetailBox >
 
       {/* 수정 폼 모달 */}
-      {data && (
-        <EditHabitDetailModal
-          open={openEditModal}
-          onClose={handleCloseEditModal}
-          goal={data} // 현재 목표 데이터를 prop으로 전달
-        />
-      )}
+      {
+        data && (
+          <EditHabitDetailModal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            goal={data} // 현재 목표 데이터를 prop으로 전달
+          />
+        )
+      }
     </>
   );
 };
