@@ -59,9 +59,10 @@ const GoalFormCpnt: React.FC<GoalFormCpntProps> = ({
   return (
     <GoalFormBox size={{ xs: 12, md: 6 }} container>
       <TitleTextField
-        placeholder="습관 이름을 입력하세요. "
+        placeholder="습관 이름을 입력하세요. (최대 30자)"
         multiline
         InputProps={{ disableUnderline: true }}
+        inputProps={{maxLength:30}}
         name="title"
         value={title}
         onChange={onTitleChange}
