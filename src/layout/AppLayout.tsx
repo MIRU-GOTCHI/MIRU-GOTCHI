@@ -17,6 +17,10 @@ const ContentArea = styled('main')({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
+  "@media (min-width:1280px)" : {
+    padding: "120px 0 50px",
+    // height: 'calc(100% - 50px)',
+  }
 });
 
 const AppLayout = () => {

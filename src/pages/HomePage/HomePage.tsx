@@ -13,11 +13,13 @@ const MainContent = styled('div')({
   margin: '-10px -20px 0',
   paddingBottom: '60px',
   // height: "calc(100% + 30px)",
+  '@media (min-width: 1280px)': { marginTop: 0 },
 });
 
 const CharacterArea = styled('div')({
   // height: "250px",
   backgroundColor: '#F2F2F3',
+  '@media (min-width: 1000px)': { padding: "40px 0 25px" },
 });
 
 const CustomBox = styled('div')({
