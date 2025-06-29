@@ -10,7 +10,7 @@ const GoalFormBox = styled(Grid)({
   flexDirection: 'column',
   gap: 20,
   '@media (min-width: 1001px)': { padding: '30px 20px', },
-  '@media (max-width: 600px)': { gap: 15, fontSize: '12px', padding: '20px 15px', },
+  '@media (max-width: 600px)': { gap: 10, fontSize: '12px', padding: '15px 15px', },
 });
 const TitleTextField = styled(TextField)(() => ({
   width: '100%',
@@ -25,7 +25,9 @@ const TitleTextField = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
     '&::placeholder': { fontFamily: 'Galmuri14', },
     fontFamily: 'Galmuri14',
-    '@media (max-width: 600px)': { fontSize: '12px' },
+    '@media (max-width: 600px)': { fontSize: '12px',maxHeight:'18vh',overflowY:'auto'},
+    '@media (max-height: 780px)': { fontSize: '12px',maxHeight:'13vh',overflowY:'auto'},
+    '@media (max-height: 700px)': { fontSize: '12px',maxHeight:'6vh',overflowY:'auto'},
   }
 }));
 const CalenderIcon = styled('img')({
@@ -60,9 +62,10 @@ const GoalFormCpnt: React.FC<GoalFormCpntProps> = ({
   return (
     <GoalFormBox size={{ xs: 12, md: 6 }} container>
       <TitleTextField
-        placeholder="습관 이름을 입력하세요. "
+        placeholder="습관 이름을 입력하세요. (최대 30자)"
         multiline
         InputProps={{ disableUnderline: true }}
+        inputProps={{maxLength:30}}
         name="title"
         value={title}
         onChange={onTitleChange}
