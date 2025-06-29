@@ -1,14 +1,14 @@
-import AddNewGoalButton from '@common/components/AddNewGoalButton';
 import CustomSwitch from '@common/components/CustomSwitch';
 import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
 import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
+import { useGetAllTodayLogs } from '@hooks/useGetAllTodayLogs';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Typography, Tabs, Tab } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
 import HabitList from '@pages/HabitPage/components/HabitList';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -41,9 +41,22 @@ const HabitListPage = () => {
   const { userId } = useAuth();
   const [showInProgress, setShowInProgress] = useState(true);
   const [doneTab, setDoneTab] = useState<'completed' | 'failed'>('completed');
+  const {
+    data: goals = [],
+    isLoading: isGoalLoading,
+    error: goalError,
+  } = useGetGoals(userId ?? '');
+  const {
+    data: characters = [],
+    isLoading: isCharactersLoading,
+    error: charactersError,
+  } = useGetAllCharacters();
+  const {
+    data: todayLogs,
+    isLoading: isLogLoading,
+    error: logError,
+  } = useGetAllTodayLogs(userId ?? '');
 
-  const { data: goals = [], isLoading: isGoalLoading } = useGetGoals(userId ?? '');
-  const { data: characters = [], isLoading: isCharactersLoading } = useGetAllCharacters();
   const completeTodayLogMutation = useCompleteTodayLog();
 
   const handleSwitchChange = () => setShowInProgress((prev) => !prev);
@@ -62,36 +75,44 @@ const HabitListPage = () => {
     }
   };
 
-  const filteredGoals = goals.filter((goal) => {
-    if (showInProgress) return goal.status === 'in_progress';
-    return goal.status === doneTab;
-  });
+  const filteredGoals = useMemo(() => {
+    return goals.filter((goal) => {
+      if (showInProgress) return goal.status === 'in_progress';
+      return goal.status === doneTab;
+    });
+  }, [goals, showInProgress, doneTab]);
 
-  if (isGoalLoading || isCharactersLoading) return <Loading />;
+  if (!userId) {
+    return <Loading />;
+  }
 
+  const isLoading = isGoalLoading || isCharactersLoading || isLogLoading;
+
+  if (goalError || charactersError || logError) {
+    return (
+      <Container>
+        <Typography color="error">데이터 불러오는 중 오류가 발생했습니다.</Typography>
+      </Container>
+    );
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Container>
       <TitleContainer>
-        <Typography
-          sx={{
-            fontSize: {
-              xs: '2.2rem',
-              sm: '2.8rem',
-              md: '2.9rem',
-            },
-            lineHeight: {
-              xs: '2',
-              sm: '1.6',
-            },
-          }}
-          variant="h4"
-        >
-          나의 습관 리스트
-        </Typography>
-
+        <Box>
+          <Typography variant="h4" fontWeight="bold">
+            나의 습관 리스트
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {showInProgress ? '진행 중 목표' : '완료 목표'}
+          </Typography>
+        </Box>
         <SwitchContainer>
-          <Typography>{showInProgress ? '진행 중 목표' : '완료 목표'}</Typography>
           <CustomSwitch checked={showInProgress} onChange={handleSwitchChange} />
+          {/* <AddNewGoalButton /> */}
         </SwitchContainer>
       </TitleContainer>
 
@@ -103,20 +124,25 @@ const HabitListPage = () => {
             mb: 2,
           }}
         >
-          <Tab value="completed" label="완료된 목표" />
-          <Tab value="failed" label="실패한 목표" />
+          <Tab label="완료" value="completed" />
+          <Tab label="실패" value="failed" />
         </Tabs>
       )}
 
       {filteredGoals.length === 0 ? (
-        <Box sx={{ minHeight: '40vh' }}>
-          <Typography sx={{ lineHeight: 40, textAlign: 'center' }}>습관이 없습니다</Typography>
+        <Box textAlign="center" py={4}>
+          <Typography variant="body1" color="text.secondary">
+            습관이 없습니다
+          </Typography>
         </Box>
       ) : (
-        <HabitList goals={filteredGoals} characters={characters} onCheck={handleCheck} />
+        <HabitList
+          goals={filteredGoals}
+          characters={characters}
+          todayLogs={todayLogs ?? {}}
+          onCheck={handleCheck}
+        />
       )}
-
-      <AddNewGoalButton />
     </Container>
   );
 };

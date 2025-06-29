@@ -19,7 +19,7 @@ const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  backgroundColor: '#F2F2F3',
+  // backgroundColor: '#F2F2F3',
   padding: '0rem 2rem 6rem 2rem',
 });
 
@@ -107,8 +107,6 @@ const LockedStage = styled('div')({
   borderRadius: '12px',
 });
 
-const BeforeBtnWrapper = styled('div')({});
-
 const CharacterDetailPage = () => {
   const navigate = useNavigate();
   const { userId } = useAuthContext();
@@ -126,14 +124,12 @@ const CharacterDetailPage = () => {
   const charId = goalData?.characterId;
   const charImages = charId ? characterImageMap[charId] : null;
 
-  console.log('goalData', goalData);
+  // console.log('goalData', goalData);
 
   return (
     <Container>
       <ContentTitle>
-        <BeforeBtnWrapper onClick={() => navigate(`/character`)}>
-          <BeforeBtn />
-        </BeforeBtnWrapper>
+        <BeforeBtn handleClick={() => navigate(`/character`)} />
       </ContentTitle>
 
       {goalData && (

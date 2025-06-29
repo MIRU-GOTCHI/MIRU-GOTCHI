@@ -5,7 +5,7 @@ interface ContentTitleProps {
 }
 
 const ContentTitleBar = styled("div") ({
-  margin: "0 -20px 10px",
+  margin: "-10px -20px 0",
   display: "flex",
   alignItems: "center",
   padding: "0 20px",
@@ -15,7 +15,11 @@ const ContentTitleBar = styled("div") ({
   },
   "& h2, & h3":{
     fontSize: "16px"
-  }
+  },
+  "@media (min-width:1280px)": {
+    margin: 0,
+    minHeight: "50px",
+  },
 });
 
 const ContentTitle = ({children}:ContentTitleProps) => {

@@ -2,16 +2,31 @@ import LoginButton from '@pages/LoginPage/component/LoginButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import LogoImage from '../../assets/images/logo.png';
+import LogoImage from '../../assets/images/logo_mirugochi.png';
 
 const HeaderArea = styled('header')({
   position: 'fixed',
   top: 0,
   left: 0,
   width: '100%',
+  minHeight: '60px',
   // backgroundColor: "rgba(255,255,255,0.7)",
   backgroundColor: 'rgba(242,242,243,0.7)',
   zIndex: 100,
+  '@media (min-width:1280px)': {
+    height: '70px',
+  },
+  '@media (max-width:1279px)': {
+    '& .logoutBtn': {
+      marginRight: '20px',
+    },
+  },
+  '@media (max-width:750px)': {
+    '& .logoutBtn': {
+      padding: '4px 4px',
+      fontSize: '11px',
+    },
+  },
 });
 
 const Inner = styled('div')({
@@ -47,11 +62,15 @@ const Logo = styled('h1')({
     fontSize: 0,
     color: 'transparent',
   },
+  '@media (min-width:1280px)': {
+    '& > a': {
+      paddingLeft: 0,
+    },
+    '& img': {
+      height: '30px',
+    },
+  },
 });
-
-// const LogOutBtn = styled('button')({
-//   backgroundColor: 'transparent',
-// });
 
 const AppHeader = () => {
   return (
@@ -63,8 +82,8 @@ const AppHeader = () => {
             <span className="hideTxt">미루고치</span>
           </Link>
         </Logo>
-        {/* <LogOutBtn type="button">로그아웃</LogOutBtn> */}
         <LoginButton />
+        {/* <Menu /> */}
       </Inner>
     </HeaderArea>
   );

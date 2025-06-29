@@ -48,12 +48,22 @@ const CharacterContent = styled('div')({
     left: '20%',
     top: '23%',
   },
-  '&.tit .character': {
-    '& .bubble': {
-      right: '20%',
+  '&.tit': {
+    ".character": {
+      '& .bubble': {
+        right: '20%',
+      },
+      left: '57%',
+      top: '40%',
+      '& .nameTag': {
+        left: '45%',
+      },
     },
-    left: '57%',
-    top: '40%',
+    '&.baby, &.teen': {
+      "& .nameTag": {
+        left: '49%',
+      }
+    },
   },
   '&.hamster .character': {
     '& .bubble': {
@@ -73,10 +83,18 @@ const LifeArea = styled('div')({
   top: '10%',
   right: '10%',
   textAlign: 'right',
-  '& svg': {
-    width: '10%',
-    height: '10%',
-  },
+  width: "80%",
+  '& > div': {
+    justifyContent: "end",
+    '& img': {
+      width: '13%',
+      height: 'auto',
+    },
+  }
+  // '& svg': {
+  //   width: '10%',
+  //   height: '10%',
+  // },
 });
 
 const Character = styled('div')({
@@ -155,7 +173,7 @@ const CharacterBox = ({
 
   return (
     // className : rabbit hamster tit dog cat
-    <CharacterContent className={`${characterStatus?.growthStage} ${characterData?.class}`}>
+    <CharacterContent className={`characterContent ${characterStatus?.growthStage} ${characterData?.class}`}>
       <CharacterField>
         <LifeArea>
           <LifeIcon failCount={failCount} />

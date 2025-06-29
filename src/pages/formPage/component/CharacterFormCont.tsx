@@ -11,12 +11,18 @@ const CharacterFormBox = styled(Grid)({
   width: '100%',
   height: 'auto',
   borderRadius: '15px',
-  backgroundColor: '#FF101015',
-  padding: '10px 20px',
+  backgroundColor: '#F2F2F3',
+  padding: '10px',
   display: 'flex',
   flexDirection: 'column',
   gap: 5,
   fontFamily: 'Galmuri14',
+  alignItems: "center",
+  justifyContent: "center",
+  "& .characterSelectGroup": {
+    marginTop: "5px",
+    '@media (min-width: 1001px)': { gap: "15px" },
+  }
 });
 const CharInformText = styled('p')({
   color: '#00000090',
@@ -26,9 +32,11 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   width: '100%',
   gap: 5,
   display: 'flex',
-  flexGrow: 1,
+  // flexGrow: 1,
   justifyContent: 'center',
   alignItems: 'center',
+  marginTop: "10px",
+  '@media (min-width: 1001px)': { marginTop: "20px" },
   [`& .${toggleButtonGroupClasses.firstButton}, & .${toggleButtonGroupClasses.middleButton}`]: {
     borderTopRightRadius: (theme.vars || theme).shape.borderRadius,
     borderBottomRightRadius: (theme.vars || theme).shape.borderRadius,
@@ -39,27 +47,35 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     borderLeft: `1px solid ${(theme.vars || theme).palette.divider}`,
   },
   [`& .${toggleButtonGroupClasses.lastButton}.${toggleButtonClasses.disabled}, & .${toggleButtonGroupClasses.middleButton}.${toggleButtonClasses.disabled}`]:
-    {
-      borderLeft: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`,
-    },
+  {
+    borderLeft: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`,
+  },
 }));
 const StyledToggleButton = styled(ToggleButton)({
-  width: '15vh',
+  // width: '15vh',
+  width: '20%',
+  minWidth: "70px",
+  maxWidth: "100px",
   aspectRatio: '1/1',
   backgroundColor: '#fff',
-  border: 'none',
+  border: "1px solid #ddd",
   boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.05)',
   '&.Mui-selected': {
     backgroundColor: '#5B93D530',
     border: '2px solid #5B93D5',
   },
-  '@media (max-width: 600px)': { width: '10vh' },
+  '@media (min-width: 1001px)': { 
+    width: '25%',
+    maxWidth: "120px" 
+  },
+  '@media (min-width: 601px) and (max-width: 1000px)': { maxWidth: "90px" },
 });
 const EggGrid = styled(Grid)({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
   gap: 10,
+  '@media (min-width: 1001px)': { gap: 15,},
 });
 const EggImg = styled('img')({
   width: '100%',
@@ -92,7 +108,7 @@ const CharacterFormCont: React.FC<CharacterFormContProps> = ({
         onChange={handleCharacterSelection}
         aria-label="text alignment"
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={1} className="characterSelectGroup">
           <EggGrid size={12}>
             {/* 햄찌 미루찌 */}
             <StyledToggleButton value="DZ1OHxn48Z5zRwtt50TP" aria-label="left aligned">

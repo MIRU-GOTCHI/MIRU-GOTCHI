@@ -1,3 +1,6 @@
+import AddNewGoalButton from '@common/components/AddNewGoalButton';
+import Loading from '@common/components/Loading';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,7 +12,7 @@ const Wrap = styled('div')({
   height: '100%',
   maxWidth: '1280px',
   margin: '0 auto',
-  minWidth: '320px',
+  minWidth: '340px',
 });
 
 const ContentArea = styled('main')({
@@ -17,6 +20,10 @@ const ContentArea = styled('main')({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
+  '@media (min-width:1280px)': {
+    padding: '120px 0 50px',
+    // height: 'calc(100% - 50px)',
+  },
 });
 
 const AppLayout = () => {
@@ -24,8 +31,11 @@ const AppLayout = () => {
     <Wrap>
       <Header />
       <ContentArea>
-        <Outlet />
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
       </ContentArea>
+      <AddNewGoalButton />
       <Menu />
     </Wrap>
   );

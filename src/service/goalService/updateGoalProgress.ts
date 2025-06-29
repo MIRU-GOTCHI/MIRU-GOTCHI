@@ -19,6 +19,12 @@ const calculateGrowthStage = (successRatio: number): GrowthStage => {
   if (successRatio >= 0.3) return 'baby';
   return 'egg';
 };
+const calculateLevel = (successRatio: number): number => {
+  if (successRatio >= 0.8) return 3;
+  if (successRatio >= 0.5) return 2;
+  if (successRatio >= 0.3) return 1;
+  return 0;
+};
 
 export const updateGoalProgress = async (userId: string, goalId: string): Promise<void> => {
   const goalRef = doc(db, 'users', userId, 'goals', goalId);
@@ -66,7 +72,7 @@ export const updateGoalProgress = async (userId: string, goalId: string): Promis
     status,
     characterStatus: {
       growthStage,
-      level: goalData.characterStatus.level,
+      level: calculateLevel(successRatio),
       gone,
     },
     updatedAt: Timestamp.now(),
