@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { characterImageMap } from '../../constants/characterImages';
+import ContentInner from '@layout/common/ContentInner';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -26,7 +27,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            padding: { sm: '60px 48px', xs: '30px 24px' },
+            padding: { sm: '60px 35px', xs: '30px 23px' },
             backgroundColor: '#5B93D5',
             minHeight: '128px',
             borderRadius: '0px 16px 16px 16px',
@@ -51,14 +52,50 @@ const CharacterPageContainer = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   width: '100%',
   height: '100%',
-  background: '#F2F2F3',
-  padding: '4rem',
+  // background: '#F2F2F3',
+  padding: '4rem 0',
   [theme.breakpoints.down('lg')]: {
-    padding: '2rem',
+    padding: '2rem 0',
   },
   [theme.breakpoints.down('md')]: {
-    padding: '1rem',
+    padding: '1rem 0',
   },
+  "& .tabImgArea": {
+    display: 'flex', justifyContent: 'center'
+  },
+  "& .tabImg": {
+    position: 'relative',
+    backgroundColor: 'white',
+    minWidth: '128px',
+    minHeight: '128px',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    "& > img": {
+      width: '80px', height: '80px', objectFit: 'contain'
+    }
+  },
+  "@media (min-width:320px) and (max-width:720px)" : {
+    "& .tabImgArea": {
+      width: "calc(50% - 10px)",
+    },
+    "& .tabImg": {
+      padding: "20px",
+      "& > img": {
+        width: '100%', height: 'auto'
+      }
+    },
+  },
+  "@media (max-width:375px)": {
+    "& .tabImgArea": {
+      width: "calc(50% - 10px)",
+    },
+    "& .MuiBox-root":{
+      padding: "20px 15px",
+    }
+  }
 }));
 
 const CharacterPageTitle = styled(Typography)({
@@ -125,7 +162,7 @@ const CharacterPage = () => {
   };
 
   return (
-    <>
+    <ContentInner>
       <CharacterPageContainer>
         <CharacterPageTitle>나의 습관 캐릭터 목록</CharacterPageTitle>
         <CharacterPageDescription>
@@ -144,7 +181,7 @@ const CharacterPage = () => {
           </Tabs>
         </CharacterPageTabArea>
         <CustomTabPanel value={value} index={0}>
-          <Grid container rowSpacing={4} columnSpacing={1}>
+          <Grid container rowSpacing={2} columnSpacing={2}>
             {onGoingGoals?.map((goal) => {
               const charId = goal.characterId;
               const stage = goal.characterStatus.growthStage;
@@ -153,28 +190,16 @@ const CharacterPage = () => {
               return (
                 <Grid
                   key={goal.id}
-                  size={{ lg: 2, md: 3, sm: 4, xs: 6 }}
-                  sx={{ display: 'flex', justifyContent: 'center' }}
+                  className="tabImgArea"
                 >
                   <Box
                     onClick={() => navigate(`/character/${goal.id}`)}
-                    sx={{
-                      position: 'relative',
-                      backgroundColor: 'white',
-                      width: '128px',
-                      height: '128px',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
+                    className="tabImg"
                   >
                     {image && (
                       <img
                         src={image}
                         alt="캐릭터 이미지"
-                        style={{ width: '80px', height: '80px', objectFit: 'contain' }}
                       />
                     )}
                     <Typography
@@ -200,7 +225,7 @@ const CharacterPage = () => {
           </Grid>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Grid container rowSpacing={4} columnSpacing={1}>
+          <Grid container rowSpacing={2} columnSpacing={2}>
             {completedGoals?.map((goal) => {
               const charId = goal.characterId;
               const stage = goal.characterStatus.growthStage;
@@ -209,29 +234,16 @@ const CharacterPage = () => {
               return (
                 <Grid
                   key={goal.id}
-                  size={{ lg: 2, md: 3, sm: 4, xs: 6 }}
-                  sx={{ display: 'flex', justifyContent: 'center' }}
+                  className="tabImgArea"
                 >
                   <Box
                     onClick={() => navigate(`/character/${goal.id}`)}
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      position: 'relative',
-                      backgroundColor: 'white',
-                      width: '128px',
-                      height: '128px',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      cursor: 'pointer',
-                    }}
+                    className="tabImg"
                   >
                     {image && (
                       <img
                         src={image}
                         alt="캐릭터 이미지"
-                        style={{ width: '80px', height: '80px', objectFit: 'contain' }}
                       />
                     )}
                     <Typography
@@ -257,7 +269,7 @@ const CharacterPage = () => {
           </Grid>
         </CustomTabPanel>
       </CharacterPageContainer>
-    </>
+    </ContentInner>
   );
 };
 

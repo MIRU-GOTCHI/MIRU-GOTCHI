@@ -19,7 +19,7 @@ const Container = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  backgroundColor: '#F2F2F3',
+  // backgroundColor: '#F2F2F3',
   padding: '0rem 2rem 6rem 2rem',
 });
 

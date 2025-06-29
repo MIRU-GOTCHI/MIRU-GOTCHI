@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
-import ContentInner from '@layout/common/ContentInner';
+
 
 const HabitDetailBox = styled(Box)({
   display: 'flex',
@@ -20,16 +20,16 @@ const HabitDetailBox = styled(Box)({
   flexGrow: 1,
   backgroundColor: '#F2F2F3',
   borderRadius: '10px',
-  padding: '50px 20px 30px',
-  position: 'relative',
-  '& .unitBox': {
-    color: '#bababa',
-    fontSize: '11px',
-    position: 'absolute',
-    right: '20px',
-    top: '20px',
-    display: 'flex',
-    alignItems: 'center',
+  padding: '20px 30px',
+  position: "relative",
+  "& .unitBox": {
+    color: "#bababa",
+    fontSize: "11px",
+    position: "absolute",
+    right: "20px",
+    top: "20px",
+    display: "flex",
+    alignItems: "center",
   },
   '& .characterContent': {
     padding: 0,
@@ -101,7 +101,6 @@ const HabitContainBox = styled(Grid)({
   flexGrow: 1,
   display: 'flex',
   gap: 10,
-  '@media (max-width: 600px)': { flexGrow: 0 },
 });
 const CharacterGrid = styled(Grid)({
   width: '100%',
@@ -109,23 +108,22 @@ const CharacterGrid = styled(Grid)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '25px 0 30px',
+  // padding: "25px 0 30px",
 });
 const CharBox = styled(Box)({
-  width: '80%',
+  width: '60%',
   aspectRatio: '1/1.14',
   display: 'flex',
   justifyContent: 'center',
   maxWidth: '450px',
-  // minWidth: '200px',
+  minWidth: '200px',
   '@media (max-width: 600px)': { maxWidth: '230px' },
   '@media (max-width: 1279px)': { maxWidth: '400px' },
 });
 const HabitContSecGrid = styled(Grid)({
   width: '100%',
   gap: 10,
-  display: 'flex',
-  flexGrow: 1,
+  display: 'flex', flexGrow: 1,
   flexDirection: 'column',
 });
 
@@ -151,20 +149,9 @@ const InformHeadBox = styled(Box)({
   fontSize: '12px',
 });
 
-// const InformHeadBox = styled(Box)({
-//   display: 'flex',
-//   alignItems: 'center',
-//   color: 'rgba(17, 17, 17, 0.68)',
-//   backgroundColor: "#dddddd",
-//   padding: "3px",
-//   borderRadius: "5px",
-//   fontWeight: 500,
-// });
-
 const HabitDoneBtn = styled(Button)({
   width: '100%',
   borderRadius: '20px',
-  marginTop: '15px',
 });
 
 const HabitDetailPage = () => {
@@ -177,7 +164,6 @@ const HabitDetailPage = () => {
   const { isChecked, checkLog, uncheckLog, isUpdatingLog } = useTodayLogStatus(id);
   // 모달
   const [openEditModal, setOpenEditModal] = useState(false);
-  // 로그
 
   if (!id) {
     return <div>오류: 파라미터값이 발견되지 않았습니다.</div>;
@@ -225,16 +211,19 @@ const HabitDetailPage = () => {
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
   return (
-    <ContentInner>
+    <>
       <ContentTitle>
-        <BeforeBtn />
+        <BeforeBtn handleClick={()=> navigate('/habit')}/>
       </ContentTitle>
       <HabitDetailBox>
         <HabitDetailTitle>
+          <>
           <h2>{data?.title}</h2>
           <InformHeadBox>
-            목표기간 : {data?.startDate.toLocaleDateString()}~{data?.endDate.toLocaleDateString()}
-          </InformHeadBox>
+            목표기간 : {data?.startDate.toLocaleDateString()}~
+            {data?.endDate.toLocaleDateString()}
+          </InformHeadBox>         
+          </>
 
           {data.status === 'failed' ? (
             ''
@@ -307,7 +296,7 @@ const HabitDetailPage = () => {
           />
         )
       }
-    </ContentInner>
+    </>
   );
 };
 
