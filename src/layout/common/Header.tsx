@@ -2,7 +2,7 @@ import LoginButton from '@pages/LoginPage/component/LoginButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import LogoImage from '../../assets/images/logo_mirugochi.png';
+import LogoImage from '../../assets/images/logo.png';
 
 const HeaderArea = styled('header')({
   position: 'fixed',
