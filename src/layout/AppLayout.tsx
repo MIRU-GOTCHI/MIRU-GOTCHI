@@ -1,3 +1,4 @@
+import AddNewGoalButton from '@common/components/AddNewGoalButton';
 import Loading from '@common/components/Loading';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -34,6 +35,7 @@ const AppLayout = () => {
           <Outlet />
         </Suspense>
       </ContentArea>
+      <AddNewGoalButton />
       <Menu />
     </Wrap>
   );

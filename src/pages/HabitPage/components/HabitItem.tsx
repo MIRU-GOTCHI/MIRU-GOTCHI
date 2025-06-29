@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import type { Character } from '@models/character';
 import type { Goal } from '@models/goal';
+import type { Log } from '@models/log';
 
 const HabitCard = styled(Box)<{ checked: boolean }>`
   border: 1px solid #ccc;
@@ -103,6 +104,7 @@ interface HabitItemProps {
   goal: Goal;
   character?: Character;
   onCheck: (goalId: string, logId?: string) => void;
+  todayLog: Log | null;
 }
 
 const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
