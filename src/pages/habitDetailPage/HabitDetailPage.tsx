@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
+import ContentInner from '@layout/common/ContentInner';
 
 const HabitDetailBox = styled(Box)({
   display: 'flex',
@@ -33,18 +34,19 @@ const HabitDetailBox = styled(Box)({
   '& .characterContent': {
     padding: 0,
   },
+  '@media (max-width: 1000px)': {
+    height: "100vh",
+  },
   '@media (max-width: 600px)': {
-    borderRadius: 'unset',
-    paddingBottom: 0,
+    borderRadius: "unset",
+    // paddingBottom: 0,
+    
     margin: '0 -20px -16px',
     '& .unitBox': {
       right: '10px',
       top: '15px',
     },
   },
-  // '@media (min-width: 601px)': {
-
-  // }
 });
 
 const HabitDetailTitle = styled(Grid)({
@@ -223,7 +225,7 @@ const HabitDetailPage = () => {
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
   return (
-    <>
+    <ContentInner>
       <ContentTitle>
         <BeforeBtn />
       </ContentTitle>
@@ -296,14 +298,16 @@ const HabitDetailPage = () => {
       </HabitDetailBox>
 
       {/* 수정 폼 모달 */}
-      {data && (
-        <EditHabitDetailModal
-          open={openEditModal}
-          onClose={handleCloseEditModal}
-          goal={data} // 현재 목표 데이터를 prop으로 전달
-        />
-      )}
-    </>
+      {
+        data && (
+          <EditHabitDetailModal
+            open={openEditModal}
+            onClose={handleCloseEditModal}
+            goal={data} // 현재 목표 데이터를 prop으로 전달
+          />
+        )
+      }
+    </ContentInner>
   );
 };
 
