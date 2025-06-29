@@ -3,10 +3,11 @@ import { useAuth } from '@hooks/auth/useAuth';
 import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { useGetGoals } from '@hooks/useGetGoals';
+import { useUpdateAllGoalsProgress } from '@hooks/useUpdateAllGoal';
 import { FormGroup } from '@mui/material';
 import HomeHabitList from '@pages/HomePage/component/HomeHabitList';
 import { getTodayCompletedCount } from '@service/logService/getTodayCompletedCount';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const MainContent = styled('div')({
@@ -19,7 +20,7 @@ const MainContent = styled('div')({
 const CharacterArea = styled('div')({
   // height: "250px",
   backgroundColor: '#F2F2F3',
-  '@media (min-width: 1000px)': { padding: "40px 0 25px" },
+  '@media (min-width: 1000px)': { padding: '40px 0 25px' },
 });
 
 const CustomBox = styled('div')({
@@ -68,6 +69,16 @@ const HomePage = () => {
   const [completedCount, setCompletedCount] = useState(0);
 
   const completeTodayLogMutation = useCompleteTodayLog();
+  const updateAllProgressMutation = useUpdateAllGoalsProgress();
+
+  const updateProgress = useCallback(() => {
+    if (!userId) return;
+    updateAllProgressMutation.mutate({ userId });
+  }, [userId, updateAllProgressMutation]);
+
+  useEffect(() => {
+    updateProgress();
+  }, [updateProgress]);
 
   const todayDate = new Date();
   const dateFormat = `${todayDate.getMonth() + 1} 월 ${todayDate.getDate()}일`;
