@@ -110,13 +110,13 @@ const HomeHabitItem = ({ goal, character, onCheck }: HomeHabitItemProps) => {
       {character && (
         <>
           {isLoading && (
-            <Typography color="text.secondary" fontSize={12}>
+            <Typography fontSize={12}>
               <CircularProgress size={16} sx={{ mr: 1, verticalAlign: 'middle' }} />
               로딩 중...
             </Typography>
           )}
           {isError && (
-            <Typography color="error" fontSize={12}>
+            <Typography fontSize={12}>
               목표를 불러오지 못했습니다.
             </Typography>
           )}

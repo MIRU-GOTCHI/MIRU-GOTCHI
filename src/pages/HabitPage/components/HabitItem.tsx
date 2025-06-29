@@ -16,7 +16,7 @@ const HabitCard = styled(Box)<{ checked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  // gap: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
@@ -30,6 +30,7 @@ const ContentsWrapper = muiStyled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: 16,
+  flexGrow: 1,
 });
 const CharacterContainer = styled.div`
   position: relative;
@@ -79,7 +80,9 @@ const CustomCheckbox = muiStyled(Checkbox)({
   '& .MuiSvgIcon-root': {
     fontSize: 32,
   },
-  marginRight: 12,
+  width: "50px",
+  flexShrink: 0,
+  // marginRight: 12,
 });
 const TextContainer = muiStyled(Box)({
   overflow: 'hidden',
@@ -125,7 +128,7 @@ const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
       {character && (
         <>
           {isLoading && (
-            <Typography color="text.secondary" fontSize={14}>
+            <Typography fontSize={14}>
               <CircularProgress size={18} sx={{ mr: 1, verticalAlign: 'middle' }} />
               오늘 목표 불러오는 중...
             </Typography>
