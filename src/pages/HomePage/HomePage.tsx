@@ -104,14 +104,11 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    if (userId && data.length > 0) {
+    if (userId && data.length > 0 && randomNum === 0) {
       fetchCompletedCount();
-
-      if (randomNum === 0) {
-        getRandomNum(data.length);
-      }
+      getRandomNum(data.length);
     }
-  }, [userId, data, randomNum]);
+  }, [userId, data]);
 
   const handleCheck = async (goalId: string, logId?: string) => {
     if (!logId || !userId) return;

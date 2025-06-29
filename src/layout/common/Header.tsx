@@ -2,7 +2,6 @@ import LoginButton from '@pages/LoginPage/component/LoginButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Menu from './Menu';
 import LogoImage from '../../assets/images/logo_mirugochi.png';
 
 const HeaderArea = styled('header')({
