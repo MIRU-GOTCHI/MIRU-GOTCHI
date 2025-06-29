@@ -16,6 +16,64 @@ const Menu = () => {
     width: '100%',
     height: '50px',
     backgroundColor: '#050505',
+    "@media (max-width:1279px)": {
+      "& .name": {
+        display: "none",
+      },
+      "&.nameType": {
+        height: '54px',
+        "& li > a": {
+        
+          flexDirection: "column",
+          gap: "1px",
+          "& .name": {
+            display: "block",
+            fontSize: "10px",
+          }
+        }
+    },
+    },
+    "@media (min-width:1280px)" : {
+      "&.menuList":{
+        top: "70px",
+        bottom: "unset",
+        backgroundColor: 'rgba(5,5,5,0.8)',
+        "& li": {
+           flexGrow: "unset",
+           minWidth: "140px",
+          "&:nth-child(1)": {
+            order: 3,
+          },
+          "&:nth-child(2)": {
+            order: 1,
+            minWidth: "unset",
+            "& .name": {
+              display: "none",
+            }
+          },
+          "&:nth-child(3)": {
+            order: 2,
+          },
+          "&:nth-child(4)": {
+            order: 4,
+          },
+          "& > a": {
+            gap: "10px",
+            padding: "0 15px",
+            "&:hover": {
+              backgroundColor: "rgba(91,147,213,0.8)"
+            },
+            "&.active": {
+              backgroundColor: "rgba(91,147,213,0.8)"
+            },
+            "& .name": {
+              fontSize: "16px",
+              fontWeight: 600,
+            }
+          }
+        },
+      }
+    },
   });
 
   const NevList = styled('ul')({
@@ -38,33 +96,34 @@ const Menu = () => {
       },
     },
   });
+
   return (
-    <Menu>
+    <Menu className='menuList nameType'>
       <NevList>
         <li>
           <NavLink to="/character">
             <MarginIcon />
-            {/* <CatchingPokemonIcon/> */}
+            <span className='name'>캐릭터</span>
           </NavLink>
         </li>
         <li>
           <NavLink to="/">
             <HomeFilledIcon />
+            <span className='name'>홈</span>
           </NavLink>
         </li>
         <li>
-          <NavLink to="/">
+          <NavLink to="/habit">
             <ListIcon />
-            {/* <DensitySmallIcon />
-            <EditNoteIcon /> */}
+            <span className='name'>목표</span>
           </NavLink>
         </li>
-        <li> 
-          {/* 임시 가이드 메뉴 */}
+        {/* <li> 
           <NavLink to="/guide">
             <ViewSidebarIcon />
+            <span className='name'>가이드</span>
           </NavLink>
-        </li>
+        </li> */}
       </NevList>
     </Menu>
   );

@@ -1,6 +1,8 @@
-import type { CharacterStatus } from "@models/character";
-import { characterImageMap } from "../../constants/characterImages";
 import { styled } from "styled-components";
+
+import { characterImageMap } from "../../constants/characterImages";
+
+import type { CharacterStatus } from "@models/character";
 
 interface CharactersImageProps {
   characterId?: string;
@@ -18,6 +20,10 @@ const Name = styled('div')({
   background: '#050505',
   color: '#fff',
   fontSize: '12px',
+  '@media (max-width: 600px)': { 
+    width: "60%",
+    padding: '1px 2px',
+  },
 });
 
 const CharactersImage = ({ characterStatus, characterId, name}:CharactersImageProps) => {

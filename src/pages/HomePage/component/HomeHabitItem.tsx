@@ -15,97 +15,84 @@ const HabitCard = styled(Box)<{ checked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  color: #444;
 
-  background-color: ${({ checked }) => (checked ? '#B0E501' : '#5B93D5')};
+  background-color: ${({ checked }) => (checked ? '#E8E8E8' : '#ADC9EA')};
 
   &:hover {
-    background-color: ${({ checked }) => (checked ? '#A0D400' : '#4A80BF')};
+    background-color: ${({ checked }) => (checked ? '#D3D3D3' : '#7DACE2')};
   }
 `;
+
 const ContentsWrapper = muiStyled(Box)({
   display: 'flex',
   alignItems: 'center',
-  gap: 16,
+  gap: 12,
 });
+
 const CharacterContainer = styled.div`
   position: relative;
-  width: 20vw;
-  max-width: 80px;
-  height: 20vw;
-  max-height: 80px;
-  @media (max-width: 600px) {
-    width: 24vw;
-    height: 24vw;
-  }
+  width: 50px;
+  height: 50px;
 `;
 
 const CharacterImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: #f2f2f3;
 `;
 
-const CharacterNameOverlay = styled(Typography)`
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  font-weight: bold;
-  color: #333;
-  background-color: #f2f2f3;
-  border-radius: 4px;
-`;
 const CompletedLabel = styled(Typography)`
   font-weight: bold;
-  color: #5b93d5;
+  color: #666;
   margin-left: 8px;
 `;
 
 const CustomCheckbox = muiStyled(Checkbox)({
   color: '#fff',
   '&.Mui-checked': {
-    color: '#5B93D5',
+    color: '#87CEEB',
   },
   '&.Mui-disabled': {
-    color: '#555',
+    color: '#999',
   },
   '& .MuiSvgIcon-root': {
-    fontSize: 32,
+    fontSize: 28,
   },
-  marginRight: 12,
+  marginRight: 8,
 });
+
 const TextContainer = muiStyled(Box)({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  maxWidth: '40vw',
   flex: 1,
 });
-const GoalInfoContainer = muiStyled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 4,
-});
 
-const TruncatedTypography = muiStyled(Typography)({
+const TruncatedTypography = muiStyled(Typography)(({ theme }) => ({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-});
+  fontSize: '20px',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '14px',
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '12px',
+  },
+}));
 
-interface HabitItemProps {
+interface HomeHabitItemProps {
   goal: Goal;
   character?: Character;
   onCheck: (goalId: string, logId?: string) => void;
 }
 
-const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
+const HomeHabitItem = ({ goal, character, onCheck }: HomeHabitItemProps) => {
   const navigate = useNavigate();
   const { data: log, isLoading, isError } = useGetTodayLog(goal.id);
 
@@ -121,33 +108,33 @@ const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
       {character && (
         <>
           {isLoading && (
-            <Typography color="text.secondary" fontSize={14}>
-              <CircularProgress size={18} sx={{ mr: 1, verticalAlign: 'middle' }} />
-              오늘 목표 불러오는 중...
+            <Typography color="text.secondary" fontSize={12}>
+              <CircularProgress size={16} sx={{ mr: 1, verticalAlign: 'middle' }} />
+              로딩 중...
             </Typography>
           )}
           {isError && (
-            <Typography color="error" fontSize={14}>
-              오늘의 목표를 불러오지 못했습니다.
+            <Typography color="error" fontSize={12}>
+              목표를 불러오지 못했습니다.
             </Typography>
           )}
           <ContentsWrapper>
             <CharacterContainer>
               <CharacterImage src={imagePath} alt={character.name} />
-              <CharacterNameOverlay>{character.name}</CharacterNameOverlay>
             </CharacterContainer>
             <TextContainer>
-              <GoalInfoContainer>
-                <TruncatedTypography variant="h6" sx={{ color: isTodayCompleted ? '#666' : '' }}>
-                  {goal.title}
-                </TruncatedTypography>
-                {goal.description.length > 0 && (
-                  <TruncatedTypography sx={{ color: isTodayCompleted ? '#666' : '' }}>
-                    설명 : {goal.description}
-                  </TruncatedTypography>
-                )}
-              </GoalInfoContainer>
-              {log && isTodayCompleted && <CompletedLabel>오늘 목표 완료!</CompletedLabel>}
+              <TruncatedTypography
+                variant="body1"
+                sx={{
+                  color: isTodayCompleted ? '#666' : '#050505',
+                  fontWeight: 500,
+                }}
+              >
+                {goal.title}
+              </TruncatedTypography>
+              {log && isTodayCompleted && (
+                <CompletedLabel sx={{ fontSize: '12px' }}>오늘 목표 완료!</CompletedLabel>
+              )}
             </TextContainer>
           </ContentsWrapper>
           {goal.status === 'in_progress' && log && (
@@ -166,4 +153,4 @@ const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
   );
 };
 
-export default HabitItem;
+export default HomeHabitItem;

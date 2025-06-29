@@ -1,7 +1,8 @@
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import LinearProgress from '@mui/material/LinearProgress';
 import styled from 'styled-components';
 
+import CharactersImage from './CharactersImage';
+import LifeIcon from './LifeIcon';
 import CatBackground from '../../assets/images/background/cat-background.png';
 import DogBackground from '../../assets/images/background/dog-background.png';
 import HamsterBackground from '../../assets/images/background/hamster-background.png';
@@ -11,8 +12,6 @@ import TitBackground from '../../assets/images/background/tit-background.png';
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import type { CharacterStatus } from '@models/character';
-import CharactersImage from './CharactersImage';
-import LifeIcon from './LifeIcon';
 
 interface CharacterProps {
   failCount?: number;
@@ -74,10 +73,18 @@ const LifeArea = styled('div')({
   top: '10%',
   right: '10%',
   textAlign: 'right',
-  '& svg': {
-    width: '10%',
-    height: '10%',
-  },
+  width: "80%",
+  '& > div': {
+    justifyContent: "end",
+    '& img': {
+      width: '13%',
+      height: 'auto',
+    },
+  }
+  // '& svg': {
+  //   width: '10%',
+  //   height: '10%',
+  // },
 });
 
 const Character = styled('div')({
@@ -139,34 +146,36 @@ const CharacterBox = ({
   successCount,
   bubbleTalk,
 }: CharacterProps) => {
-  const characterType: { character: string; name: string; class: string, bg: string }[] = [
-    { character: "DZ1OHxn48Z5zRwtt50TP", name: '미루찌', class: 'hamster', bg: HamsterBackground},
-    { character: "bEFnSlfFSbK9QVq0arjT", name: '레이토', class: 'rabbit', bg: RabbitBackground},
-    { character: "YYlClvXJADbJO9ru1VG3", name: '늦장멍', class: 'dog', bg: DogBackground},
-    { character: "cJb5qHB1Z7GFm79SCitA", name: '나중삐', class: 'tit', bg: TitBackground},
-    { character: "t0vhk3H3NCZACFLL7c0s", name: '미루냥', class: 'cat', bg: CatBackground},
+  const characterType: { character: string; name: string; class: string; bg: string }[] = [
+    { character: 'DZ1OHxn48Z5zRwtt50TP', name: '미루찌', class: 'hamster', bg: HamsterBackground },
+    { character: 'bEFnSlfFSbK9QVq0arjT', name: '레이토', class: 'rabbit', bg: RabbitBackground },
+    { character: 'YYlClvXJADbJO9ru1VG3', name: '늦장멍', class: 'dog', bg: DogBackground },
+    { character: 'cJb5qHB1Z7GFm79SCitA', name: '나중삐', class: 'tit', bg: TitBackground },
+    { character: 't0vhk3H3NCZACFLL7c0s', name: '미루냥', class: 'cat', bg: CatBackground },
   ];
 
   const totalProgressValue = successCount && totalDays ? (successCount / totalDays) * 100 : 0;
   const characterLevel = characterStatus ? characterStatus.level : 0;
 
-  let characterData = characterType.find((item) => {
+  const characterData = characterType.find((item) => {
     return item.character === characterId;
-  })
-
+  });
 
   return (
     // className : rabbit hamster tit dog cat
-    <CharacterContent className={`${characterStatus?.growthStage} ${characterData?.class}`}>
+    <CharacterContent className={`characterContent ${characterStatus?.growthStage} ${characterData?.class}`}>
       <CharacterField>
         <LifeArea>
-          <LifeIcon failCount={failCount}/>
+          <LifeIcon failCount={failCount} />
         </LifeArea>
         <Character className="character">
-          
           {bubbleTalk && <RandomText className="fontGalmuri bubble">{bubbleTalk}</RandomText>}
 
-          <CharactersImage characterId={characterId} characterStatus={characterStatus} name={characterData?.name}/>
+          <CharactersImage
+            characterId={characterId}
+            characterStatus={characterStatus}
+            name={characterData?.name}
+          />
         </Character>
         <img src={characterData?.bg} alt="" className="characterBg" />
       </CharacterField>

@@ -10,53 +10,62 @@ import GoalFormCpnt from "./component/GoalFormCpnt"
 import type { CharacterStatus } from "@models/character"
 import type { GrowthStage } from "@models/common"
 import type { CreateGoalData } from "@models/goal"
+import ContentTitle from "@layout/common/ContentTitle"
 
 const FormPageBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  maxWidth: '1200px',
+  // maxWidth: '1200px',
   flexGrow: 1,
   fontFamily: 'Galmuri14',
   margin: '0 auto',
-  '@media (max-width: 1490px)': {maxWidth: '1000px',}
+  // '@media (max-width: 1490px)': {maxWidth: '1000px',}
 })
-const FormTitle = styled(Box)({
-  height: '7vh',
-  display: 'flex',
-  alignItems: 'center',
-  fontSize: '20px',
-})
-const FlagIcon = styled('img')({
-  height: '3.5vh', margin: '0 15px'
-})
+// const FormTitle = styled(Box)({
+//   // height: '7vh',
+//   display: 'flex',
+//   alignItems: 'center',
+//   fontSize: '20px',
+// })
+// const FlagIcon = styled('img')({
+//   // height: '3.5vh',
+//   margin: '0 15px'
+// })
 const Form = styled('form')({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  minHeight: '60vh',
+  // minHeight: '60vh',
   flexGrow: 1,
   borderRadius: '5px',
+  // padding: "30px 0",
 
 })
 const FormBox = styled(Grid)({
   display: 'flex',
   width: '100%',
-  minHeight: '60vh',
+  // minHeight: '60vh',
   flexGrow: 1,
   borderRadius: '5px',
 
 })
 const FormFooter = styled(Grid)({
   width: '100%',
-  height: '6vh',
-  display: 'flex',
+  // height: '6vh',
+  // display: 'flex',
+  textAlign: "center",
+  marginTop: "30px",
 })
 const FormButton = styled(Button)({
   marginLeft: 'auto',
-  padding: '0 10vh',
-  height: '5vh',
-  marginTop: 'auto'
+  width: "50%",
+  minWidth: "200px",
+  minHeight: "40px",
+  '@media (max-width: 600px)': { width: "100%" },
+  // padding: '0 10vh',
+  // height: '5vh',
+  // marginTop: 'auto'
 })
 //-----------------------------------------//
 const FormPage = () => {
@@ -144,8 +153,16 @@ const FormPage = () => {
 
   return (
     <FormPageBox>
+      <ContentTitle>
+        <BeforeBtn />
+        <h2>습관 등록</h2>
+      </ContentTitle>
 
-      <FormTitle><BeforeBtn /><FlagIcon src="public\icon\social-rewards-flag--Streamline-Pixel.svg" alt="" /> 습관 등록</FormTitle>
+      {/* <FormTitle>
+        <BeforeBtn />
+        <FlagIcon src="public\icon\social-rewards-flag--Streamline-Pixel.svg" alt="" />
+        습관 등록
+      </FormTitle> */}
       <Form
         onSubmit={handleSubmit}
       >

@@ -8,8 +8,9 @@ const GoalFormBox = styled(Grid)({
   padding: '20px',
   display: 'flex',
   flexDirection: 'column',
-  gap: 30,
-  '@media (max-width: 600px)': { gap: 10, fontSize: '12px', padding: '10px', },
+  gap: 20,
+  '@media (min-width: 1001px)': { padding: '30px 20px', },
+  '@media (max-width: 600px)': { gap: 15, fontSize: '12px', padding: '20px 15px', },
 });
 const TitleTextField = styled(TextField)(() => ({
   width: '100%',

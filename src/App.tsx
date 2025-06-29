@@ -2,7 +2,6 @@ import Loading from '@common/components/Loading';
 import LoginRoute from '@common/LoginRoute';
 import PrivateRoute from '@common/PrivateRoute';
 import AppLayout from '@layout/AppLayout';
-import StyleGuidePage from '@pages/styleGuidePage/StyleGuidePage';
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
 const HomePage = React.lazy(() => import('@pages/HomePage/HomePage'));
@@ -28,7 +27,6 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="guide" element={<StyleGuidePage />} />
             <Route path="character" element={<CharacterPage />} />
             <Route path="character/:id" element={<CharacterDetailPage />} />
             <Route path="new" element={<FormPage />} />
