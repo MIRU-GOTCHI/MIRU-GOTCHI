@@ -1,3 +1,4 @@
+import { updateGoalProgress } from '@service/goalService/updateGoalProgress';
 import { completeTodayLog } from '@service/logService/completeTodayLog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -12,7 +13,8 @@ export const useCompleteTodayLog = () => {
 
   return useMutation({
     mutationFn: async ({ userId, goalId, logId }: CompleteTodayLogParams) => {
-      return completeTodayLog(userId, goalId, logId);
+      await completeTodayLog(userId, goalId, logId);
+      return updateGoalProgress(userId, goalId);
     },
     onSuccess: (_, { userId, goalId }) => {
       const todayKey = new Date().toISOString().split('T')[0];
