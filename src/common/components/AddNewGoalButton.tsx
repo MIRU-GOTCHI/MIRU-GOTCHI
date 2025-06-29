@@ -19,10 +19,10 @@ const FloatingButton = styled(Button)(({ theme }) => ({
     backgroundColor: '#1565c0',
   },
   [theme.breakpoints.up('lg')]: {
-    right: 'calc(50vw - 640px + 40px)',
+    right: 'calc(50vw - 600px + 40px)',
   },
   '@media (min-width:1800px)': {
-    right: 'calc((100vw - 1280px) / 2 + 40px)',
+    right: 'calc((100vw - 1500px) / 2 )',
   },
 }));
 
