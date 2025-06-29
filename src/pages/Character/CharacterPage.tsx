@@ -107,7 +107,7 @@ const CharacterPageTitle = styled(Typography)({
   // fontSize: '32px !important',
   fontSize: '25px !important',
   // color: '#050505 !important',
-  fontWeight: "500",
+  fontWeight: '500',
   // fontFamily: 'Galmuri14 !important',
 });
 
@@ -124,8 +124,8 @@ const CharacterPageTabArea = styled('div')({
   border: 'none',
   outline: 'none',
   boxShadow: 'none',
-  backgroundColor: "#ededed",
-  borderRadius: "16px 16px 0 0",
+  backgroundColor: '#ededed',
+  borderRadius: '16px 16px 0 0',
 });
 
 const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
@@ -190,7 +190,7 @@ const CharacterPage = () => {
             scrollButtons="auto"
             TabIndicatorProps={{ style: { display: 'none' } }}
           >
-            <CharacterPageTab label="진행중" {...a11yProps(0)}/>
+            <CharacterPageTab label="진행중" {...a11yProps(0)} />
             <CharacterPageTab label="완료" {...a11yProps(1)} />
           </Tabs>
         </CharacterPageTabArea>
@@ -203,7 +203,11 @@ const CharacterPage = () => {
 
               return (
                 <Grid key={goal.id} className="tabImgArea">
-                  <Box onClick={() => navigate(`/character/${goal.id}`)} className="tabImg">
+                  <Box
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/character/${goal.id}`)}
+                    className="tabImg"
+                  >
                     {image && <img src={image} alt="캐릭터 이미지" />}
                     <Typography
                       sx={{
