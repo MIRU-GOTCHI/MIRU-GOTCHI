@@ -67,6 +67,7 @@ const HomePage = () => {
   const { data = [] } = useGetGoals(userId ?? '');
   const { data: characters = [] } = useGetAllCharacters();
   const [completedCount, setCompletedCount] = useState(0);
+  const [randomNum, setRandomNum] = useState(0);
 
   const completeTodayLogMutation = useCompleteTodayLog();
   const updateAllProgressMutation = useUpdateAllGoalsProgress();
@@ -97,8 +98,16 @@ const HomePage = () => {
     }
   };
 
+  const getRandomNum = (num:number) => {
+    console.log(num)
+    return setRandomNum(Math.floor(Math.random()*num));
+  }
+
   useEffect(() => {
     fetchCompletedCount();
+    if(data.length > 0) {
+      getRandomNum(data.length)
+    }
   }, [userId, data]);
 
   const handleCheck = async (goalId: string, logId?: string) => {
@@ -122,12 +131,12 @@ const HomePage = () => {
       <CharacterArea>
         {data.length > 0 && (
           <CharacterBox
-            failCount={data[0].failCount}
-            title={data[0].title}
-            characterStatus={data[0].characterStatus}
-            characterId={data[0].characterId}
-            totalDays={data[0].totalDays}
-            successCount={data[0].successCount}
+            failCount={data[randomNum].failCount}
+            title={data[randomNum].title}
+            characterStatus={data[randomNum].characterStatus}
+            characterId={data[randomNum].characterId}
+            totalDays={data[randomNum].totalDays}
+            successCount={data[randomNum].successCount}
             bubbleTalk="습관은 습관으로 극복할 수 있다."
           />
         )}
