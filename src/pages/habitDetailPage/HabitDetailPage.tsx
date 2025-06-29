@@ -4,14 +4,15 @@ import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoalDetail } from '@hooks/useGetGoalDetail';
 import { useGoalsFirestore } from '@hooks/useGoalsMutation';
 import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
+import ContentTitle from '@layout/common/ContentTitle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { Box, Button, Grid, styled } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
-import ContentTitle from '@layout/common/ContentTitle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+
 
 const HabitDetailBox = styled(Box)({
   display: 'flex',
