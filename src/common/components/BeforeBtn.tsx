@@ -5,7 +5,7 @@ interface BeforeButtonProps {
   handleClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const BeforeButton = styled("button")({
+const BeforeButton = styled("button") ({
   width: "40px",
   height: "40px",
   padding: 0,
@@ -13,7 +13,7 @@ const BeforeButton = styled("button")({
   backgroundColor: "transparent",
 })
 
-const BeforeBtn = ({ handleClick }: BeforeButtonProps) => {
+const BeforeBtn = ({handleClick}:BeforeButtonProps) => {
   return (
     <BeforeButton type='button' onClick={handleClick}>
       <KeyboardArrowLeftIcon />
