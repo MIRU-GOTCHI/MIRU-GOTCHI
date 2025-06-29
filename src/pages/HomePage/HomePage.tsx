@@ -99,16 +99,21 @@ const HomePage = () => {
   };
 
   const getRandomNum = (num:number) => {
-    console.log(num)
+    if (!userId || data.length === 0) return;
     return setRandomNum(Math.floor(Math.random()*num));
   }
 
   useEffect(() => {
-    fetchCompletedCount();
-    if(data.length > 0) {
-      getRandomNum(data.length)
+    if (userId && data.length > 0) {
+      fetchCompletedCount();
+
+
+      if (randomNum === 0) {
+        getRandomNum(data.length);
+      }
     }
-  }, [userId, data]);
+  }, [userId, data, randomNum]);
+
 
   const handleCheck = async (goalId: string, logId?: string) => {
     if (!logId || !userId) return;
