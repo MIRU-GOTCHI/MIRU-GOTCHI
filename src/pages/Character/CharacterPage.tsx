@@ -27,10 +27,10 @@ function CustomTabPanel(props: TabPanelProps) {
       {value === index && (
         <Box
           sx={{
-            padding: { sm: '60px 35px', xs: '30px 23px' },
+            padding: { sm: '40px 35px', xs: '30px 23px' },
             backgroundColor: '#5B93D5',
             minHeight: '128px',
-            borderRadius: '0px 16px 16px 16px',
+            borderRadius: '0px 0 16px 16px',
           }}
         >
           {children}
@@ -104,16 +104,18 @@ const CharacterPageContainer = styled('div')(({ theme }) => ({
 
 const CharacterPageTitle = styled(Typography)({
   justifyContent: 'center',
-  fontSize: '32px !important',
-  color: '#050505 !important',
-  fontFamily: 'Galmuri14 !important',
+  // fontSize: '32px !important',
+  fontSize: '25px !important',
+  // color: '#050505 !important',
+  fontWeight: "500",
+  // fontFamily: 'Galmuri14 !important',
 });
 
 const CharacterPageDescription = styled(Typography)({
   justifyContent: 'center',
   fontSize: '16px !important',
   color: '#a4a4a4 !important',
-  fontFamily: 'Galmuri14!important',
+  // fontFamily: 'Galmuri14!important',
   marginBottom: '2rem !important',
 });
 
@@ -122,6 +124,8 @@ const CharacterPageTabArea = styled('div')({
   border: 'none',
   outline: 'none',
   boxShadow: 'none',
+  backgroundColor: "#ededed",
+  borderRadius: "16px 16px 0 0",
 });
 
 const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
@@ -129,13 +133,15 @@ const CharacterPageTab = styled(Tab)<{ selected?: boolean }>({
   justifyContent: 'center',
   alignItems: 'center',
   width: 'fit-content',
-  backgroundColor: '#4B7CB4 !important',
+  // backgroundColor: '#4B7CB4 !important',
+  backgroundColor: '#ededed !important',
   color: '#A4A4A4 !important',
-  fontSize: '20px !important',
+  // fontSize: '20px !important',
+  fontSize: '16px !important',
   border: 'none',
   outline: 'none',
   boxShadow: 'none',
-  padding: '16px 32px !important',
+  // padding: '16px 32px !important',
   fontFamily: 'Galmuri14 !important',
   borderRadius: '16px 16px 0px 0px ',
 
@@ -184,7 +190,7 @@ const CharacterPage = () => {
             scrollButtons="auto"
             TabIndicatorProps={{ style: { display: 'none' } }}
           >
-            <CharacterPageTab label="진행중" {...a11yProps(0)} sx={{ marginRight: '1rem' }} />
+            <CharacterPageTab label="진행중" {...a11yProps(0)}/>
             <CharacterPageTab label="완료" {...a11yProps(1)} />
           </Tabs>
         </CharacterPageTabArea>

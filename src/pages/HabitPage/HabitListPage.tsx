@@ -12,22 +12,35 @@ import { useState, useMemo } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  padding: 16px;
+  padding: 25px 0;
   @media (max-width: 600px) {
-    padding: 0px;
+    padding: 16px 0;
+  }
+  @media (min-width: 1280px) {
+    padding: 4rem 0 0;
   }
 `;
 
 const TitleContainer = muiStyled(Box)(({ theme }) => ({
+  position: "relative",
   display: 'flex',
-  alignItems: 'start',
+  alignItems: 'center',
   justifyContent: 'space-between',
   marginBottom: 30,
   [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(1, 1.5),
+    // padding: theme.spacing(1, 1.5),
     gap: theme.spacing(1),
-    marginBottom: 0,
+    // marginBottom: 15,
   },
+  "& .titleStyle" : {
+    fontSize: "25px",
+    fontWeight: "500",
+  },
+  "& .switchTitle" : {
+    position: "absolute",
+    right: 0,
+    top: "40px",
+  }
 }));
 
 const SwitchContainer = muiStyled(Box)(() => ({
@@ -103,10 +116,10 @@ const HabitListPage = () => {
     <Container>
       <TitleContainer>
         <Box>
-          <Typography variant="h4" fontWeight="bold">
+          <Typography className='titleStyle'>
             나의 습관 리스트
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" className='switchTitle'>
             {showInProgress ? '진행 중 목표' : '완료 목표'}
           </Typography>
         </Box>
@@ -131,7 +144,7 @@ const HabitListPage = () => {
 
       {filteredGoals.length === 0 ? (
         <Box textAlign="center" py={4}>
-          <Typography variant="body1" color="text.secondary">
+          <Typography variant="body1">
             습관이 없습니다
           </Typography>
         </Box>
