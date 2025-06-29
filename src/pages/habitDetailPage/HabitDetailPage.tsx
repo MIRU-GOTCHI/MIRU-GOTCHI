@@ -13,7 +13,6 @@ import { useNavigate, useParams } from 'react-router';
 
 import EditHabitDetailModal from './component/EditHabitDetailModal';
 
-
 const HabitDetailBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
@@ -21,26 +20,26 @@ const HabitDetailBox = styled(Box)({
   backgroundColor: '#F2F2F3',
   borderRadius: '10px',
   padding: '20px 30px',
-  position: "relative",
-  "& .unitBox": {
-    color: "#bababa",
-    fontSize: "11px",
-    position: "absolute",
-    right: "20px",
-    top: "20px",
-    display: "flex",
-    alignItems: "center",
+  position: 'relative',
+  '& .unitBox': {
+    color: '#bababa',
+    fontSize: '11px',
+    position: 'absolute',
+    right: '20px',
+    top: '20px',
+    display: 'flex',
+    alignItems: 'center',
   },
   '& .characterContent': {
     padding: 0,
   },
   '@media (max-width: 1000px)': {
-    height: "100vh",
+    height: '100vh',
   },
   '@media (max-width: 600px)': {
-    borderRadius: "unset",
+    borderRadius: 'unset',
     // paddingBottom: 0,
-    
+
     margin: '0 -20px -16px',
     '& .unitBox': {
       right: '10px',
@@ -57,6 +56,9 @@ const HabitDetailTitle = styled(Grid)({
 });
 
 const EditBtn = styled('button')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   background: 'none',
   fontFamily: 'fontGalmuri',
   fontSize: '12px',
@@ -123,7 +125,8 @@ const CharBox = styled(Box)({
 const HabitContSecGrid = styled(Grid)({
   width: '100%',
   gap: 10,
-  display: 'flex', flexGrow: 1,
+  display: 'flex',
+  flexGrow: 1,
   flexDirection: 'column',
 });
 
@@ -213,16 +216,15 @@ const HabitDetailPage = () => {
   return (
     <>
       <ContentTitle>
-        <BeforeBtn handleClick={()=> navigate('/habit')}/>
+        <BeforeBtn handleClick={() => navigate('/habit')} />
       </ContentTitle>
       <HabitDetailBox>
         <HabitDetailTitle>
           <>
-          <h2>{data?.title}</h2>
-          <InformHeadBox>
-            목표기간 : {data?.startDate.toLocaleDateString()}~
-            {data?.endDate.toLocaleDateString()}
-          </InformHeadBox>         
+            <h2>{data?.title}</h2>
+            <InformHeadBox>
+              목표기간 : {data?.startDate.toLocaleDateString()}~{data?.endDate.toLocaleDateString()}
+            </InformHeadBox>
           </>
 
           {data.status === 'failed' ? (
@@ -287,15 +289,13 @@ const HabitDetailPage = () => {
       </HabitDetailBox>
 
       {/* 수정 폼 모달 */}
-      {
-        data && (
-          <EditHabitDetailModal
-            open={openEditModal}
-            onClose={handleCloseEditModal}
-            goal={data} // 현재 목표 데이터를 prop으로 전달
-          />
-        )
-      }
+      {data && (
+        <EditHabitDetailModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          goal={data} // 현재 목표 데이터를 prop으로 전달
+        />
+      )}
     </>
   );
 };
