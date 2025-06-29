@@ -4,6 +4,7 @@ import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoalDetail } from '@hooks/useGetGoalDetail';
 import { useGoalsFirestore } from '@hooks/useGoalsMutation';
 import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
+import ContentInner from '@layout/common/ContentInner';
 import ContentTitle from '@layout/common/ContentTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -31,28 +32,29 @@ const HabitDetailBox = styled(Box)({
     display: "flex",
     alignItems: "center",
   },
-  "& .characterContent": {
+  '& .characterContent': {
     padding: 0,
+  },
+  '@media (max-width: 1000px)': {
+    height: "100vh",
   },
   '@media (max-width: 600px)': {
     borderRadius: "unset",
-    paddingBottom: 0,
-    margin: '0 -20px -16px',
-    "& .unitBox": {
-      right: "10px",
-      top: "15px",
-    }
-  },
-  // '@media (min-width: 601px)': {
+    // paddingBottom: 0,
     
-  // }
+    margin: '0 -20px -16px',
+    '& .unitBox': {
+      right: '10px',
+      top: '15px',
+    },
+  },
 });
 
 const HabitDetailTitle = styled(Grid)({
   width: '100%',
   // height: '6vh',
   display: 'flex',
-  flexDirection: "column",
+  flexDirection: 'column',
 });
 
 const EditBtn = styled('button')({
@@ -64,35 +66,35 @@ const EditBtn = styled('button')({
   '& selected': {
     color: '',
   },
-  "&.updateBtn": {
+  '&.updateBtn': {
     '& svg': {
-      width: "20px",
-    }
+      width: '20px',
+    },
   },
-  "&.deleteBtn": {
+  '&.deleteBtn': {
     '& svg': {
-      width: "15px",
-    }
+      width: '15px',
+    },
   },
   '& svg': {
-    height: "auto",
-    verticalAlign: "middle",
-    marginRight: "2px",
+    height: 'auto',
+    verticalAlign: 'middle',
+    marginRight: '2px',
   },
   '@media (min-width: 601px)': {
     fontSize: '14px',
-    display: "flex",
-    "&.updateBtn": {
+    display: 'flex',
+    '&.updateBtn': {
       '& svg': {
-        width: "24px",
-      }
+        width: '24px',
+      },
     },
-    "&.deleteBtn": {
+    '&.deleteBtn': {
       '& svg': {
-        width: "19px",
-      }
+        width: '19px',
+      },
+    },
   },
-  }
 });
 
 const HabitContainBox = styled(Grid)({
@@ -102,7 +104,8 @@ const HabitContainBox = styled(Grid)({
   gap: 10,
 });
 const CharacterGrid = styled(Grid)({
-  width: '100%', flexGrow: 1,
+  width: '100%',
+  flexGrow: 1,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -116,7 +119,7 @@ const CharBox = styled(Box)({
   maxWidth: '450px',
   minWidth: '200px',
   '@media (max-width: 600px)': { maxWidth: '230px' },
-  '@media (max-width: 1279px)': { maxWidth: '400px' }
+  '@media (max-width: 1279px)': { maxWidth: '400px' },
 });
 const HabitContSecGrid = styled(Grid)({
   width: '100%',
@@ -131,9 +134,10 @@ const HabitDescBox = styled(Box)({
   flexGrow: 1,
   borderRadius: '10px',
   padding: '20px',
-  minHeight: "90px",
+  minHeight: '90px',
   '@media (max-width: 600px)': {
-    maxHeight: 'calc(100vh - 550px)', overflowY: 'auto',
+    maxHeight: 'calc(100vh - 550px)',
+    overflowY: 'auto',
   },
 });
 
@@ -141,9 +145,9 @@ const InformHeadBox = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   color: 'rgba(17, 17, 17, 0.68)',
-  marginTop: "3px",
+  marginTop: '3px',
   fontWeight: 500,
-  fontSize: "12px",
+  fontSize: '12px',
 });
 
 const HabitDoneBtn = styled(Button)({
@@ -158,12 +162,7 @@ const HabitDetailPage = () => {
 
   const { deleteGoal } = useGoalsFirestore();
   const { data, isLoading } = useGetGoalDetail(userId, id);
-  const {
-    isChecked,
-    checkLog,
-    uncheckLog,
-    isUpdatingLog,
-  } = useTodayLogStatus(id);
+  const { isChecked, checkLog, uncheckLog, isUpdatingLog } = useTodayLogStatus(id);
   // 모달
   const [openEditModal, setOpenEditModal] = useState(false);
 
@@ -213,7 +212,7 @@ const HabitDetailPage = () => {
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
   return (
-    <>
+    <ContentInner>
       <ContentTitle>
         <BeforeBtn handleClick={()=> navigate('/habit')}/>
       </ContentTitle>
@@ -231,8 +230,21 @@ const HabitDetailPage = () => {
             ''
           ) : (
             <Box sx={{ marginLeft: 'auto' }} className="unitBox">
-              {!isEditable ? '' : <><EditBtn onClick={handleOpenEditModal} className='updateBtn'><EditNoteIcon/>수정</EditBtn>|</> }
-              <EditBtn onClick={handleDeleteGoal} className='deleteBtn'><DeleteIcon/>삭제</EditBtn>
+              {!isEditable ? (
+                ''
+              ) : (
+                <>
+                  <EditBtn onClick={handleOpenEditModal} className="updateBtn">
+                    <EditNoteIcon />
+                    수정
+                  </EditBtn>
+                  |
+                </>
+              )}
+              <EditBtn onClick={handleDeleteGoal} className="deleteBtn">
+                <DeleteIcon />
+                삭제
+              </EditBtn>
             </Box>
           )}
         </HabitDetailTitle>
@@ -241,6 +253,7 @@ const HabitDetailPage = () => {
           <CharacterGrid size={{ xs: 12, sm: 6 }}>
             <CharBox>
               <CharacterBox
+                successCount={data.successCount}
                 failCount={data.failCount}
                 totalDays={data.totalDays}
                 characterId={data.characterId}
@@ -259,18 +272,20 @@ const HabitDetailPage = () => {
             </HabitDescBox>
             {/* 완료 버튼 */}
 
-            < HabitDoneBtn
+            <HabitDoneBtn
               variant="contained"
               onClick={isChecked ? uncheckLog : checkLog}
-              color={isChecked ? "primary" : "secondary"}>
-              {isUpdatingLog ? "처리 중..." :
-                (isChecked ? `오늘의 (${data.title.slice(0, 10)}) 취소하기`
-                  : `오늘의 (${data.title.slice(0, 10)}) 완료하기`)}
+              color={isChecked ? 'primary' : 'secondary'}
+            >
+              {isUpdatingLog
+                ? '처리 중...'
+                : isChecked
+                  ? `오늘의 (${data.title.slice(0, 10)}) 취소하기`
+                  : `오늘의 (${data.title.slice(0, 10)}) 완료하기`}
             </HabitDoneBtn>
-
           </HabitContSecGrid>
         </HabitContainBox>
-      </HabitDetailBox >
+      </HabitDetailBox>
 
       {/* 수정 폼 모달 */}
       {
@@ -282,7 +297,7 @@ const HabitDetailPage = () => {
           />
         )
       }
-    </>
+    </ContentInner>
   );
 };
 

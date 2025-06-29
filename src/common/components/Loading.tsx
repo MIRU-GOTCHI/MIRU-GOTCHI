@@ -1,15 +1,24 @@
 import styled from "styled-components";
 
 const LoadingBox = styled("div") ({
-
+  position: "fixed",
+  left: 0,
+  top: 0,
+  minHeight: "100%",
+  minWidth: "100%",
+  zIndex: 200,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  // backgroundColor: "rgba(0,0,0,0.3)",
 });
 
 const Loader = styled("div") ({
   display: "block",
-  position: "relative",
   height: "20px",
   width: "140px",
-  margin: "0 auto",
+  // margin: "0 auto",
+  zIndex: 100,
   backgroundImage: `linear-gradient(#FFF 20px, transparent 0), 
   linear-gradient(#FFF 20px, transparent 0), 
   linear-gradient(#FFF 20px, transparent 0), 

@@ -20,8 +20,8 @@ const Name = styled('div')({
   background: '#050505',
   color: '#fff',
   fontSize: '12px',
+  minWidth: "50px",
   '@media (max-width: 600px)': { 
-    width: "60%",
     padding: '1px 2px',
   },
 });
@@ -32,7 +32,7 @@ const CharactersImage = ({ characterStatus, characterId, name}:CharactersImagePr
 
   return (
     <div className="characterArea">
-      {name && <Name className="fontBitBit">{name}</Name>}
+      {name && <Name className="fontBitBit nameTag">{name}</Name>}
       {charImages && characterStatus && (
         <img src={charImages[characterStatus?.growthStage]} alt={name} />
       )}
