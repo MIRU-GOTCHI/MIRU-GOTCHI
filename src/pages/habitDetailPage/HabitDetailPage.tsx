@@ -4,7 +4,6 @@ import { useAuthContext } from '@hooks/auth/useAuthContext';
 import { useGetGoalDetail } from '@hooks/useGetGoalDetail';
 import { useGoalsFirestore } from '@hooks/useGoalsMutation';
 import { useTodayLogStatus } from '@hooks/useTodayLogStatus';
-import ContentInner from '@layout/common/ContentInner';
 import ContentTitle from '@layout/common/ContentTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -212,7 +211,7 @@ const HabitDetailPage = () => {
   const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const isEditable = Math.abs(data.startDate.getTime() - now.getTime()) < ONE_DAY_IN_MS;
   return (
-    <ContentInner>
+    <>
       <ContentTitle>
         <BeforeBtn handleClick={()=> navigate('/habit')}/>
       </ContentTitle>
@@ -297,7 +296,7 @@ const HabitDetailPage = () => {
           />
         )
       }
-    </ContentInner>
+    </>
   );
 };
 
