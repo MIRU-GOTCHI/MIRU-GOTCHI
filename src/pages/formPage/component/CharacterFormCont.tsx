@@ -39,9 +39,9 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     borderLeft: `1px solid ${(theme.vars || theme).palette.divider}`,
   },
   [`& .${toggleButtonGroupClasses.lastButton}.${toggleButtonClasses.disabled}, & .${toggleButtonGroupClasses.middleButton}.${toggleButtonClasses.disabled}`]:
-    {
-      borderLeft: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`,
-    },
+  {
+    borderLeft: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`,
+  },
 }));
 const StyledToggleButton = styled(ToggleButton)({
   width: '15vh',
