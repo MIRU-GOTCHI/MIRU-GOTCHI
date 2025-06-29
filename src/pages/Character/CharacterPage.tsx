@@ -1,11 +1,11 @@
 import { useAuth } from '@hooks/auth/useAuth';
 import { useGetGoals } from '@hooks/useGetGoals';
+import ContentInner from '@layout/common/ContentInner';
 import { Box, Grid, styled, Tab, Tabs, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { characterImageMap } from '../../constants/characterImages';
-import ContentInner from '@layout/common/ContentInner';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,10 +60,11 @@ const CharacterPageContainer = styled('div')(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     padding: '1rem 0',
   },
-  "& .tabImgArea": {
-    display: 'flex', justifyContent: 'center'
+  '& .tabImgArea': {
+    display: 'flex',
+    justifyContent: 'center',
   },
-  "& .tabImg": {
+  '& .tabImg': {
     position: 'relative',
     backgroundColor: 'white',
     minWidth: '128px',
@@ -73,29 +74,32 @@ const CharacterPageContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    "& > img": {
-      width: '80px', height: '80px', objectFit: 'contain'
-    }
-  },
-  "@media (min-width:320px) and (max-width:720px)" : {
-    "& .tabImgArea": {
-      width: "calc(50% - 10px)",
-    },
-    "& .tabImg": {
-      padding: "20px",
-      "& > img": {
-        width: '100%', height: 'auto'
-      }
+    '& > img': {
+      width: '80px',
+      height: '80px',
+      objectFit: 'contain',
     },
   },
-  "@media (max-width:375px)": {
-    "& .tabImgArea": {
-      width: "calc(50% - 10px)",
+  '@media (min-width:320px) and (max-width:720px)': {
+    '& .tabImgArea': {
+      width: 'calc(50% - 10px)',
     },
-    "& .MuiBox-root":{
-      padding: "20px 15px",
-    }
-  }
+    '& .tabImg': {
+      padding: '20px',
+      '& > img': {
+        width: '100%',
+        height: 'auto',
+      },
+    },
+  },
+  '@media (max-width:375px)': {
+    '& .tabImgArea': {
+      width: 'calc(50% - 10px)',
+    },
+    '& .MuiBox-root': {
+      padding: '20px 15px',
+    },
+  },
 }));
 
 const CharacterPageTitle = styled(Typography)({
@@ -154,8 +158,12 @@ const CharacterPage = () => {
   const { userId } = useAuth();
   const { data: allGoalData } = useGetGoals(userId ?? '');
 
-  const onGoingGoals = allGoalData ? allGoalData.filter((goal) => !goal.characterStatus.gone) : [];
-  const completedGoals = allGoalData ? allGoalData.filter((goal) => goal.characterStatus.gone) : [];
+  const onGoingGoals = allGoalData
+    ? allGoalData.filter((goal) => goal.status === 'in_progress')
+    : [];
+  const completedGoals = allGoalData
+    ? allGoalData.filter((goal) => goal.status === 'completed')
+    : [];
 
   const handleChange = (_e: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -188,20 +196,9 @@ const CharacterPage = () => {
               const image = characterImageMap[charId]?.[stage];
 
               return (
-                <Grid
-                  key={goal.id}
-                  className="tabImgArea"
-                >
-                  <Box
-                    onClick={() => navigate(`/character/${goal.id}`)}
-                    className="tabImg"
-                  >
-                    {image && (
-                      <img
-                        src={image}
-                        alt="캐릭터 이미지"
-                      />
-                    )}
+                <Grid key={goal.id} className="tabImgArea">
+                  <Box onClick={() => navigate(`/character/${goal.id}`)} className="tabImg">
+                    {image && <img src={image} alt="캐릭터 이미지" />}
                     <Typography
                       sx={{
                         position: 'absolute',
@@ -232,20 +229,9 @@ const CharacterPage = () => {
               const image = characterImageMap[charId]?.[stage];
 
               return (
-                <Grid
-                  key={goal.id}
-                  className="tabImgArea"
-                >
-                  <Box
-                    onClick={() => navigate(`/character/${goal.id}`)}
-                    className="tabImg"
-                  >
-                    {image && (
-                      <img
-                        src={image}
-                        alt="캐릭터 이미지"
-                      />
-                    )}
+                <Grid key={goal.id} className="tabImgArea">
+                  <Box onClick={() => navigate(`/character/${goal.id}`)} className="tabImg">
+                    {image && <img src={image} alt="캐릭터 이미지" />}
                     <Typography
                       sx={{
                         position: 'absolute',
