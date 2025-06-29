@@ -1,3 +1,4 @@
+import AddNewGoalButton from '@common/components/AddNewGoalButton';
 import CustomSwitch from '@common/components/CustomSwitch';
 import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
@@ -22,7 +23,7 @@ const Container = styled.div`
 `;
 
 const TitleContainer = muiStyled(Box)(({ theme }) => ({
-  position: "relative",
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -32,15 +33,15 @@ const TitleContainer = muiStyled(Box)(({ theme }) => ({
     gap: theme.spacing(1),
     // marginBottom: 15,
   },
-  "& .titleStyle" : {
-    fontSize: "25px",
-    fontWeight: "500",
+  '& .titleStyle': {
+    fontSize: '25px',
+    fontWeight: '500',
   },
-  "& .switchTitle" : {
-    position: "absolute",
+  '& .switchTitle': {
+    position: 'absolute',
     right: 0,
-    top: "40px",
-  }
+    top: '40px',
+  },
 }));
 
 const SwitchContainer = muiStyled(Box)(() => ({
@@ -116,16 +117,14 @@ const HabitListPage = () => {
     <Container>
       <TitleContainer>
         <Box>
-          <Typography className='titleStyle'>
-            나의 습관 리스트
-          </Typography>
-          <Typography variant="body2" className='switchTitle'>
+          <Typography className="titleStyle">나의 습관 리스트</Typography>
+          <Typography variant="body2" className="switchTitle">
             {showInProgress ? '진행 중 목표' : '완료 목표'}
           </Typography>
         </Box>
         <SwitchContainer>
           <CustomSwitch checked={showInProgress} onChange={handleSwitchChange} />
-          {/* <AddNewGoalButton /> */}
+          <AddNewGoalButton />
         </SwitchContainer>
       </TitleContainer>
 
@@ -144,9 +143,7 @@ const HabitListPage = () => {
 
       {filteredGoals.length === 0 ? (
         <Box textAlign="center" py={4}>
-          <Typography variant="body1">
-            습관이 없습니다
-          </Typography>
+          <Typography variant="body1">습관이 없습니다</Typography>
         </Box>
       ) : (
         <HabitList

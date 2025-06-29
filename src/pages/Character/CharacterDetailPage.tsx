@@ -20,7 +20,7 @@ const Container = styled('div')({
   flexDirection: 'column',
   width: '100%',
   // backgroundColor: '#F2F2F3',
-  padding: '0rem 2rem 6rem 2rem',
+  padding: '0 0 6rem 0',
 });
 
 const GrowthTitle = styled(Typography)({
