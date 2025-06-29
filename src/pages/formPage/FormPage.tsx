@@ -1,5 +1,6 @@
 import BeforeBtn from "@common/components/BeforeBtn"
 import { useGoalsFirestore } from "@hooks/useGoalsMutation"
+import ContentTitle from "@layout/common/ContentTitle"
 import { Box, Button, Grid, styled } from "@mui/material"
 import { useState } from "react"
 import { useNavigate } from "react-router"
@@ -10,7 +11,7 @@ import GoalFormCpnt from "./component/GoalFormCpnt"
 import type { CharacterStatus } from "@models/character"
 import type { GrowthStage } from "@models/common"
 import type { CreateGoalData } from "@models/goal"
-import ContentTitle from "@layout/common/ContentTitle"
+
 
 const FormPageBox = styled(Box)({
   display: 'flex',
@@ -28,10 +29,7 @@ const FormPageBox = styled(Box)({
 //   alignItems: 'center',
 //   fontSize: '20px',
 // })
-// const FlagIcon = styled('img')({
-//   // height: '3.5vh',
-//   margin: '0 15px'
-// })
+
 const Form = styled('form')({
   display: 'flex',
   flexDirection: 'column',
