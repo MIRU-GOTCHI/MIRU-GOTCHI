@@ -11,7 +11,7 @@ const Wrap = styled('div')({
   height: '100%',
   maxWidth: '1280px',
   margin: '0 auto',
-  minWidth: '320px',
+  minWidth: '340px',
 });
 
 const ContentArea = styled('main')({
