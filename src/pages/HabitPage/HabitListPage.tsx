@@ -3,6 +3,7 @@ import Loading from '@common/components/Loading';
 import { useAuth } from '@hooks/auth/useAuth';
 import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
+import { useGetAllTodayLogs } from '@hooks/useGetAllTodayLogs';
 import { useGetGoals } from '@hooks/useGetGoals';
 import { Box, Typography, Tabs, Tab } from '@mui/material';
 import { styled as muiStyled } from '@mui/material/styles';
@@ -50,6 +51,12 @@ const HabitListPage = () => {
     isLoading: isCharactersLoading,
     error: charactersError,
   } = useGetAllCharacters();
+  const {
+    data: todayLogs,
+    isLoading: isLogLoading,
+    error: logError,
+  } = useGetAllTodayLogs(userId ?? '');
+
   const completeTodayLogMutation = useCompleteTodayLog();
 
   const handleSwitchChange = () => setShowInProgress((prev) => !prev);
@@ -79,9 +86,9 @@ const HabitListPage = () => {
     return <Loading />;
   }
 
-  const isLoading = isGoalLoading || isCharactersLoading;
+  const isLoading = isGoalLoading || isCharactersLoading || isLogLoading;
 
-  if (goalError || charactersError) {
+  if (goalError || charactersError || logError) {
     return (
       <Container>
         <Typography color="error">데이터 불러오는 중 오류가 발생했습니다.</Typography>
@@ -129,7 +136,12 @@ const HabitListPage = () => {
           </Typography>
         </Box>
       ) : (
-        <HabitList goals={filteredGoals} characters={characters} onCheck={handleCheck} />
+        <HabitList
+          goals={filteredGoals}
+          characters={characters}
+          todayLogs={todayLogs ?? {}}
+          onCheck={handleCheck}
+        />
       )}
     </Container>
   );
