@@ -73,7 +73,7 @@ export const useGoalsFirestore = () => {
     },
     onSuccess: (_, variables) => {
       // 사용자별 목표 목록과 특정 목표 상세 페이지 쿼리 키 무효화
-      queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName] });
+      // queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName] });
       queryClient.invalidateQueries({ queryKey: [goalsSubCollectionName, variables.docId] });
     },
     onError: (error: Error) => {
