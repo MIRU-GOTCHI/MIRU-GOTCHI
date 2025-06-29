@@ -98,22 +98,20 @@ const HomePage = () => {
     }
   };
 
-  const getRandomNum = (num:number) => {
+  const getRandomNum = (num: number) => {
     if (!userId || data.length === 0) return;
-    return setRandomNum(Math.floor(Math.random()*num));
-  }
+    return setRandomNum(Math.floor(Math.random() * num));
+  };
 
   useEffect(() => {
     if (userId && data.length > 0) {
       fetchCompletedCount();
-
 
       if (randomNum === 0) {
         getRandomNum(data.length);
       }
     }
   }, [userId, data, randomNum]);
-
 
   const handleCheck = async (goalId: string, logId?: string) => {
     if (!logId || !userId) return;
@@ -134,14 +132,14 @@ const HomePage = () => {
   return (
     <MainContent>
       <CharacterArea>
-        {data.length > 0 && (
+        {inProgressGoals.length > 0 && (
           <CharacterBox
-            failCount={data[randomNum].failCount}
-            title={data[randomNum].title}
-            characterStatus={data[randomNum].characterStatus}
-            characterId={data[randomNum].characterId}
-            totalDays={data[randomNum].totalDays}
-            successCount={data[randomNum].successCount}
+            failCount={inProgressGoals[randomNum].failCount}
+            title={inProgressGoals[randomNum].title}
+            characterStatus={inProgressGoals[randomNum].characterStatus}
+            characterId={inProgressGoals[randomNum].characterId}
+            totalDays={inProgressGoals[randomNum].totalDays}
+            successCount={inProgressGoals[randomNum].successCount}
             bubbleTalk="습관은 습관으로 극복할 수 있다."
           />
         )}
@@ -156,7 +154,9 @@ const HomePage = () => {
               <p className="totalCounter">
                 <span>완료 : </span>
                 <span className="counter">{completedCount}</span>
-                <span className="total">/ {data.length > 0 ? data.length : '0'}</span>
+                <span className="total">
+                  / {inProgressGoals.length > 0 ? inProgressGoals.length : '0'}
+                </span>
               </p>
             </div>
           </CustomHead>

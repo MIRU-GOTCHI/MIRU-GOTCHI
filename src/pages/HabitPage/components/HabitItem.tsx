@@ -113,7 +113,9 @@ const HabitItem = ({ goal, character, onCheck }: HabitItemProps) => {
 
   const stage = goal.characterStatus?.gone ? 'gone' : goal.characterStatus?.growthStage;
   const imagePath = character
-    ? `/assets/images/character/${character.type}/${character.type}-${stage}.png`
+    ? goal.characterStatus.gone
+      ? `/assets/images/character/${stage}.png`
+      : `/assets/images/character/${character.type}/${character.type}-${stage}.png`
     : '';
 
   const isTodayCompleted = log?.checked === true;

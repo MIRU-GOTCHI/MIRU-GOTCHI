@@ -107,8 +107,6 @@ const LockedStage = styled('div')({
   borderRadius: '12px',
 });
 
-const BeforeBtnWrapper = styled('div')({});
-
 const CharacterDetailPage = () => {
   const navigate = useNavigate();
   const { userId } = useAuthContext();
@@ -126,12 +124,12 @@ const CharacterDetailPage = () => {
   const charId = goalData?.characterId;
   const charImages = charId ? characterImageMap[charId] : null;
 
-  console.log('goalData', goalData);
+  // console.log('goalData', goalData);
 
   return (
     <Container>
       <ContentTitle>
-        <BeforeBtn handleClick={() => navigate(`/character`)}/>
+        <BeforeBtn handleClick={() => navigate(`/character`)} />
       </ContentTitle>
 
       {goalData && (
