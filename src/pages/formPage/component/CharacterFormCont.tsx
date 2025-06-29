@@ -12,16 +12,13 @@ const CharacterFormBox = styled(Grid)({
   height: 'auto',
   borderRadius: '15px',
   backgroundColor: '#F2F2F3',
-  padding: '20px 20px 30px',
+  padding: '10px',
   display: 'flex',
   flexDirection: 'column',
   gap: 5,
   fontFamily: 'Galmuri14',
   alignItems: "center",
   justifyContent: "center",
-  '@media (min-width: 1001px)': { 
-    padding: '30px 20px',
-   },
   "& .characterSelectGroup": {
     marginTop: "5px",
     '@media (min-width: 1001px)': { gap: "15px" },

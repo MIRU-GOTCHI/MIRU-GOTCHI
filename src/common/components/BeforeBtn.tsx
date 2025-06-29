@@ -1,13 +1,11 @@
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface BeforeButtonProps {
-to: string;
+  handleClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-
-const BeforeButton = styled(NavLink) ({
+const BeforeButton = styled("button")({
   width: "40px",
   height: "40px",
   padding: 0,
@@ -15,9 +13,9 @@ const BeforeButton = styled(NavLink) ({
   backgroundColor: "transparent",
 })
 
-const BeforeBtn = ({to}:BeforeButtonProps) => {
+const BeforeBtn = ({ handleClick }: BeforeButtonProps) => {
   return (
-    <BeforeButton  to={to}>
+    <BeforeButton type='button' onClick={handleClick}>
       <KeyboardArrowLeftIcon />
     </BeforeButton>
   )

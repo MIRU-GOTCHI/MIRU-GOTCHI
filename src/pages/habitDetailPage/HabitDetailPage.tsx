@@ -167,10 +167,6 @@ const HabitDetailPage = () => {
   // 모달
   const [openEditModal, setOpenEditModal] = useState(false);
 
-  const handleGoBack = () => {
-    navigate(-1); // 이전 페이지로 이동
-  };
-
   if (!id) {
     return <div>오류: 파라미터값이 발견되지 않았습니다.</div>;
   }
@@ -219,7 +215,7 @@ const HabitDetailPage = () => {
   return (
     <>
       <ContentTitle>
-        <BeforeBtn handleClick={handleGoBack}/>
+        <BeforeBtn handleClick={()=> navigate('/habit')}/>
       </ContentTitle>
       <HabitDetailBox>
         <HabitDetailTitle>
