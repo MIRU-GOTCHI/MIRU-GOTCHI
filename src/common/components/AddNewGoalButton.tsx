@@ -1,27 +1,31 @@
-import { Button } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 
-const FloatingButton = styled(Button)`
-  && {
-    position: fixed;
-    bottom: 80px;
-    right: 24px;
-    width: 56px;
-    height: 56px;
-    color: white;
-    border-radius: 50%;
-    font-size: 32px;
-    line-height: 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    min-width: 0;
-    z-index: 10;
+const FloatingButton = styled(Button)(({ theme }) => ({
+  position: 'fixed',
+  bottom: 80,
+  right: 24,
+  width: 56,
+  height: 56,
+  color: '#fff',
+  borderRadius: '50%',
+  fontSize: 32,
+  lineHeight: 0,
+  boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+  minWidth: 0,
+  zIndex: 10,
+  transition: 'right 0.3s',
+  '&:hover': {
+    backgroundColor: '#1565c0',
+  },
+  [theme.breakpoints.up('lg')]: {
+    right: 'calc(50vw - 640px + 40px)',
+  },
+  '@media (min-width:1800px)': {
+    right: 'calc((100vw - 1280px) / 2 + 40px)',
+  },
+}));
 
-    &:hover {
-      background-color: #1565c0;
-    }
-  }
-`;
 const AddNewGoalButton = () => {
   const navigate = useNavigate();
   return (
@@ -30,4 +34,5 @@ const AddNewGoalButton = () => {
     </FloatingButton>
   );
 };
+
 export default AddNewGoalButton;
