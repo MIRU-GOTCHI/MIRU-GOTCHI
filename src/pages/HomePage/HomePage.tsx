@@ -3,11 +3,10 @@ import { useAuth } from '@hooks/auth/useAuth';
 import { useCompleteTodayLog } from '@hooks/useCompleteTodayLog';
 import { useGetAllCharacters } from '@hooks/useGetAllCharacters';
 import { useGetGoals } from '@hooks/useGetGoals';
-import { useUpdateAllGoalsProgress } from '@hooks/useUpdateAllGoal';
 import { FormGroup } from '@mui/material';
 import HomeHabitList from '@pages/HomePage/component/HomeHabitList';
 import { getTodayCompletedCount } from '@service/logService/getTodayCompletedCount';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const MainContent = styled('div')({
@@ -70,16 +69,6 @@ const HomePage = () => {
   const [randomNum, setRandomNum] = useState(0);
 
   const completeTodayLogMutation = useCompleteTodayLog();
-  const updateAllProgressMutation = useUpdateAllGoalsProgress();
-
-  const updateProgress = useCallback(() => {
-    if (!userId) return;
-    updateAllProgressMutation.mutate({ userId });
-  }, [userId, updateAllProgressMutation]);
-
-  useEffect(() => {
-    updateProgress();
-  }, [updateProgress]);
 
   const todayDate = new Date();
   const dateFormat = `${todayDate.getMonth() + 1} 월 ${todayDate.getDate()}일`;
